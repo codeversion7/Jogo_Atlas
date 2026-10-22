@@ -51,3 +51,9 @@ Tamanho: 56100667 bytes. Fontes/recursos: 670 arquivos. ZIP aberto e íntegro, a
 ### Revis?o anterior ao commit
 
 Nome de autor configurado localmente como `codeversion7`, confirmado pelo usu?rio; e-mail preservado. Revisados 611 caminhos de produ??o: nenhum padr?o de segredo nem arquivo acima de 50 MiB sinalizado. Nove logs finais de evid?ncia inclu?dos explicitamente. Cinco ZIPs de origem/continuidade ficaram fora do Git, mas est?o no backup; caches, builds e backups n?o foram staged. `git diff --cached --check` apontou somente espa?os/finais de linha em arquivos e log existentes; conte?do foi preservado sem refatora??o durante a emerg?ncia. O commit de checkpoint registra trabalho incompleto; resultado de commit/push ser? registrado na sequ?ncia.
+
+### Commit e envio confirmados
+
+Commit de preserva??o: `302807a0b446a26e41eefe9d6782f2c3cb73bd24` na branch `codex/preparo-git`. Push para `https://github.com/codeversion7/Jogo_Atlas.git` conclu?do sem force; `git ls-remote --heads origin refs/heads/codex/preparo-git` confirmou o mesmo SHA no GitHub. O checkpoint com este recibo ser? salvo em um segundo commit documental normal. Nenhum PR ou merge foi executado.
+
+Fora do Git: cinco ZIPs de origem/continuidade (conte?do preservado no backup), builds, backups, caches e logs n?o selecionados. C?digo, recursos, imagens originais e derivadas, ferramentas e trabalho incompleto foram inclu?dos. A produ??o foi interrompida conforme o protocolo; a pr?xima tarefa ? inspecionar e animar os quatro novos monstros, sem presumir que j? est?o animados.
