@@ -1,0 +1,55 @@
+Godot Engine v4.7.2.stable.official.ed1daf0bf - https://godotengine.org
+
+[   0% ] first_scan_filesystem | Started Inicialização do Projeto (5 steps)
+[   0% ] first_scan_filesystem | Escaneando estrutura de arquivos...
+[  16% ] first_scan_filesystem | Carregando nomes de classe globais...
+[  33% ] first_scan_filesystem | Verificando GDExtensions...
+[  50% ] first_scan_filesystem | Criando scripts autoload...
+[  66% ] first_scan_filesystem | Inicializando plugins...
+[  83% ] first_scan_filesystem | Iniciando escaneamento de arquivos...
+[ DONE ] first_scan_filesystem
+
+[   0% ] _update_scan_actions | Started Escaneando ações... (9 steps)
+[   0% ] _update_scan_actions | walk_contact_sheet.png
+[  10% ] _update_scan_actions | 05_arena.png
+[  20% ] _update_scan_actions | 05_destrocos.png
+[  30% ] _update_scan_actions | 05_fim.png
+[  40% ] _update_scan_actions | 05_livro_desaparecendo.png
+[  50% ] _update_scan_actions | 05_livro_folheando.png
+[  60% ] _update_scan_actions | 05_livro_luz.png
+[  70% ] _update_scan_actions | 05_pagina.png
+[  80% ] _update_scan_actions | 05_rota_opcional.png
+[ DONE ] _update_scan_actions
+
+[   0% ] reimport | Started (Re)Importando Recursos (7 steps)
+[   0% ] reimport | Preparando arquivos para reimportação...
+[  12% ] reimport | Preparando arquivos para reimportação...
+[  25% ] reimport | Preparando arquivos para reimportação...
+[  37% ] reimport | Preparando arquivos para reimportação...
+[  50% ] reimport | Preparando arquivos para reimportação...
+[  62% ] reimport | Preparando arquivos para reimportação...
+[  75% ] reimport | Preparando arquivos para reimportação...
+[   0% ] reimport | Executando operações pré-reimportação...
+[   0% ] reimport | 05_arena.png
+[  12% ] reimport | 05_destrocos.png
+[  25% ] reimport | 05_fim.png
+[  37% ] reimport | 05_livro_desaparecendo.png
+[  50% ] reimport | 05_livro_folheando.png
+[  62% ] reimport | 05_livro_luz.png
+[  75% ] reimport | 05_rota_opcional.png
+[  87% ] reimport | Finalizando Importação de Recursos...
+[ DONE ] reimport
+
+[   0% ] reimport | Started (Re)Importando Recursos (7 steps)
+[   0% ] reimport | Executando operações pós-reimportação...
+[ DONE ] reimport
+
+ERROR: Cannot export project with preset "Windows Desktop" due to configuration errors:
+Nenhum modelo de exportação encontrado no caminho esperado:
+C:/Users/Arthur-Gamer/AppData/Roaming/Godot/export_templates/4.7.2.stable/windows_debug_x86_64.exe
+Nenhum modelo de exportação encontrado no caminho esperado:
+C:/Users/Arthur-Gamer/AppData/Roaming/Godot/export_templates/4.7.2.stable/windows_release_x86_64.exe
+
+   at: _fs_changed (editor/editor_node.cpp:1401)
+ERROR: Project export for preset "Windows Desktop" failed.
+   at: _fs_changed (editor/editor_node.cpp:1417)

@@ -1,5 +1,19 @@
 # Decisões e pendências
 
+## Vers?o integrada atual
+
+O pedido de 22/10/2026 ampliou a produ??o para as metas A?D: agora h? percurso por F5, combate/anima??es revisados, cinco p?ginas e evento final. Consulte [entrega e evid?ncias](../atlas/ENTREGA_JOGAVEL.md) e [decis?es U12?U16](../atlas/DECISOES.md). Os registros de preparo Git abaixo descrevem o estado anterior. Prazo vigente: 23/10/2026.
+
+
+## Confirmações locais — 22/10/2026
+
+- Engine verificado no executável: Godot `4.7.2.stable.official.ed1daf0bf`; `project.godot` usa recursos 4.7. Resolve a versão antes pendente em D01 e no item 10 abaixo.
+- Projeto existente: base 640×360, escala inteira, WASD e cena inicial `res://scenes/main.tscn`. Movimento implementado; as entradas reservadas não comprovam combate, mapa ou pausa.
+- Autoria Git: somente o e-mail `Codeversion7@gmail.com` foi fornecido nesta solicitação. `user.name` continua pendente; nenhuma identidade foi inventada.
+- Este preparo não aprova regras novas de gameplay nem altera o código. A arena de combate preexistente e suas decisões foram encontradas na inspeção; não atribuir sua implementação à integração Git.
+- As decisões locais U13/U14 já resolvem as perguntas 1 e 2 do registro remoto abaixo: páginas mantidas após a morte e coleta somente após vencer toda a horda. Retorno de teste com 50% da vida máxima e fome restante 25%, sem redução permanente do máximo. Fonte: [registro local das aprovações](../atlas/DECISOES.md), mantido integralmente. Persistência somente durante a sessão da arena; salvar em disco ainda não implementado.
+- U15 confirma cinco páginas e folhear → torre de luz → desaparecimento, substituindo o colapso antigo. U12 registra adaga, parry e esquiva; números e timings são hipóteses ajustáveis de teste. As questões do texto remoto abaixo que conflitam com estas confirmações descrevem pendências anteriores.
+
 ## Aprovado / vigente
 
 | ID | Decisão | Observação |

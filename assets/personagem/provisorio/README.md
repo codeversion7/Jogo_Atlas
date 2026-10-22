@@ -1,0 +1,13 @@
+﻿# Personagem provisório autoral — 22/10/2026
+
+Fonte reproduzível: `tools/generate_provisional_character.py` (somente biblioteca padrão Python). Cada quadro foi desenhado com primitivas vetoriais inteiras próprias. O gerador não abre, recorta, altera nem copia pixels das referências. As imagens aprovadas em `referencias/personagem/` e os rascunhos anteriores permanecem intactos. Este material é provisório para tornar a locomoção/combate legíveis, sem aprovação artística final.
+
+40 × 48 por quadro, origem dos pés em (20, 46), transparência, filtro nearest. `atlas_motion.tres` contém oito clipes: idle em quatro direções (4 quadros, 4 FPS), caminhada (6 quadros, 8 FPS). Pernas e braços se articulam separadamente; botas alternam apoio/passagem. Tronco comprime um pixel; cabeça não recebe deslocamento horizontal artificial. Espera mantém pés fixos. Virar durante caminhada preserva fase da passada. Velocidade de reprodução acompanha velocidade física real; colisão/parada volta à espera na última direção.
+
+`atlas_actions.tres` contém preparação, golpe, recuperação, parry, esquiva, dano e morte nas quatro direções, com três quadros por pose. São silhuetas de teste: preparação recolhe braço, golpe estende, recuperação recua, parry eleva mãos, esquiva abaixa corpo, dano recua, morte usa desenho deitado. A direção esquerda espelha o desenho lateral direito. Arma, alcance e efeitos pertencem ao controlador de combate. Não há regras/timers de gameplay neste visual.
+
+API `set_motion(Vector2)`, `set_action(StringName, Vector2, progress=0.0)`. Ação vazia/idle/move/walk limpa a pose e retoma a última velocidade; progress normalizado escolhe quadro 0–2. `stable_pose` continua disponível para o laboratório, desligado por padrão no visual. O jogador da cena antiga pode continuar ligando essa opção de laboratório: a configuração da cena de entrega pertence ao controlador.
+
+Verificação local: Godot 4.7.2 headless, `tools/generate_provisional_character_verify.gd`: 132 verificações, zero falhas. O teste exercita quatro direções, seis fases distintas, transparência/dimensões, relógio de animação sob atualizações contínuas, transição idle, sete ações em quatro direções, retomada de locomoção e modo estável. Folha `walk_contact_sheet.png` gerada pelo Godot e inspecionada visualmente quadro a quadro. Não equivale a aprovação artística nem revisão interativa em movimento na arena. Importação concluiu; o ambiente headless emitiu erros de certificado Windows e gravação de configurações do editor, sem falhas de script do visual.
+
+Prévia animada local: abrir preview.html no navegador; quatro direções em paralelo, espera/caminhada/ações, normal/½ velocidade e pausa. Usa os próprios quadros SVG do jogo.

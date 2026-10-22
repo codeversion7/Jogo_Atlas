@@ -1,0 +1,162 @@
+Godot Engine v4.7.2.stable.official.ed1daf0bf - https://godotengine.org
+
+[   0% ] first_scan_filesystem | Started Inicialização do Projeto (5 steps)
+[   0% ] first_scan_filesystem | Escaneando estrutura de arquivos...
+[  16% ] first_scan_filesystem | Carregando nomes de classe globais...
+[  33% ] first_scan_filesystem | Verificando GDExtensions...
+[  50% ] first_scan_filesystem | Criando scripts autoload...
+[  66% ] first_scan_filesystem | Inicializando plugins...
+[  83% ] first_scan_filesystem | Iniciando escaneamento de arquivos...
+[ DONE ] first_scan_filesystem
+
+[   0% ] update_scripts_classes | Started Registrando classes globais... (2 steps)
+[   0% ] update_scripts_classes | 
+[  33% ] update_scripts_classes | 
+[ DONE ] update_scripts_classes
+
+[   0% ] _update_scan_actions | Started Escaneando ações... (134 steps)
+[   0% ] _update_scan_actions | attack_active_down_0.svg
+[   0% ] _update_scan_actions | attack_active_down_1.svg
+[   1% ] _update_scan_actions | attack_active_down_2.svg
+[   2% ] _update_scan_actions | attack_active_left_0.svg
+[   2% ] _update_scan_actions | attack_active_left_1.svg
+[   3% ] _update_scan_actions | attack_active_left_2.svg
+[   4% ] _update_scan_actions | attack_active_right_0.svg
+[   5% ] _update_scan_actions | attack_active_right_1.svg
+[   5% ] _update_scan_actions | attack_active_right_2.svg
+[   6% ] _update_scan_actions | attack_active_up_0.svg
+[   7% ] _update_scan_actions | attack_active_up_1.svg
+[   8% ] _update_scan_actions | attack_active_up_2.svg
+[   8% ] _update_scan_actions | attack_recovery_down_0.svg
+[   9% ] _update_scan_actions | attack_recovery_down_1.svg
+[  10% ] _update_scan_actions | attack_recovery_down_2.svg
+[  11% ] _update_scan_actions | attack_recovery_left_0.svg
+[  11% ] _update_scan_actions | attack_recovery_left_1.svg
+[  12% ] _update_scan_actions | attack_recovery_left_2.svg
+[  13% ] _update_scan_actions | attack_recovery_right_0.svg
+[  14% ] _update_scan_actions | attack_recovery_right_1.svg
+[  14% ] _update_scan_actions | attack_recovery_right_2.svg
+[  15% ] _update_scan_actions | attack_recovery_up_0.svg
+[  16% ] _update_scan_actions | attack_recovery_up_1.svg
+[  17% ] _update_scan_actions | attack_recovery_up_2.svg
+[  17% ] _update_scan_actions | attack_windup_down_0.svg
+[  18% ] _update_scan_actions | attack_windup_down_1.svg
+[  19% ] _update_scan_actions | attack_windup_down_2.svg
+[  20% ] _update_scan_actions | attack_windup_left_0.svg
+[  20% ] _update_scan_actions | attack_windup_left_1.svg
+[  21% ] _update_scan_actions | attack_windup_left_2.svg
+[  22% ] _update_scan_actions | attack_windup_right_0.svg
+[  22% ] _update_scan_actions | attack_windup_right_1.svg
+[  23% ] _update_scan_actions | attack_windup_right_2.svg
+[  24% ] _update_scan_actions | attack_windup_up_0.svg
+[  25% ] _update_scan_actions | attack_windup_up_1.svg
+[  25% ] _update_scan_actions | attack_windup_up_2.svg
+[  26% ] _update_scan_actions | dead_down_0.svg
+[  27% ] _update_scan_actions | dead_down_1.svg
+[  28% ] _update_scan_actions | dead_down_2.svg
+[  28% ] _update_scan_actions | dead_left_0.svg
+[  29% ] _update_scan_actions | dead_left_1.svg
+[  30% ] _update_scan_actions | dead_left_2.svg
+[  31% ] _update_scan_actions | dead_right_0.svg
+[  31% ] _update_scan_actions | dead_right_1.svg
+[  32% ] _update_scan_actions | dead_right_2.svg
+[  33% ] _update_scan_actions | dead_up_0.svg
+[  34% ] _update_scan_actions | dead_up_1.svg
+[  34% ] _update_scan_actions | dead_up_2.svg
+[  35% ] _update_scan_actions | dodge_down_0.svg
+[  36% ] _update_scan_actions | dodge_down_1.svg
+[  37% ] _update_scan_actions | dodge_down_2.svg
+[  37% ] _update_scan_actions | dodge_left_0.svg
+[  38% ] _update_scan_actions | dodge_left_1.svg
+[  39% ] _update_scan_actions | dodge_left_2.svg
+[  40% ] _update_scan_actions | dodge_right_0.svg
+[  40% ] _update_scan_actions | dodge_right_1.svg
+[  41% ] _update_scan_actions | dodge_right_2.svg
+[  42% ] _update_scan_actions | dodge_up_0.svg
+[  42% ] _update_scan_actions | dodge_up_1.svg
+[  43% ] _update_scan_actions | dodge_up_2.svg
+[  44% ] _update_scan_actions | hurt_down_0.svg
+[  45% ] _update_scan_actions | hurt_down_1.svg
+[  45% ] _update_scan_actions | hurt_down_2.svg
+[  46% ] _update_scan_actions | hurt_left_0.svg
+[  47% ] _update_scan_actions | hurt_left_1.svg
+[  48% ] _update_scan_actions | hurt_left_2.svg
+[  48% ] _update_scan_actions | hurt_right_0.svg
+[  49% ] _update_scan_actions | hurt_right_1.svg
+[  50% ] _update_scan_actions | hurt_right_2.svg
+[  51% ] _update_scan_actions | hurt_up_0.svg
+[  51% ] _update_scan_actions | hurt_up_1.svg
+[  52% ] _update_scan_actions | hurt_up_2.svg
+[  53% ] _update_scan_actions | idle_down_0.svg
+[  54% ] _update_scan_actions | idle_down_1.svg
+[  54% ] _update_scan_actions | idle_down_2.svg
+[  55% ] _update_scan_actions | idle_down_3.svg
+[  56% ] _update_scan_actions | idle_left_0.svg
+[  57% ] _update_scan_actions | idle_left_1.svg
+[  57% ] _update_scan_actions | idle_left_2.svg
+[  58% ] _update_scan_actions | idle_left_3.svg
+[  59% ] _update_scan_actions | idle_right_0.svg
+[  60% ] _update_scan_actions | idle_right_1.svg
+[  60% ] _update_scan_actions | idle_right_2.svg
+[  61% ] _update_scan_actions | idle_right_3.svg
+[  62% ] _update_scan_actions | idle_up_0.svg
+[  62% ] _update_scan_actions | idle_up_1.svg
+[  63% ] _update_scan_actions | idle_up_2.svg
+[  64% ] _update_scan_actions | idle_up_3.svg
+[  65% ] _update_scan_actions | parry_down_0.svg
+[  65% ] _update_scan_actions | parry_down_1.svg
+[  66% ] _update_scan_actions | parry_down_2.svg
+[  67% ] _update_scan_actions | parry_left_0.svg
+[  68% ] _update_scan_actions | parry_left_1.svg
+[  68% ] _update_scan_actions | parry_left_2.svg
+[  69% ] _update_scan_actions | parry_right_0.svg
+[  70% ] _update_scan_actions | parry_right_1.svg
+[  71% ] _update_scan_actions | parry_right_2.svg
+[  71% ] _update_scan_actions | parry_up_0.svg
+[  72% ] _update_scan_actions | parry_up_1.svg
+[  73% ] _update_scan_actions | parry_up_2.svg
+[  74% ] _update_scan_actions | walk_contact_sheet.png
+[  74% ] _update_scan_actions | walk_contact_sheet.svg
+[  75% ] _update_scan_actions | walk_down_0.svg
+[  76% ] _update_scan_actions | walk_down_1.svg
+[  77% ] _update_scan_actions | walk_down_2.svg
+[  77% ] _update_scan_actions | walk_down_3.svg
+[  78% ] _update_scan_actions | walk_down_4.svg
+[  79% ] _update_scan_actions | walk_down_5.svg
+[  80% ] _update_scan_actions | walk_left_0.svg
+[  80% ] _update_scan_actions | walk_left_1.svg
+[  81% ] _update_scan_actions | walk_left_2.svg
+[  82% ] _update_scan_actions | walk_left_3.svg
+[  82% ] _update_scan_actions | walk_left_4.svg
+[  83% ] _update_scan_actions | walk_left_5.svg
+[  84% ] _update_scan_actions | walk_right_0.svg
+[  85% ] _update_scan_actions | walk_right_1.svg
+[  85% ] _update_scan_actions | walk_right_2.svg
+[  86% ] _update_scan_actions | walk_right_3.svg
+[  87% ] _update_scan_actions | walk_right_4.svg
+[  88% ] _update_scan_actions | walk_right_5.svg
+[  88% ] _update_scan_actions | walk_up_0.svg
+[  89% ] _update_scan_actions | walk_up_1.svg
+[  90% ] _update_scan_actions | walk_up_2.svg
+[  91% ] _update_scan_actions | walk_up_3.svg
+[  91% ] _update_scan_actions | walk_up_4.svg
+[  92% ] _update_scan_actions | walk_up_5.svg
+[  93% ] _update_scan_actions | 05_arena.png
+[  94% ] _update_scan_actions | 05_destrocos.png
+[  94% ] _update_scan_actions | 05_fim.png
+[  95% ] _update_scan_actions | 05_livro_desaparecendo.png
+[  96% ] _update_scan_actions | 05_livro_folheando.png
+[  97% ] _update_scan_actions | 05_livro_luz.png
+[  97% ] _update_scan_actions | 05_pagina.png
+[  98% ] _update_scan_actions | 05_rota_opcional.png
+[ DONE ] _update_scan_actions
+
+[   0% ] loading_editor_layout | Started Carregando editor (5 steps)
+[   0% ] loading_editor_layout | Carregando layout do editor...
+[  16% ] loading_editor_layout | Carregando abas...
+[  33% ] loading_editor_layout | Reabrindo cenas...
+[  50% ] loading_editor_layout | Carregando layout do editor central...
+[  66% ] loading_editor_layout | Carregando layout da janela de plugins...
+[  83% ] loading_editor_layout | Layout do editor pronto.
+[ DONE ] loading_editor_layout
+

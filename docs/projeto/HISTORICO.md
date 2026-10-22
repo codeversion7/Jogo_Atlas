@@ -61,3 +61,16 @@ O pacote de origem registra os conceitos antigos de alimentar o buraco e conside
 ## Como continuar este registro
 
 Acrescentar fatos com evidências: decisão explícita, arquivos alterados, commit/PR e testes. Não registrar tarefas propostas como prontas. Atualizar ESTADO_ATUAL.md após a importação e inspeção do projeto real.
+
+
+## 22/10/2026 — preparo e integração no projeto Windows real
+
+Inspeção confirmou o jogo na raiz GODOT-ATLAS indicada, ainda sem Git. Foram preservados 184 arquivos em cópia externa com manifesto SHA-256. Git inicializado nessa raiz e `origin` configurado para o repositório correto. Os responsáveis forneceram `Codeversion7@gmail.com`; e-mail aplicado localmente, nome ainda pendente. Autenticação oficial pelo Git Credential Manager concluída como `codeversion7`, seguida de consulta e fetch de `main`.
+
+Lidos AGENTS.md, GIT_E_CODEX.md, estado, decisões, histórico e script remoto. Preservados os dois commits documentais remotos, sem criar histórico independente. Documentação integrada na branch `codex/preparo-git`; jogo e referências mantidos. Regras úteis de ignore/atributos conciliadas; nenhuma alteração de gameplay. Execução do script PowerShell bloqueada pela política do sistema; comandos Git equivalentes aplicados sem desabilitar a política. Não houve commit, push, force-push, limpeza ou descarte. Estado e pendências em ESTADO_ATUAL.md.
+
+Inspeção da conciliação também encontrou a arena preexistente e as decisões locais U12–U15, posteriores às lacunas do remoto sobre retenção/coleta da página. Os resumos foram atualizados com referências ao registro local preservado. Abertura headless do Godot aprovada neste preparo; suítes anteriores de movimento/combate/animação não foram repetidas, pois o código permaneceu intacto.
+
+## 22/10/2026 ? percurso jog?vel de cinco p?ginas
+
+Metas A?D do anexo implementadas em c?pia de trabalho e verificadas antes da aplica??o: anima??o pr?pria articulada, fases reais de adaga, parry/esquiva/dano/morte e depura??o, percurso conectado com cinco hordas/p?ginas e encerramento can?nico. Labs anteriores preservados, sem commit/push. Evid?ncias e limites, inclusive templates Windows ausentes, em ../atlas/ENTREGA_JOGAVEL.md.

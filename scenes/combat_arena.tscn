@@ -1,0 +1,16 @@
+[gd_scene load_steps=4 format=3]
+
+[ext_resource type="PackedScene" path="res://scenes/main.tscn" id="1"]
+[ext_resource type="Script" path="res://scripts/combat_arena.gd" id="2"]
+[ext_resource type="Script" path="res://scripts/combat_player.gd" id="3"]
+
+[node name="Atlas" instance=ExtResource("1")]
+script = ExtResource("2")
+
+[node name="Player" parent="World" index="1"]
+position = Vector2(120, 180)
+script = ExtResource("3")
+move_speed = 85.0
+
+[node name="Camera2D" parent="World/Player" index="3"]
+enabled = false

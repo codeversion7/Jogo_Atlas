@@ -1,5 +1,14 @@
 # ATLAS
 
+## Jogar a vers?o atual
+
+Abra `project.godot` no Godot 4.7.2 e use **F5**, ou `Jogar-ATLAS.cmd`. Percurso integrado, adaga/parry/esquiva, cinco p?ginas e evento do livro. [Controles e limites](JOGAR.md) ? [Entrega e testes](docs/atlas/ENTREGA_JOGAVEL.md). Recursos provis?rios. A documenta??o hist?rica abaixo permanece preservada.
+
+
+## Projeto local integrado — 22/10/2026
+
+A pasta Windows real já contém o projeto Godot 4.7.2 e os recortes de movimentação e arena de combate em cenas separadas. A documentação remota foi integrada localmente preservando o histórico, na branch `codex/preparo-git`. O código do jogo ainda não foi commitado nem publicado. Consulte o [estado verificado localmente](docs/projeto/ESTADO_ATUAL.md); o registro da consolidação inicial abaixo descreve o remoto antes desta integração.
+
 Jogo roguelike 2D em desenvolvimento com Godot e GDScript, com exploração, sobrevivência simples e combates frenéticos em hordas próximas às cinco páginas perdidas de um livro.
 
 ## Comece aqui

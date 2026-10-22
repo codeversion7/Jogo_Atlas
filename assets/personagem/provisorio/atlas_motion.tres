@@ -1,0 +1,52 @@
+[gd_resource type="SpriteFrames" load_steps=41 format=3]
+
+[ext_resource type="Texture2D" path="res://assets/personagem/provisorio/idle_down_0.svg" id="1"]
+[ext_resource type="Texture2D" path="res://assets/personagem/provisorio/idle_down_1.svg" id="2"]
+[ext_resource type="Texture2D" path="res://assets/personagem/provisorio/idle_down_2.svg" id="3"]
+[ext_resource type="Texture2D" path="res://assets/personagem/provisorio/idle_down_3.svg" id="4"]
+[ext_resource type="Texture2D" path="res://assets/personagem/provisorio/walk_down_0.svg" id="5"]
+[ext_resource type="Texture2D" path="res://assets/personagem/provisorio/walk_down_1.svg" id="6"]
+[ext_resource type="Texture2D" path="res://assets/personagem/provisorio/walk_down_2.svg" id="7"]
+[ext_resource type="Texture2D" path="res://assets/personagem/provisorio/walk_down_3.svg" id="8"]
+[ext_resource type="Texture2D" path="res://assets/personagem/provisorio/walk_down_4.svg" id="9"]
+[ext_resource type="Texture2D" path="res://assets/personagem/provisorio/walk_down_5.svg" id="10"]
+[ext_resource type="Texture2D" path="res://assets/personagem/provisorio/idle_left_0.svg" id="11"]
+[ext_resource type="Texture2D" path="res://assets/personagem/provisorio/idle_left_1.svg" id="12"]
+[ext_resource type="Texture2D" path="res://assets/personagem/provisorio/idle_left_2.svg" id="13"]
+[ext_resource type="Texture2D" path="res://assets/personagem/provisorio/idle_left_3.svg" id="14"]
+[ext_resource type="Texture2D" path="res://assets/personagem/provisorio/walk_left_0.svg" id="15"]
+[ext_resource type="Texture2D" path="res://assets/personagem/provisorio/walk_left_1.svg" id="16"]
+[ext_resource type="Texture2D" path="res://assets/personagem/provisorio/walk_left_2.svg" id="17"]
+[ext_resource type="Texture2D" path="res://assets/personagem/provisorio/walk_left_3.svg" id="18"]
+[ext_resource type="Texture2D" path="res://assets/personagem/provisorio/walk_left_4.svg" id="19"]
+[ext_resource type="Texture2D" path="res://assets/personagem/provisorio/walk_left_5.svg" id="20"]
+[ext_resource type="Texture2D" path="res://assets/personagem/provisorio/idle_right_0.svg" id="21"]
+[ext_resource type="Texture2D" path="res://assets/personagem/provisorio/idle_right_1.svg" id="22"]
+[ext_resource type="Texture2D" path="res://assets/personagem/provisorio/idle_right_2.svg" id="23"]
+[ext_resource type="Texture2D" path="res://assets/personagem/provisorio/idle_right_3.svg" id="24"]
+[ext_resource type="Texture2D" path="res://assets/personagem/provisorio/walk_right_0.svg" id="25"]
+[ext_resource type="Texture2D" path="res://assets/personagem/provisorio/walk_right_1.svg" id="26"]
+[ext_resource type="Texture2D" path="res://assets/personagem/provisorio/walk_right_2.svg" id="27"]
+[ext_resource type="Texture2D" path="res://assets/personagem/provisorio/walk_right_3.svg" id="28"]
+[ext_resource type="Texture2D" path="res://assets/personagem/provisorio/walk_right_4.svg" id="29"]
+[ext_resource type="Texture2D" path="res://assets/personagem/provisorio/walk_right_5.svg" id="30"]
+[ext_resource type="Texture2D" path="res://assets/personagem/provisorio/idle_up_0.svg" id="31"]
+[ext_resource type="Texture2D" path="res://assets/personagem/provisorio/idle_up_1.svg" id="32"]
+[ext_resource type="Texture2D" path="res://assets/personagem/provisorio/idle_up_2.svg" id="33"]
+[ext_resource type="Texture2D" path="res://assets/personagem/provisorio/idle_up_3.svg" id="34"]
+[ext_resource type="Texture2D" path="res://assets/personagem/provisorio/walk_up_0.svg" id="35"]
+[ext_resource type="Texture2D" path="res://assets/personagem/provisorio/walk_up_1.svg" id="36"]
+[ext_resource type="Texture2D" path="res://assets/personagem/provisorio/walk_up_2.svg" id="37"]
+[ext_resource type="Texture2D" path="res://assets/personagem/provisorio/walk_up_3.svg" id="38"]
+[ext_resource type="Texture2D" path="res://assets/personagem/provisorio/walk_up_4.svg" id="39"]
+[ext_resource type="Texture2D" path="res://assets/personagem/provisorio/walk_up_5.svg" id="40"]
+
+[resource]
+animations = [{"frames": [{"duration": 1.0, "texture": ExtResource("1")}, {"duration": 1.0, "texture": ExtResource("2")}, {"duration": 1.0, "texture": ExtResource("3")}, {"duration": 1.0, "texture": ExtResource("4")}], "loop": true, "name": &"idle_down", "speed": 4.0},
+{"frames": [{"duration": 1.0, "texture": ExtResource("5")}, {"duration": 1.0, "texture": ExtResource("6")}, {"duration": 1.0, "texture": ExtResource("7")}, {"duration": 1.0, "texture": ExtResource("8")}, {"duration": 1.0, "texture": ExtResource("9")}, {"duration": 1.0, "texture": ExtResource("10")}], "loop": true, "name": &"walk_down", "speed": 8.0},
+{"frames": [{"duration": 1.0, "texture": ExtResource("11")}, {"duration": 1.0, "texture": ExtResource("12")}, {"duration": 1.0, "texture": ExtResource("13")}, {"duration": 1.0, "texture": ExtResource("14")}], "loop": true, "name": &"idle_left", "speed": 4.0},
+{"frames": [{"duration": 1.0, "texture": ExtResource("15")}, {"duration": 1.0, "texture": ExtResource("16")}, {"duration": 1.0, "texture": ExtResource("17")}, {"duration": 1.0, "texture": ExtResource("18")}, {"duration": 1.0, "texture": ExtResource("19")}, {"duration": 1.0, "texture": ExtResource("20")}], "loop": true, "name": &"walk_left", "speed": 8.0},
+{"frames": [{"duration": 1.0, "texture": ExtResource("21")}, {"duration": 1.0, "texture": ExtResource("22")}, {"duration": 1.0, "texture": ExtResource("23")}, {"duration": 1.0, "texture": ExtResource("24")}], "loop": true, "name": &"idle_right", "speed": 4.0},
+{"frames": [{"duration": 1.0, "texture": ExtResource("25")}, {"duration": 1.0, "texture": ExtResource("26")}, {"duration": 1.0, "texture": ExtResource("27")}, {"duration": 1.0, "texture": ExtResource("28")}, {"duration": 1.0, "texture": ExtResource("29")}, {"duration": 1.0, "texture": ExtResource("30")}], "loop": true, "name": &"walk_right", "speed": 8.0},
+{"frames": [{"duration": 1.0, "texture": ExtResource("31")}, {"duration": 1.0, "texture": ExtResource("32")}, {"duration": 1.0, "texture": ExtResource("33")}, {"duration": 1.0, "texture": ExtResource("34")}], "loop": true, "name": &"idle_up", "speed": 4.0},
+{"frames": [{"duration": 1.0, "texture": ExtResource("35")}, {"duration": 1.0, "texture": ExtResource("36")}, {"duration": 1.0, "texture": ExtResource("37")}, {"duration": 1.0, "texture": ExtResource("38")}, {"duration": 1.0, "texture": ExtResource("39")}, {"duration": 1.0, "texture": ExtResource("40")}], "loop": true, "name": &"walk_up", "speed": 8.0}]

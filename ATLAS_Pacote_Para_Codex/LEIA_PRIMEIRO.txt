@@ -1,0 +1,12 @@
+ATLAS — PACOTE PARA O CODEX
+
+Extraia este ZIP na raiz do seu projeto Godot (a pasta que contém project.godot).
+Será criada a pasta referencias/personagem/ com as imagens, as instruções e o pacote de continuidade.
+Os arquivos do jogo não foram incluídos neste pacote.
+
+Responda ao Codex:
+"Os arquivos estão em referencias/personagem/, dentro do projeto. Leia primeiro referencias/personagem/ATLAS_ANIMACAO_HANDOFF.md. As folhas são rascunhos; corrija e valide os quadros antes de integrar. A referência visual aprovada é Atlas em pixel art, quatro direções.png. Consulte o conteúdo de Pacote_continuidade_projeto_ATLAS.zip para a documentação inicial."
+
+IMPORTANTE
+Este pacote organiza as referências e as instruções existentes. As animações ainda precisam das correções e verificações descritas no documento. Não contém GIFs verificados, sprites corrigidos ou recursos Godot prontos.
+Se houver arquivos com os mesmos nomes no destino, compare-os antes de substituir.

@@ -20,3 +20,6 @@ desktop.ini
 
 # Nao ignorar assets fonte, *.uid ou arquivos *.import associados a assets.
 # Revisar export_presets.cfg antes de adicionar: engines antigos podem guardar credenciais.
+
+# Backups locais de preservacao
+/backups/

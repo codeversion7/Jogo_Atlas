@@ -1,0 +1,56 @@
+# ATLAS — estado de produção
+
+Atualizado em 19/10/2026. Etapa 01: fundação implementada e verificada em modo headless. Revisão visual/manual pendente.
+
+## Fontes e aprovação
+
+Raiz correta indicada pelo usuário: `C:\Users\Arthur-Gamer\OneDrive\Documentos\ChatGPT\GODOT-ATLAS`. Os cinco documentos solicitados e o ZIP existem; CONTRATO, CONTEXTO, DECISOES, proposta 10 e fundação 01 foram lidos. O ZIP não precisou ser consultado nem foi alterado. Na reinspeção anterior à criação, não havia project.godot, cenas ou scripts nesta raiz.
+Usuário aprovou somente o recorte da fundação em 19/10/2026; registro U10 em DECISOES.md. Demais regras da proposta 10 continuam pendentes.
+Nenhum projeto foi criado em Documents\atlas; testes dessa outra pasta não compõem a evidência abaixo.
+
+## Implementado
+
+- `project.godot`: Godot 4.7, renderizador Compatibility, cena inicial `res://scenes/main.tscn`; base 640×360, janela inicial 1280×720, proporção preservada e escala inteira; filtro de textura nearest.
+- Input Map: `move_up` W, `move_left` A, `move_down` S, `move_right` D, `interact` E, `map` M, `pause` Esc e `attack` clique esquerdo. Teclas físicas. Mouse para mira será consumido diretamente em etapa futura; não há ação de mira artificial.
+- `scenes/main.tscn`: raiz `Atlas` (Node2D) → `scripts/main.gd`; `World/TestGround` (Polygon2D); `World/PlayerPlaceholder` (Node2D) com três Polygon2D editáveis; `Interface` (CanvasLayer) com Labels.
+- `scripts/main.gd`: atualiza `Interface/Status` pelo campo exportado `status_text` e registra carregamento. Esse texto é ajustável no Inspector da raiz Atlas.
+- Silhueta e piso geométricos provisórios criados nesta etapa, sem arquivos externos ou áudio; identificados em tela como teste, sem alegação de arte final.
+- `.gitignore` exclui cache .godot e builds; `.gitattributes` define texto. O UID de main.gd é gerado pelo Godot.
+
+A cena é estática. Movimento, mira efetiva, combate, interação, mapa, pausa, NPC, comida, ondas, conquistas, páginas e livro não foram implementados. Entradas reservadas não significam sistemas concluídos.
+
+## Evidência de execução — 19/10/2026
+
+Executável descoberto nos metadados do projeto inicial e confirmado, sem busca indiscriminada:
+`C:\Users\Arthur-Gamer\OneDrive\Documentos\Godot\Godot_v4.7.2-stable_win64.exe`.
+Existe também o executável `_console.exe` na mesma pasta, usado no diagnóstico de entradas. Versão confirmada: `4.7.2.stable.official.ed1daf0bf`.
+Os caminhos acima são evidência local; cenas, scripts e recursos de execução usam caminhos relativos `res://`.
+
+Comandos executados a partir desta raiz, usando o executável indicado:
+
+1. `--version` e `--help`: versão e opções disponíveis confirmadas.
+2. `--headless --path <raiz> --import --log-file docs/atlas/evidencias/01_importacao.log`: código de saída 0; log de inicialização do editor e escaneamento concluídos, sem erros reportados.
+3. `--headless --path <raiz> --quit-after 3 --log-file docs/atlas/evidencias/02_execucao.log`: código de saída 0; log registra “ATLAS: fundação carregada; cena principal pronta.”; sem erros reportados.
+4. Executável console com `--headless --path <raiz> --script res://.godot/validate_foundation.gd --log-file docs/atlas/evidencias/03_entradas.log`: código de saída 0. Diagnóstico temporário no cache cria eventos físicos W/A/S/D/E/M/Esc e clique esquerdo, verifica o reconhecimento pelo InputMap e instancia a cena definida em application/run/main_scene. Resultado: sete teclas e clique reconhecidos, cena instanciada, viewport 640×360 e escala integer. O diagnóstico no cache não é dependência do projeto.
+5. Inspeção de referências: main.tscn e main.gd existem; não há caminhos absolutos em project.godot, cenas ou scripts de execução. A única dependência externa da cena é main.gd.
+
+Logs preservados em `docs/atlas/evidencias/`. Execuções liberadas fora da restrição de escrita da sessão, pois a raiz correta e as configurações/cache do Godot estão fora de Documents\atlas.
+
+## Não executado / limites
+
+- Abertura e revisão visual no editor com interface: NÃO EXECUTADAS.
+- Interação física com teclado/mouse, redimensionamento e avaliação de legibilidade: NÃO EXECUTADOS; o diagnóstico de eventos não substitui teste manual.
+- Exportação Windows e teste de build: NÃO EXECUTADOS. Formato/arquitetura e templates serão conferidos no marco de exportação.
+- Não há medição de desempenho nem promessa de conclusão até sábado sem reavaliar as etapas restantes.
+
+## Como abrir, editar e conferir manualmente
+
+1. No Godot 4.7.2, importe/abra o `project.godot` desta raiz.
+2. Abra `scenes/main.tscn`. A raiz Atlas expõe `status_text` no Inspector; as formas e os Labels podem ser editados diretamente na árvore.
+3. Use F6 para a cena ou F5 para a cena principal configurada. Deve aparecer a apresentação “ATLAS / FUNDAÇÃO”, a silhueta e os avisos de teste; não esperar movimento nesta etapa.
+4. Redimensione a janela e confira escala inteira, proporção, margens e legibilidade. Verifique Debugger/Output sem erros. Encerre com F8 no editor ou pelo fechamento normal da janela; Esc está apenas reservado.
+5. Em Project Settings → Input Map, confira as oito ações e suas associações. Em Display → Window e Rendering, ajuste os valores provisórios de apresentação quando necessário, respeitando U10.
+
+## Próximo marco
+
+Exploração e mapa conforme PLANO.md. Fechamento e pausa do mapa ainda precisam de decisão específica; a proposta M abre/fecha e pausa não foi aprovada por U10. Não implementar etapas posteriores sem solicitação. Preservar exatamente cinco páginas, livro e colapso nos marcos correspondentes.

@@ -1,0 +1,94 @@
+[gd_scene load_steps=6 format=3 uid="uid://c1rbwse4x2yo7"]
+
+[ext_resource type="Script" uid="uid://gyc4r2d8c1hj" path="res://scripts/main.gd" id="1_main"]
+
+[ext_resource type="PackedScene" path="res://scenes/player.tscn" id="2_player"]
+
+[sub_resource type="RectangleShape2D" id="HorizontalBoundary"]
+size = Vector2(608, 16)
+
+[sub_resource type="RectangleShape2D" id="VerticalBoundary"]
+size = Vector2(16, 192)
+
+[sub_resource type="RectangleShape2D" id="ObstacleShape"]
+size = Vector2(40, 40)
+
+[node name="Atlas" type="Node2D" unique_id=725664277]
+script = ExtResource("1_main")
+
+[node name="World" type="Node2D" parent="." unique_id=776443454]
+
+[node name="TestGround" type="Polygon2D" parent="World" unique_id=1426294850]
+color = Color(0.106, 0.165, 0.18, 1)
+polygon = PackedVector2Array(24, 84, 616, 84, 616, 276, 24, 276)
+
+[node name="Player" parent="World" instance=ExtResource("2_player")]
+position = Vector2(320, 180)
+
+[node name="Boundaries" type="StaticBody2D" parent="World"]
+collision_layer = 1
+collision_mask = 2
+
+[node name="Top" type="CollisionShape2D" parent="World/Boundaries"]
+position = Vector2(320, 76)
+shape = SubResource("HorizontalBoundary")
+
+[node name="Bottom" type="CollisionShape2D" parent="World/Boundaries"]
+position = Vector2(320, 284)
+shape = SubResource("HorizontalBoundary")
+
+[node name="Left" type="CollisionShape2D" parent="World/Boundaries"]
+position = Vector2(16, 180)
+shape = SubResource("VerticalBoundary")
+
+[node name="Right" type="CollisionShape2D" parent="World/Boundaries"]
+position = Vector2(624, 180)
+shape = SubResource("VerticalBoundary")
+
+[node name="Obstacle" type="StaticBody2D" parent="World"]
+position = Vector2(400, 180)
+collision_layer = 1
+collision_mask = 2
+
+[node name="Body" type="Polygon2D" parent="World/Obstacle"]
+color = Color(0.38, 0.45, 0.44, 1)
+polygon = PackedVector2Array(-20, -20, 20, -20, 20, 20, -20, 20)
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="World/Obstacle"]
+shape = SubResource("ObstacleShape")
+
+[node name="Interface" type="CanvasLayer" parent="." unique_id=68094068]
+
+[node name="Title" type="Label" parent="Interface" unique_id=506460788]
+offset_left = 24.0
+offset_top = 14.0
+offset_right = 616.0
+offset_bottom = 42.0
+theme_override_colors/font_color = Color(0.949, 0.859, 0.667, 1)
+theme_override_font_sizes/font_size = 22
+text = "ATLAS / MOVIMENTAÇÃO"
+
+[node name="Status" type="Label" parent="Interface" unique_id=337734052]
+offset_left = 24.0
+offset_top = 48.0
+offset_right = 616.0
+offset_bottom = 72.0
+theme_override_font_sizes/font_size = 13
+text = "WASD · colisão nos pés · câmera acompanha o personagem"
+
+[node name="Scope" type="Label" parent="Interface" unique_id=852037404]
+offset_left = 36.0
+offset_top = 244.0
+offset_right = 604.0
+offset_bottom = 268.0
+theme_override_colors/font_color = Color(0.596, 0.729, 0.741, 1)
+theme_override_font_sizes/font_size = 12
+text = "Pose estável provisória · animações em revisão"
+
+[node name="Inputs" type="Label" parent="Interface" unique_id=884979013]
+offset_left = 24.0
+offset_top = 290.0
+offset_right = 616.0
+offset_bottom = 346.0
+theme_override_font_sizes/font_size = 12
+text = "Contorne o bloco e teste as bordas do piso.\nWASD: mover · solte para parar mantendo a direção.\nCombate, interação, mapa e pausa aguardam as próximas etapas."

@@ -12,3 +12,9 @@
 *.ps1 text eol=crlf
 # Preservar bytes/CRLF das fontes arquivadas e seus hashes.
 docs/historico/pacote-2026-09-19/** -text whitespace=cr-at-eol
+
+# Regras locais preservadas
+* text=auto
+*.gd text eol=lf
+*.tscn text eol=lf
+*.godot text eol=lf

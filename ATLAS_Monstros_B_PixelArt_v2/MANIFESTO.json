@@ -1,0 +1,310 @@
+{
+  "version": 2,
+  "art_scope": "Linha B: Fenda, Carcaça, Esporo e Escavador compacto",
+  "status": "Quatro vistas estáticas por criatura; não são ciclos animados.",
+  "mode": "built_in_image_gen",
+  "native_grid_verified": false,
+  "godot_runtime_tested": false,
+  "assets": [
+    {
+      "name": "b1_fenda",
+      "path": "assets/monstros/b1_fenda/pixel_v2/b1_fenda_quatro_direcoes.png",
+      "source_size": [
+        1254,
+        1254
+      ],
+      "alpha_min_max": [
+        0,
+        255
+      ],
+      "sha256": "b8cb9512d9612ac275e5a55a45350b28c7c92a05527720cb0968ef474239382c",
+      "frames": [
+        {
+          "direction": "down",
+          "cell_region_xywh": [
+            0,
+            0,
+            627,
+            627
+          ],
+          "visible_bbox_in_cell_alpha_gt_8": [
+            97,
+            115,
+            591,
+            569
+          ]
+        },
+        {
+          "direction": "left",
+          "cell_region_xywh": [
+            627,
+            0,
+            627,
+            627
+          ],
+          "visible_bbox_in_cell_alpha_gt_8": [
+            66,
+            135,
+            521,
+            590
+          ]
+        },
+        {
+          "direction": "right",
+          "cell_region_xywh": [
+            0,
+            627,
+            627,
+            627
+          ],
+          "visible_bbox_in_cell_alpha_gt_8": [
+            97,
+            75,
+            560,
+            510
+          ]
+        },
+        {
+          "direction": "up",
+          "cell_region_xywh": [
+            627,
+            627,
+            627,
+            627
+          ],
+          "visible_bbox_in_cell_alpha_gt_8": [
+            48,
+            49,
+            530,
+            510
+          ]
+        }
+      ]
+    },
+    {
+      "name": "b2_carcaca",
+      "path": "assets/monstros/b2_carcaca/pixel_v2/b2_carcaca_quatro_direcoes.png",
+      "source_size": [
+        1341,
+        1173
+      ],
+      "alpha_min_max": [
+        0,
+        255
+      ],
+      "sha256": "3ebd7b5a67a8130bcb728adac6b034e08fe62d3d26a1796935c86a08e6430ea6",
+      "frames": [
+        {
+          "direction": "down",
+          "cell_region_xywh": [
+            0,
+            0,
+            670,
+            586
+          ],
+          "visible_bbox_in_cell_alpha_gt_8": [
+            29,
+            72,
+            670,
+            546
+          ]
+        },
+        {
+          "direction": "left",
+          "cell_region_xywh": [
+            670,
+            0,
+            671,
+            586
+          ],
+          "visible_bbox_in_cell_alpha_gt_8": [
+            0,
+            91,
+            620,
+            556
+          ]
+        },
+        {
+          "direction": "right",
+          "cell_region_xywh": [
+            0,
+            586,
+            670,
+            587
+          ],
+          "visible_bbox_in_cell_alpha_gt_8": [
+            41,
+            83,
+            590,
+            546
+          ]
+        },
+        {
+          "direction": "up",
+          "cell_region_xywh": [
+            670,
+            586,
+            671,
+            587
+          ],
+          "visible_bbox_in_cell_alpha_gt_8": [
+            0,
+            41,
+            653,
+            525
+          ]
+        }
+      ]
+    },
+    {
+      "name": "b3_esporo",
+      "path": "assets/monstros/b3_esporo/pixel_v2/b3_esporo_quatro_direcoes.png",
+      "source_size": [
+        1328,
+        1184
+      ],
+      "alpha_min_max": [
+        0,
+        254
+      ],
+      "sha256": "4e143ff112d601eeaf00f0f4cee2129e8d6a85c56a3d3542c23efea2497e13a5",
+      "frames": [
+        {
+          "direction": "down",
+          "cell_region_xywh": [
+            0,
+            0,
+            664,
+            592
+          ],
+          "visible_bbox_in_cell_alpha_gt_8": [
+            63,
+            32,
+            608,
+            558
+          ]
+        },
+        {
+          "direction": "left",
+          "cell_region_xywh": [
+            664,
+            0,
+            664,
+            592
+          ],
+          "visible_bbox_in_cell_alpha_gt_8": [
+            47,
+            109,
+            637,
+            553
+          ]
+        },
+        {
+          "direction": "right",
+          "cell_region_xywh": [
+            0,
+            592,
+            664,
+            592
+          ],
+          "visible_bbox_in_cell_alpha_gt_8": [
+            36,
+            76,
+            635,
+            534
+          ]
+        },
+        {
+          "direction": "up",
+          "cell_region_xywh": [
+            664,
+            592,
+            664,
+            592
+          ],
+          "visible_bbox_in_cell_alpha_gt_8": [
+            60,
+            49,
+            632,
+            519
+          ]
+        }
+      ]
+    },
+    {
+      "name": "b4_escavador",
+      "path": "assets/monstros/b4_escavador/pixel_v2/b4_escavador_quatro_direcoes.png",
+      "source_size": [
+        1254,
+        1254
+      ],
+      "alpha_min_max": [
+        0,
+        255
+      ],
+      "sha256": "a639b6d94f19e51165b597d0244dfd3fbd16bdb786625b7ebcedd3e1c013a408",
+      "frames": [
+        {
+          "direction": "down",
+          "cell_region_xywh": [
+            0,
+            0,
+            627,
+            627
+          ],
+          "visible_bbox_in_cell_alpha_gt_8": [
+            49,
+            131,
+            601,
+            550
+          ]
+        },
+        {
+          "direction": "left",
+          "cell_region_xywh": [
+            627,
+            0,
+            627,
+            627
+          ],
+          "visible_bbox_in_cell_alpha_gt_8": [
+            85,
+            153,
+            579,
+            579
+          ]
+        },
+        {
+          "direction": "right",
+          "cell_region_xywh": [
+            0,
+            627,
+            627,
+            627
+          ],
+          "visible_bbox_in_cell_alpha_gt_8": [
+            49,
+            98,
+            541,
+            530
+          ]
+        },
+        {
+          "direction": "up",
+          "cell_region_xywh": [
+            627,
+            627,
+            627,
+            627
+          ],
+          "visible_bbox_in_cell_alpha_gt_8": [
+            29,
+            81,
+            589,
+            481
+          ]
+        }
+      ]
+    }
+  ]
+}

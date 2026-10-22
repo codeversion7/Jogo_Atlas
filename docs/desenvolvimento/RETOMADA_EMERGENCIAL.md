@@ -1,0 +1,53 @@
+# Retomada emergencial — ATLAS
+
+Data/hora: 22/10/2026 19:31:21 — America/Sao_Paulo (UTC−03:00).
+
+## Objetivo e último pedido
+
+Produção anterior: finalizar as metas A–D e entregar versão compacta jogável; agora interrompida pelo pedido de preservação emergencial. Protocolo autoriza backup local, commit e push para o repositório configurado. Cota de uso indisponível nesta sessão: nenhum percentual foi estimado.
+
+Raiz: `C:\Users\Arthur-Gamer\OneDrive\Documentos\ChatGPT\GODOT-ATLAS`. Nome do projeto preservado: `Atlas_Verdadeiro`. Godot confirmado: `4.7.2.stable.official.ed1daf0bf`. Branch atual: `codex/preparo-git`; origin: `https://github.com/codeversion7/Jogo_Atlas.git`. E-mail `Codeversion7@gmail.com`; usuário aprovou nome de autor `codeversion7` nesta sessão. Não houve alterações staged anteriores.
+
+## Implementado e verificado antes da emergência
+
+- Percurso por F5 em `scenes/playable.tscn`, controlador `scripts/playable.gd`, configuração `resources/route_layout.tres` e scripts de cenário. Sete regiões conectadas: destroços, exploração/ruínas, abrigo opcional e cinco clareiras de confronto.
+- 124 quadros autorais provisórios de personagem, recursos em `assets/personagem/provisorio/`, gerador `tools/generate_provisional_character.py`, visual `scripts/atlas_visual.gd`; referências originais preservadas.
+- Adaga por preparação/ativo/recuperação, parry, esquiva, dano/morte, áreas matemáticas compartilhadas em `scripts/combat_geometry.gd`, depuração F3 e pausa Esc.
+- Cinco páginas distintas após hordas de três ondas; retenção ao morrer, R com 50% da vida máxima e fome 25%; final folhear → torre de luz → desaparecer, Enter reinicia.
+- Suítes no projeto original: percurso 155/0, combate 54/0, movimento 67/0, visual 132/0, animações 0 falhas/nove ciclos. Renderização 163/0, importação e abertura normal sem erros nos oito logs finais. Pacote extraído sem cache repetiu 155 verificações sem falhas. Não houve teste humano de teclado/mouse físico nem aprovação artística/balanceamento.
+- `builds/ATLAS_jogavel_fontes.zip` preparado, íntegro e testado em extração limpa; pacote de fontes, não EXE. Exportação Windows tentada e bloqueada por templates 4.7.2 ausentes; log `docs/atlas/evidencias/05_exportacao_windows.log`. Não instalar templates durante esta emergência.
+
+## Incompleto e ainda não iniciado
+
+- Pedido mais recente de produção informado no protocolo: analisar B1 Fenda, B2 Carcaça, B3 Esporo e B4 Escavador em `assets/monstros/`, preparar parado/oscilação, caminhada articulada, corrida e dano. A inspeção atual encontrou quatro PNGs de quatro direções e metadados `.import` em `pixel_v2/`; não foram encontrados clipes/recursos de animação desses quatro monstros. Não declarar animações prontas. Ataques específicos ficam para outra etapa.
+- Recursos de monstros recebidos também em `ATLAS_Monstros_B_PixelArt_v2/` e ZIP de origem: preservar no backup e arquivos extraídos no Git. O monstro ativo do percurso ainda é o desenho provisório em `scripts/test_monster.gd`.
+- Arte definitiva, avaliação humana, comida funcional, NPC, mapa M, persistência em disco e EXE Windows não concluídos; não confundir fome do HUD com sobrevivência.
+
+## Arquivos e riscos
+
+Treze arquivos existentes alterados na versão jogável: project.godot, README, cena visual, atlas_visual, combat_player, test_monster, verify_combat e registros de estado/decisões/plano/histórico. Novos: percurso/cenário/livro/pausa, recursos, quadros de personagem, testes, launcher, preset, JOGAR.md, relatório e evidências. A lista exata de produção está no backup e no commit; alterações incompletas de monstros são preservadas.
+
+Durante integração, preservada alteração concorrente de `config/name` para `Atlas_Verdadeiro`; não substituir pelo nome antigo. BOM UTF-8 removido de três arquivos autorais após importação limpa apontar problema; importação repetida sem erros. Fontes anteriores modificados têm cópia externa em `Documents/atlas/atlas-release-original-backup`.
+
+Não há processos de teste confirmados em andamento; o empacotamento anterior terminou antes da emergência. Nenhum Godot foi fechado à força. Alterações apenas na memória do editor não podem ser verificadas/salvas pela interface disponível: se houver abas não salvas, usar Salvar Tudo no editor. Arquivos abertos em `.godot/editor/` são cache e não substituem fontes.
+
+## Próximo passo exato
+
+1. Ler este checkpoint e conferir git status, branch/remoto e atualizações de outros autores.
+2. Abrir `project.godot` no Godot 4.7.2; F5 executa o percurso. WASD, mouse, esquerdo/adaga, direito/parry, Espaço/esquiva, E/página, R/retorno, Esc/pausa e F3/áreas. `Jogar-ATLAS.cmd` usa o Godot local.
+3. Para a próxima tarefa de produção, inspecionar tecnicamente os quatro PNGs em `assets/monstros/*/pixel_v2/`, preservar originais e definir quadros/pivôs. Criar cópias animadas de parado/caminhada/corrida/dano e verificar antes de integrar. Não gerar ataques específicos nesta etapa.
+4. Continuar pela documentação `docs/projeto/ESTADO_ATUAL.md`, `docs/projeto/DECISOES.md`, `docs/desenvolvimento/ROADMAP.md` e `docs/atlas/ENTREGA_JOGAVEL.md`. Nenhuma suíte longa deve ser iniciada durante o salvamento emergencial.
+
+## Preservação
+
+Backup previsto: `C:\Users\Arthur-Gamer\OneDrive\Documentos\ChatGPT\GODOT-ATLAS\backups\ATLAS-emergencial-20261022-193121.zip`. Estado inicial: sendo criado. Inclui todos os fontes, arte original/derivada e recursos ignorados relevantes; exclui somente .git, .godot, a própria pasta backups e caches/temporários/credenciais. Commit e push: pendentes no momento da primeira gravação. Resultado final será acrescentado abaixo.
+
+### Backup concluído
+
+Arquivo: `C:\Users\Arthur-Gamer\OneDrive\Documentos\ChatGPT\GODOT-ATLAS\backups\ATLAS-emergencial-20261022-193121.zip`
+
+Tamanho: 56100667 bytes. Fontes/recursos: 670 arquivos. ZIP aberto e íntegro, arquivos essenciais e quatro PNGs de monstros presentes. SHA-256: `243ca5b3102f1e3cc583dee5d910dbbac38bb893e2cad9b183b49cf698bbab70`. O backup contém o checkpoint inicial; o checkpoint final ficará no Git e no arquivo local.
+
+### Revis?o anterior ao commit
+
+Nome de autor configurado localmente como `codeversion7`, confirmado pelo usu?rio; e-mail preservado. Revisados 611 caminhos de produ??o: nenhum padr?o de segredo nem arquivo acima de 50 MiB sinalizado. Nove logs finais de evid?ncia inclu?dos explicitamente. Cinco ZIPs de origem/continuidade ficaram fora do Git, mas est?o no backup; caches, builds e backups n?o foram staged. `git diff --cached --check` apontou somente espa?os/finais de linha em arquivos e log existentes; conte?do foi preservado sem refatora??o durante a emerg?ncia. O commit de checkpoint registra trabalho incompleto; resultado de commit/push ser? registrado na sequ?ncia.
