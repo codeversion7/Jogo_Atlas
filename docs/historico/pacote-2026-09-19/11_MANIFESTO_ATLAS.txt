@@ -1,0 +1,101 @@
+ATLAS — MANIFESTO DE CONTINUIDADE
+
+==================================================
+IDENTIDADE
+==================================================
+
+Projeto:
+ATLAS
+
+Primeiro protótipo:
+2D
+
+Engine:
+Godot
+
+Linguagem:
+GDScript
+
+==================================================
+HISTÓRIA
+==================================================
+
+A nave caiu.
+
+Apenas o protagonista sobreviveu ao acidente inicial.
+
+Ele ficou gravemente ferido.
+
+A Atlas Boardship é a força antagonista central.
+
+Os inimigos não são o verdadeiro vilão central.
+
+==================================================
+LIVRO
+==================================================
+
+O antigo buraco foi removido.
+
+O livro substituiu o buraco.
+
+O jogador busca fragmentos do livro.
+
+Fragmentos são obtidos por conquistas.
+
+Todos os fragmentos:
+
+livro completo
+↓
+colapso/desabamento
+↓
+fim do prólogo
+
+==================================================
+SOBREVIVÊNCIA
+==================================================
+
+A comida ficou mais escassa.
+
+==================================================
+3 JOGADORES
+==================================================
+
+Jogador 1:
+personagem da ilha.
+
+Jogador 2:
+membro da nave.
+
+Jogador 3:
+membro da nave.
+
+Jogadores 2 e 3:
+amigos de longa data.
+
+==================================================
+REGRA
+==================================================
+
+CANÔNICO > HISTÓRICO
+
+Não inventar decisões pendentes.
+
+==================================================
+REMOVIDO
+==================================================
+
+Buraco como eixo do jogo.
+
+Alimentar o buraco.
+
+==================================================
+A DEFINIR
+==================================================
+
+Livro em detalhes.
+Atlas Boardship em detalhes.
+Mapa.
+Conquistas.
+Quantidade de fragmentos.
+Multiplayer completo.
+Versão do Godot.

@@ -1,0 +1,14 @@
+* text=auto eol=lf
+*.png binary
+*.jpg binary
+*.jpeg binary
+*.webp binary
+*.gif binary
+*.ogg binary
+*.wav binary
+*.mp3 binary
+*.zip binary
+*.pdf binary
+*.ps1 text eol=crlf
+# Preservar bytes/CRLF das fontes arquivadas e seus hashes.
+docs/historico/pacote-2026-09-19/** -text whitespace=cr-at-eol

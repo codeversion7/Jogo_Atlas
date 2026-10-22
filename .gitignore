@@ -1,0 +1,22 @@
+# Godot: caches e saidas locais. Confirmar versao antes da primeira importacao.
+.godot/
+.import/
+.mono/
+build/
+builds/
+exports/
+export_credentials.cfg
+
+# Ambiente, credenciais e temporarios
+.env
+.env.*
+!.env.example
+*.log
+*.tmp
+*.bak
+.DS_Store
+Thumbs.db
+desktop.ini
+
+# Nao ignorar assets fonte, *.uid ou arquivos *.import associados a assets.
+# Revisar export_presets.cfg antes de adicionar: engines antigos podem guardar credenciais.
