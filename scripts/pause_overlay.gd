@@ -11,7 +11,7 @@ func _ready() -> void:
 	panel.visible = false
 	add_child(panel)
 	var label := Label.new()
-	label.text = "PAUSA\n\nEsc para continuar\n\nWASD · mover    Mouse · mirar\nEsquerdo · adaga    Direito · parry\nEspaço · esquiva    E · recolher\nR · retornar após morte    F3 · áreas de combate\n\nCinco páginas. Progresso mantido ao retornar nesta partida."
+	label.text = "PAUSA\n\nEsc para continuar\n\nWASD · mover    Mouse · mirar\nEsquerdo · adaga    Direito · parry\nEspaço · esquiva    E · recolher\nQ · adaga de retorno    F · rastreio    Tab · personagem\nR · retornar após morte    F3 · áreas de combate\n\nCinco páginas. Progresso mantido ao retornar nesta partida."
 	label.position = Vector2(56,42)
 	label.add_theme_font_size_override("font_size",16)
 	panel.add_child(label)

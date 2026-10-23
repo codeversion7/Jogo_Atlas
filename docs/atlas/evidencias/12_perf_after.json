@@ -1,0 +1,18 @@
+{
+  "draw_calls_mean": 159.173333333333,
+  "enemies": 4,
+  "engine": "4.7.2-stable (official)",
+  "frame_median_ms": 6.715,
+  "frame_p95_ms": 7.816,
+  "load_ms": 1106.451,
+  "physics_median_ms": 1.322,
+  "physics_p95_ms": 1.322,
+  "process_median_ms": 13.939,
+  "process_p95_ms": 14.448,
+  "ready_ms": 20.62,
+  "rendered": true,
+  "resolution": "(1920, 1080)",
+  "samples": 300,
+  "static_memory_mib": 38.9318351745605,
+  "viewport": "(640, 360)"
+}

@@ -66,7 +66,7 @@ func run() -> void:
 	await process_frame
 	check(main.get_node("World/Player") is CharacterBody2D, "Main scene must contain the playable character")
 	main.queue_free()
-	var lab = load("res://scenes/animation_lab.tscn").instantiate()
+	var lab = load("res://scenes/review/animation_lab.tscn").instantiate()
 	root.add_child(lab)
 	await process_frame
 	check(lab.samples.size() == 8 and is_instance_valid(lab.pilot), "Lab failed to assemble")

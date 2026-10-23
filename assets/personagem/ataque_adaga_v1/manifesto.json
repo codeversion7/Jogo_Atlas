@@ -1,0 +1,812 @@
+{
+  "version": 1,
+  "status": "prepared_for_review_not_integrated",
+  "native_format": "SVG integer primitives",
+  "source_generator_sha256": "2c77435a6bb5fa1a530b5a4272db806b3821fc4084b4d959c061215fd1af0779",
+  "canvas": [
+    80,
+    80
+  ],
+  "pivot": [
+    40,
+    62
+  ],
+  "source_character_pivot": [
+    20,
+    46
+  ],
+  "directions": [
+    "down",
+    "left",
+    "right",
+    "up"
+  ],
+  "total_seconds": 0.4,
+  "phases_seconds": {
+    "attack_windup": 0.08,
+    "attack_active": 0.12,
+    "attack_recovery": 0.2
+  },
+  "layers": [
+    "body",
+    "dagger",
+    "trail",
+    "combined"
+  ],
+  "frames": [
+    {
+      "direction": "down",
+      "index": 0,
+      "phase": "attack_windup",
+      "duration": 0.04,
+      "hand_px": [
+        48,
+        45
+      ],
+      "tip_px": [
+        56,
+        36
+      ],
+      "damage_phase": false,
+      "dagger_behind_body": false
+    },
+    {
+      "direction": "down",
+      "index": 1,
+      "phase": "attack_windup",
+      "duration": 0.04,
+      "hand_px": [
+        49,
+        46
+      ],
+      "tip_px": [
+        60,
+        40
+      ],
+      "damage_phase": false,
+      "dagger_behind_body": false
+    },
+    {
+      "direction": "down",
+      "index": 2,
+      "phase": "attack_active",
+      "duration": 0.03,
+      "hand_px": [
+        48,
+        54
+      ],
+      "tip_px": [
+        54,
+        64
+      ],
+      "damage_phase": true,
+      "dagger_behind_body": false
+    },
+    {
+      "direction": "down",
+      "index": 3,
+      "phase": "attack_active",
+      "duration": 0.03,
+      "hand_px": [
+        48,
+        55
+      ],
+      "tip_px": [
+        50,
+        67
+      ],
+      "damage_phase": true,
+      "dagger_behind_body": false
+    },
+    {
+      "direction": "down",
+      "index": 4,
+      "phase": "attack_active",
+      "duration": 0.03,
+      "hand_px": [
+        42,
+        56
+      ],
+      "tip_px": [
+        39,
+        68
+      ],
+      "damage_phase": true,
+      "dagger_behind_body": false
+    },
+    {
+      "direction": "down",
+      "index": 5,
+      "phase": "attack_active",
+      "duration": 0.03,
+      "hand_px": [
+        36,
+        53
+      ],
+      "tip_px": [
+        28,
+        62
+      ],
+      "damage_phase": true,
+      "dagger_behind_body": false
+    },
+    {
+      "direction": "down",
+      "index": 6,
+      "phase": "attack_recovery",
+      "duration": 0.03333333333333333,
+      "hand_px": [
+        36,
+        53
+      ],
+      "tip_px": [
+        28,
+        62
+      ],
+      "damage_phase": false,
+      "dagger_behind_body": false
+    },
+    {
+      "direction": "down",
+      "index": 7,
+      "phase": "attack_recovery",
+      "duration": 0.03333333333333333,
+      "hand_px": [
+        39,
+        51
+      ],
+      "tip_px": [
+        34,
+        62
+      ],
+      "damage_phase": false,
+      "dagger_behind_body": false
+    },
+    {
+      "direction": "down",
+      "index": 8,
+      "phase": "attack_recovery",
+      "duration": 0.03333333333333333,
+      "hand_px": [
+        43,
+        49
+      ],
+      "tip_px": [
+        41,
+        61
+      ],
+      "damage_phase": false,
+      "dagger_behind_body": false
+    },
+    {
+      "direction": "down",
+      "index": 9,
+      "phase": "attack_recovery",
+      "duration": 0.03333333333333333,
+      "hand_px": [
+        46,
+        48
+      ],
+      "tip_px": [
+        47,
+        60
+      ],
+      "damage_phase": false,
+      "dagger_behind_body": false
+    },
+    {
+      "direction": "down",
+      "index": 10,
+      "phase": "attack_recovery",
+      "duration": 0.03333333333333333,
+      "hand_px": [
+        47,
+        47
+      ],
+      "tip_px": [
+        50,
+        59
+      ],
+      "damage_phase": false,
+      "dagger_behind_body": false
+    },
+    {
+      "direction": "down",
+      "index": 11,
+      "phase": "attack_recovery",
+      "duration": 0.03333333333333333,
+      "hand_px": [
+        47,
+        47
+      ],
+      "tip_px": [
+        50,
+        59
+      ],
+      "damage_phase": false,
+      "dagger_behind_body": false
+    },
+    {
+      "direction": "left",
+      "index": 0,
+      "phase": "attack_windup",
+      "duration": 0.04,
+      "hand_px": [
+        39,
+        40
+      ],
+      "tip_px": [
+        42,
+        28
+      ],
+      "damage_phase": false,
+      "dagger_behind_body": false
+    },
+    {
+      "direction": "left",
+      "index": 1,
+      "phase": "attack_windup",
+      "duration": 0.04,
+      "hand_px": [
+        41,
+        38
+      ],
+      "tip_px": [
+        45,
+        27
+      ],
+      "damage_phase": false,
+      "dagger_behind_body": false
+    },
+    {
+      "direction": "left",
+      "index": 2,
+      "phase": "attack_active",
+      "duration": 0.03,
+      "hand_px": [
+        34,
+        38
+      ],
+      "tip_px": [
+        23,
+        33
+      ],
+      "damage_phase": true,
+      "dagger_behind_body": false
+    },
+    {
+      "direction": "left",
+      "index": 3,
+      "phase": "attack_active",
+      "duration": 0.03,
+      "hand_px": [
+        27,
+        41
+      ],
+      "tip_px": [
+        15,
+        40
+      ],
+      "damage_phase": true,
+      "dagger_behind_body": false
+    },
+    {
+      "direction": "left",
+      "index": 4,
+      "phase": "attack_active",
+      "duration": 0.03,
+      "hand_px": [
+        25,
+        45
+      ],
+      "tip_px": [
+        14,
+        49
+      ],
+      "damage_phase": true,
+      "dagger_behind_body": false
+    },
+    {
+      "direction": "left",
+      "index": 5,
+      "phase": "attack_active",
+      "duration": 0.03,
+      "hand_px": [
+        28,
+        48
+      ],
+      "tip_px": [
+        19,
+        56
+      ],
+      "damage_phase": true,
+      "dagger_behind_body": false
+    },
+    {
+      "direction": "left",
+      "index": 6,
+      "phase": "attack_recovery",
+      "duration": 0.03333333333333333,
+      "hand_px": [
+        30,
+        48
+      ],
+      "tip_px": [
+        22,
+        57
+      ],
+      "damage_phase": false,
+      "dagger_behind_body": false
+    },
+    {
+      "direction": "left",
+      "index": 7,
+      "phase": "attack_recovery",
+      "duration": 0.03333333333333333,
+      "hand_px": [
+        32,
+        48
+      ],
+      "tip_px": [
+        27,
+        59
+      ],
+      "damage_phase": false,
+      "dagger_behind_body": false
+    },
+    {
+      "direction": "left",
+      "index": 8,
+      "phase": "attack_recovery",
+      "duration": 0.03333333333333333,
+      "hand_px": [
+        33,
+        47
+      ],
+      "tip_px": [
+        29,
+        58
+      ],
+      "damage_phase": false,
+      "dagger_behind_body": false
+    },
+    {
+      "direction": "left",
+      "index": 9,
+      "phase": "attack_recovery",
+      "duration": 0.03333333333333333,
+      "hand_px": [
+        33,
+        47
+      ],
+      "tip_px": [
+        30,
+        59
+      ],
+      "damage_phase": false,
+      "dagger_behind_body": false
+    },
+    {
+      "direction": "left",
+      "index": 10,
+      "phase": "attack_recovery",
+      "duration": 0.03333333333333333,
+      "hand_px": [
+        33,
+        47
+      ],
+      "tip_px": [
+        30,
+        59
+      ],
+      "damage_phase": false,
+      "dagger_behind_body": false
+    },
+    {
+      "direction": "left",
+      "index": 11,
+      "phase": "attack_recovery",
+      "duration": 0.03333333333333333,
+      "hand_px": [
+        33,
+        47
+      ],
+      "tip_px": [
+        30,
+        59
+      ],
+      "damage_phase": false,
+      "dagger_behind_body": false
+    },
+    {
+      "direction": "right",
+      "index": 0,
+      "phase": "attack_windup",
+      "duration": 0.04,
+      "hand_px": [
+        41,
+        40
+      ],
+      "tip_px": [
+        38,
+        28
+      ],
+      "damage_phase": false,
+      "dagger_behind_body": false
+    },
+    {
+      "direction": "right",
+      "index": 1,
+      "phase": "attack_windup",
+      "duration": 0.04,
+      "hand_px": [
+        39,
+        38
+      ],
+      "tip_px": [
+        35,
+        27
+      ],
+      "damage_phase": false,
+      "dagger_behind_body": false
+    },
+    {
+      "direction": "right",
+      "index": 2,
+      "phase": "attack_active",
+      "duration": 0.03,
+      "hand_px": [
+        46,
+        38
+      ],
+      "tip_px": [
+        57,
+        33
+      ],
+      "damage_phase": true,
+      "dagger_behind_body": false
+    },
+    {
+      "direction": "right",
+      "index": 3,
+      "phase": "attack_active",
+      "duration": 0.03,
+      "hand_px": [
+        53,
+        41
+      ],
+      "tip_px": [
+        65,
+        40
+      ],
+      "damage_phase": true,
+      "dagger_behind_body": false
+    },
+    {
+      "direction": "right",
+      "index": 4,
+      "phase": "attack_active",
+      "duration": 0.03,
+      "hand_px": [
+        55,
+        45
+      ],
+      "tip_px": [
+        66,
+        49
+      ],
+      "damage_phase": true,
+      "dagger_behind_body": false
+    },
+    {
+      "direction": "right",
+      "index": 5,
+      "phase": "attack_active",
+      "duration": 0.03,
+      "hand_px": [
+        52,
+        48
+      ],
+      "tip_px": [
+        61,
+        56
+      ],
+      "damage_phase": true,
+      "dagger_behind_body": false
+    },
+    {
+      "direction": "right",
+      "index": 6,
+      "phase": "attack_recovery",
+      "duration": 0.03333333333333333,
+      "hand_px": [
+        50,
+        48
+      ],
+      "tip_px": [
+        58,
+        57
+      ],
+      "damage_phase": false,
+      "dagger_behind_body": false
+    },
+    {
+      "direction": "right",
+      "index": 7,
+      "phase": "attack_recovery",
+      "duration": 0.03333333333333333,
+      "hand_px": [
+        48,
+        48
+      ],
+      "tip_px": [
+        53,
+        59
+      ],
+      "damage_phase": false,
+      "dagger_behind_body": false
+    },
+    {
+      "direction": "right",
+      "index": 8,
+      "phase": "attack_recovery",
+      "duration": 0.03333333333333333,
+      "hand_px": [
+        47,
+        47
+      ],
+      "tip_px": [
+        51,
+        58
+      ],
+      "damage_phase": false,
+      "dagger_behind_body": false
+    },
+    {
+      "direction": "right",
+      "index": 9,
+      "phase": "attack_recovery",
+      "duration": 0.03333333333333333,
+      "hand_px": [
+        47,
+        47
+      ],
+      "tip_px": [
+        50,
+        59
+      ],
+      "damage_phase": false,
+      "dagger_behind_body": false
+    },
+    {
+      "direction": "right",
+      "index": 10,
+      "phase": "attack_recovery",
+      "duration": 0.03333333333333333,
+      "hand_px": [
+        47,
+        47
+      ],
+      "tip_px": [
+        50,
+        59
+      ],
+      "damage_phase": false,
+      "dagger_behind_body": false
+    },
+    {
+      "direction": "right",
+      "index": 11,
+      "phase": "attack_recovery",
+      "duration": 0.03333333333333333,
+      "hand_px": [
+        47,
+        47
+      ],
+      "tip_px": [
+        50,
+        59
+      ],
+      "damage_phase": false,
+      "dagger_behind_body": false
+    },
+    {
+      "direction": "up",
+      "index": 0,
+      "phase": "attack_windup",
+      "duration": 0.04,
+      "hand_px": [
+        33,
+        44
+      ],
+      "tip_px": [
+        28,
+        55
+      ],
+      "damage_phase": false,
+      "dagger_behind_body": true
+    },
+    {
+      "direction": "up",
+      "index": 1,
+      "phase": "attack_windup",
+      "duration": 0.04,
+      "hand_px": [
+        31,
+        46
+      ],
+      "tip_px": [
+        25,
+        56
+      ],
+      "damage_phase": false,
+      "dagger_behind_body": true
+    },
+    {
+      "direction": "up",
+      "index": 2,
+      "phase": "attack_active",
+      "duration": 0.03,
+      "hand_px": [
+        28,
+        40
+      ],
+      "tip_px": [
+        19,
+        32
+      ],
+      "damage_phase": true,
+      "dagger_behind_body": true
+    },
+    {
+      "direction": "up",
+      "index": 3,
+      "phase": "attack_active",
+      "duration": 0.03,
+      "hand_px": [
+        30,
+        33
+      ],
+      "tip_px": [
+        26,
+        22
+      ],
+      "damage_phase": true,
+      "dagger_behind_body": true
+    },
+    {
+      "direction": "up",
+      "index": 4,
+      "phase": "attack_active",
+      "duration": 0.03,
+      "hand_px": [
+        37,
+        29
+      ],
+      "tip_px": [
+        38,
+        17
+      ],
+      "damage_phase": true,
+      "dagger_behind_body": true
+    },
+    {
+      "direction": "up",
+      "index": 5,
+      "phase": "attack_active",
+      "duration": 0.03,
+      "hand_px": [
+        44,
+        33
+      ],
+      "tip_px": [
+        52,
+        24
+      ],
+      "damage_phase": true,
+      "dagger_behind_body": true
+    },
+    {
+      "direction": "up",
+      "index": 6,
+      "phase": "attack_recovery",
+      "duration": 0.03333333333333333,
+      "hand_px": [
+        44,
+        34
+      ],
+      "tip_px": [
+        54,
+        27
+      ],
+      "damage_phase": false,
+      "dagger_behind_body": true
+    },
+    {
+      "direction": "up",
+      "index": 7,
+      "phase": "attack_recovery",
+      "duration": 0.03333333333333333,
+      "hand_px": [
+        43,
+        37
+      ],
+      "tip_px": [
+        54,
+        33
+      ],
+      "damage_phase": false,
+      "dagger_behind_body": true
+    },
+    {
+      "direction": "up",
+      "index": 8,
+      "phase": "attack_recovery",
+      "duration": 0.03333333333333333,
+      "hand_px": [
+        41,
+        40
+      ],
+      "tip_px": [
+        52,
+        44
+      ],
+      "damage_phase": false,
+      "dagger_behind_body": true
+    },
+    {
+      "direction": "up",
+      "index": 9,
+      "phase": "attack_recovery",
+      "duration": 0.03333333333333333,
+      "hand_px": [
+        38,
+        43
+      ],
+      "tip_px": [
+        46,
+        52
+      ],
+      "damage_phase": false,
+      "dagger_behind_body": true
+    },
+    {
+      "direction": "up",
+      "index": 10,
+      "phase": "attack_recovery",
+      "duration": 0.03333333333333333,
+      "hand_px": [
+        35,
+        46
+      ],
+      "tip_px": [
+        40,
+        57
+      ],
+      "damage_phase": false,
+      "dagger_behind_body": true
+    },
+    {
+      "direction": "up",
+      "index": 11,
+      "phase": "attack_recovery",
+      "duration": 0.03333333333333333,
+      "hand_px": [
+        34,
+        47
+      ],
+      "tip_px": [
+        37,
+        59
+      ],
+      "damage_phase": false,
+      "dagger_behind_body": true
+    }
+  ],
+  "unchanged_runtime_sha256": {
+    "scripts/atlas_visual.gd": "b47211a5af5de53d37eec6e08d71c3ca132d23b8b3c6961c794f4095c9398ad8",
+    "scripts/combat_player.gd": "203619efe007f19e2019fbea0f815fe104ce8b27e718810b32a6c45cf02924f9",
+    "assets/personagem/provisorio/atlas_motion.tres": "a2f6785dbed10e752de30b70f0ebb0407ab9256af952d05acacc7bd522d68d74",
+    "assets/personagem/provisorio/atlas_actions.tres": "5473fba0f437837c5ec513317f0267d5a6dde8ed15828f734f89cb4be8f9bf97"
+  }
+}

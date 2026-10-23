@@ -2,6 +2,7 @@ extends CharacterBody2D
 ## One provisional creature with committed telegraph, strike and recovery.
 signal defeated
 const Geometry = preload("res://scripts/combat_geometry.gd")
+const MonsterVisual = preload("res://scripts/monster_visual.gd")
 const COMBAT_OFFSET := Vector2(0, -8)
 @export var max_health: int = 50
 @export var move_speed: float = 40.0
@@ -13,6 +14,9 @@ const COMBAT_OFFSET := Vector2(0, -8)
 @export var stagger_duration: float = 0.85
 @export var hurt_radius: float = 8.0
 @export var feet_radius: float = 6.0
+## Varia somente a apresentação; comportamento/ataques continuam compartilhados.
+@export_enum("Fenda", "Carcaça", "Esporo", "Escavador") var monster_kind: int = 0
+var visual: Node2D
 var health: int
 var target: CharacterBody2D
 var state: StringName = &"chase"
@@ -37,6 +41,18 @@ func _ready() -> void:
 	shape.position = Vector2(0, -3)
 	add_child(shape)
 	add_to_group("atlas_combat_targets")
+	var shadow := Polygon2D.new()
+	shadow.z_index = -2
+	shadow.color = Color(0.04,0.05,0.07,0.55)
+	var shadow_points := PackedVector2Array()
+	for i in 16:
+		shadow_points.append(Vector2(cos(i*TAU/16)*8,sin(i*TAU/16)*3-2))
+	shadow.polygon = shadow_points
+	add_child(shadow)
+	visual = MonsterVisual.new()
+	visual.monster_kind = monster_kind
+	visual.z_index = -1
+	add_child(visual)
 	detour_side = 1.0 if get_instance_id() % 2 == 0 else -1.0
 
 func combat_center() -> Vector2:
@@ -47,12 +63,14 @@ func _physics_process(delta: float) -> void:
 	hurt_flash = maxf(0, hurt_flash - delta)
 	detour_wait = maxf(0, detour_wait - delta)
 	if dead:
+		visual.visible = false
 		death_time -= delta
 		queue_redraw()
 		if death_time <= 0:
 			queue_free()
 		return
 	if not is_instance_valid(target) or target.dead:
+		visual.set_motion(Vector2.ZERO)
 		queue_redraw()
 		return
 	var offset: Vector2 = target.combat_center() - combat_center()
@@ -79,6 +97,7 @@ func _physics_process(delta: float) -> void:
 			hit_target = true
 			target.receive_attack(damage, self)
 	move_and_slide()
+	visual.set_motion(get_real_velocity())
 	queue_redraw()
 
 func chase_direction(desired: Vector2) -> Vector2:
@@ -108,6 +127,8 @@ func take_damage(amount: int) -> void:
 		return
 	health = maxi(0, health - amount)
 	hurt_flash = 0.15
+	var from_direction := global_position.direction_to(target.global_position) if is_instance_valid(target) else Vector2.RIGHT
+	visual.play_hurt(from_direction)
 	if health == 0:
 		dead = true
 		state = &"dead"
@@ -133,10 +154,6 @@ func _draw() -> void:
 	if dead:
 		draw_ellipse_corpse(color)
 		return
-	draw_circle(Vector2(0, -2), 8, Color(0.04, 0.05, 0.07, 0.55))
-	draw_colored_polygon(PackedVector2Array([Vector2(-9,-3), Vector2(-7,-13), Vector2(-3,-18), Vector2(0,-15), Vector2(5,-18), Vector2(9,-10), Vector2(7,-2)]), color)
-	draw_line(Vector2(-4,-12), Vector2(-1,-11), Color(1,0.75,0.4), 2)
-	draw_line(Vector2(3,-11), Vector2(6,-12), Color(1,0.75,0.4), 2)
 	if state in [&"windup", &"attack", &"recovery"]:
 		var alpha := 0.3 if state == &"attack" else 0.10
 		Geometry.draw_sector(self, COMBAT_OFFSET, attack_direction, attack_reach, PI / 3, Color(1, 0.5, 0.2, alpha))
@@ -145,8 +162,9 @@ func _draw() -> void:
 	if is_instance_valid(target) and target.debug_areas:
 		draw_arc(Vector2(0,-3), feet_radius, 0, TAU, 24, Color.LIME_GREEN, 1)
 		draw_arc(COMBAT_OFFSET, hurt_radius, 0, TAU, 24, Color.MAGENTA, 1)
-	draw_rect(Rect2(-8, -23, 16, 2), Color(0.1,0.1,0.1))
-	draw_rect(Rect2(-8, -23, 16.0 * health / max_health, 2), Color(0.8,0.9,0.7))
+	var bar_y: float = -MonsterVisual.Catalog.HEIGHTS[monster_kind]-5
+	draw_rect(Rect2(-8, bar_y, 16, 2), Color(0.1,0.1,0.1))
+	draw_rect(Rect2(-8, bar_y, 16.0 * health / max_health, 2), Color(0.8,0.9,0.7))
 
 func draw_ellipse_corpse(color: Color) -> void:
 	var fade := clampf(death_time / 0.28, 0, 1)

@@ -37,7 +37,8 @@ func run() -> void:
 		for state in [&"attack_windup", &"attack_active", &"attack_recovery", &"parry", &"dodge", &"hurt", &"dead"]:
 			actor.set_action(state,direction,0.8)
 			check(String(actor.sprite.animation).begins_with(String(state)), "Action pose " + state)
-			check(actor.sprite.frame == 2, "Action progress selects frame")
+			var expected: int = {&"attack_windup":1,&"attack_active":3,&"attack_recovery":4}.get(state,2)
+			check(actor.sprite.frame == expected, "Action progress selects actual 2/4/6 or legacy 3-frame pose")
 		actor.set_action(&"",direction)
 		check(actor.sprite.sprite_frames == frames and actor.sprite.is_playing(), "Action resumes motion resource")
 	actor.stable_pose = true

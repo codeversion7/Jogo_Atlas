@@ -186,6 +186,8 @@ func run() -> void:
 				check(monster.dead,"Dagger defeats wave target")
 			await step()
 		check(game.cleared.has(index) and game.active_encounter == -1,"Horde unlocks only its page")
+		check(player.attributes.points == index+1,"Exactly one skill point per completed encounter")
+		check(not player.attributes.reward_encounter(index),"Completed encounter cannot reward points twice")
 		player.position = game.page_position(index)
 		Input.action_press("interact")
 		await step()

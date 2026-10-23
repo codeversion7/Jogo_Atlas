@@ -5,7 +5,7 @@ func _initialize() -> void:
 	render.call_deferred()
 
 func render() -> void:
-	var lab = load("res://scenes/animation_lab.tscn").instantiate()
+	var lab = load("res://scenes/review/animation_lab.tscn").instantiate()
 	root.add_child(lab)
 	await process_frame
 	root.size = Vector2i(640, 360)

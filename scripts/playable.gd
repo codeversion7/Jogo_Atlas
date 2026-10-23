@@ -5,6 +5,9 @@ const Monster = preload("res://scripts/test_monster.gd")
 const Prop = preload("res://scripts/world_prop.gd")
 const Ground = preload("res://scripts/world_ground.gd")
 const Book = preload("res://scripts/book_sequence.gd")
+const CharacterPanel = preload("res://scripts/ui/character_panel.gd")
+var character_panel: CanvasLayer
+var skills_bar: Label
 const PauseOverlay = preload("res://scripts/pause_overlay.gd")
 @export var layout: Resource
 @onready var player = $World/Player
@@ -154,7 +157,7 @@ func build_interface() -> void:
 	bottom.mouse_filter = Control.MOUSE_FILTER_IGNORE
 	hud.add_child(bottom)
 	hint = make_label("",Vector2(16,320),12)
-	help = make_label("WASD mover · Mouse mirar · Esq. atacar · Dir. parry · Espaço esquiva · Esc pausa",Vector2(16,342),10)
+	help = make_label("WASD mover · Mouse atacar/parry · Espaço esquiva · Q adaga · F rastreio · Tab árvore · Esc pausa",Vector2(16,342),10)
 	modal = ColorRect.new()
 	modal.position = Vector2(72,75)
 	modal.size = Vector2(496,205)
@@ -165,6 +168,11 @@ func build_interface() -> void:
 	modal_text = make_label("",Vector2(26,28),17,modal)
 	var pause := PauseOverlay.new()
 	add_child(pause)
+	character_panel = CharacterPanel.new()
+	character_panel.player = player
+	character_panel.game = self
+	add_child(character_panel)
+	skills_bar = make_label("",Vector2(16,303),10)
 
 func region_at(point: Vector2) -> int:
 	var col := clampi(int(point.x/560),0,3)
@@ -181,7 +189,8 @@ func _physics_process(delta: float) -> void:
 	var region := region_at(player.position)
 	visited[region] = true
 	title.text = "ATLAS / " + layout.region_names[region].to_upper()
-	stats.text = "Vida %d/%d    Fome %d%%    %d/5" % [player.health,player.max_health,int(player.hunger),pages.size()]
+	stats.text = "Vida %d/%d  F%.0f%%  E%d/%d  %d/5" % [player.health,player.max_health,player.hunger/player.max_hunger*100,player.shield,player.max_shield,pages.size()]
+	skills_bar.text = "Q adaga: %s   F rastreio: %s   Tab personagem ? %d ponto(s)" % [ability_status("throw"),ability_status("tracking"),player.attributes.points]
 	if ending != &"none":
 		if ending == &"playing":
 			book.advance(delta)
@@ -228,7 +237,7 @@ func _physics_process(delta: float) -> void:
 	if player.debug_areas:
 		help.text = "F3 · ocultar áreas | Verde: física · Magenta: vulnerável · Ouro: adaga · Ciano: parry"
 	else:
-		help.text = "WASD mover · Mouse mirar · Esq. atacar · Dir. parry · Espaço esquiva · Esc pausa"
+		help.text = "WASD mover · Mouse atacar/parry · Espaço esquiva · Q adaga · F rastreio · Tab árvore · Esc pausa"
 
 func begin_encounter(index: int) -> bool:
 	if index < 0 or index >= 5 or player.dead or active_encounter >= 0 or cleared.has(index):
@@ -272,6 +281,8 @@ func spawn_wave() -> void:
 		planned.append(point)
 	for point in planned:
 		var monster := Monster.new()
+		# Quatro artes, mesmo comportamento provisório; ataques próprios ficam para depois.
+		monster.monster_kind = (active_encounter + enemies.size()) % 4
 		monster.position = point
 		monster.target = player
 		monster.defeated.connect(on_monster_defeated.bind(monster))
@@ -282,6 +293,7 @@ func on_monster_defeated(monster: CharacterBody2D) -> void:
 	enemies.erase(monster)
 	if enemies.is_empty() and encounter == &"fighting":
 		if wave_index+1 == layout.wave_sizes.size():
+			player.attributes.reward_encounter(active_encounter)
 			cleared[active_encounter] = true
 			active_encounter = -1
 			encounter = &"explore"
@@ -319,6 +331,7 @@ func return_player() -> bool:
 	return true
 
 func start_ending() -> void:
+	player.cancel_skills()
 	ending = &"playing"
 	player.state = &"ready"
 	player.remaining = 0.0
@@ -354,3 +367,10 @@ func draw_markers() -> void:
 			markers.draw_rect(Rect2(location+Vector2(-6,-24+bob),Vector2(12,18)),Color("f2df9f"))
 			for y in [-19,-15,-11]:
 				markers.draw_line(location+Vector2(-3,y+bob),location+Vector2(3,y+bob),Color("9a8452"),1)
+
+func ability_status(id: String) -> String:
+	if not player.attributes.owned.has(id+".unlock"): return "bloqueado"
+	if id == "throw" and is_instance_valid(player.thrown_dagger): return "em voo"
+	if id == "tracking" and player.tracker.remaining > 0: return "ativo %.1fs"%player.tracker.remaining
+	var remaining: float = player.attributes.cooldowns[id]
+	return "%.1fs"%remaining if remaining > 0 else "pronto"

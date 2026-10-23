@@ -1,5 +1,10 @@
 # Histórico de produção
 
+## Módulo 1 — personagem integrado em 23/10/2026
+
+Implementados atributos centralizados por instância, exatamente três ramos (adaga de retorno Q, rastreio F e parry inicial), aquisição por pontos de encontros, árvore/status em Tab e feedback de recargas. Vida/dano/esquiva base, lâmina visível, páginas e livro preservados. Parâmetros/decisões provisórias, testes, backup, medições e limites em [Módulo 1](../desenvolvimento/MODULO_1_PERSONAGEM.md). Laboratórios conservados em `scenes/review/`; F5 permanece `scenes/playable.tscn`. Sem módulos 2/3.
+
+
 Registro do material disponível; datas ausentes não foram inventadas. A descrição de uma ação planejada não implica implementação.
 
 ## 19/09/2026 — documentação de continuidade

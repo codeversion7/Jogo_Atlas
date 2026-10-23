@@ -1,5 +1,10 @@
 # Decisões e pendências
 
+## Módulo 1 — personagem integrado em 23/10/2026
+
+Implementados atributos centralizados por instância, exatamente três ramos (adaga de retorno Q, rastreio F e parry inicial), aquisição por pontos de encontros, árvore/status em Tab e feedback de recargas. Vida/dano/esquiva base, lâmina visível, páginas e livro preservados. Parâmetros/decisões provisórias, testes, backup, medições e limites em [Módulo 1](../desenvolvimento/MODULO_1_PERSONAGEM.md). Laboratórios conservados em `scenes/review/`; F5 permanece `scenes/playable.tscn`. Sem módulos 2/3.
+
+
 ## Vers?o integrada atual
 
 O pedido de 22/10/2026 ampliou a produ??o para as metas A?D: agora h? percurso por F5, combate/anima??es revisados, cinco p?ginas e evento final. Consulte [entrega e evid?ncias](../atlas/ENTREGA_JOGAVEL.md) e [decis?es U12?U16](../atlas/DECISOES.md). Os registros de preparo Git abaixo descrevem o estado anterior. Prazo vigente: 23/10/2026.
