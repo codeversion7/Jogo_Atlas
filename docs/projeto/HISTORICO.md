@@ -1,5 +1,10 @@
 # Histórico de produção
 
+## Encerramento técnico do módulo 2 — retomada de 23/10/2026
+
+Escopo funcional do protótipo concluído: mapa com descoberta em M, encontros editáveis, acompanhante interativo sem combate, menu/pausa/árvore/diálogo coordenados e quatro ataques aprovados. Auditoria conferiu fontes atuais sem alterações de gameplay desde a publicação, cobertura/resultados dos 12 testes anteriores, capturas, integridade dos 2131 arquivos do backup e SHA remoto `0ef88af`. Não executou nova suíte longa. Critérios, evidências e limites em [auditoria](../desenvolvimento/AUDITORIA_MODULO_2.md). Último saldo relatado 6%; saldo atual desconhecido. Próximo passo: avaliação humana e diagnóstico de física; nenhum módulo 3.
+
+
 ## Preservação emergencial — 23/10/2026
 
 Usuário informou 6% restantes. Implementação do módulo 2 e ataques aprovada nas 12 suítes do original; preservação/backup/checkpoint e publicação autorizada em andamento. Limitação material: vistas de ataque frontais e monitor de física elevado/discrepante, diagnóstico pendente. Sem módulo 3. Ver [relatório](../desenvolvimento/MODULO_2_MAPA_MUNDO.md).

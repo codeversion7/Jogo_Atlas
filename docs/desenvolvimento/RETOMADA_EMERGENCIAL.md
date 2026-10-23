@@ -1,5 +1,10 @@
 # Retomada emergencial — ATLAS
 
+## Encerramento técnico do módulo 2 — retomada de 23/10/2026
+
+Escopo funcional do protótipo concluído: mapa com descoberta em M, encontros editáveis, acompanhante interativo sem combate, menu/pausa/árvore/diálogo coordenados e quatro ataques aprovados. Auditoria conferiu fontes atuais sem alterações de gameplay desde a publicação, cobertura/resultados dos 12 testes anteriores, capturas, integridade dos 2131 arquivos do backup e SHA remoto `0ef88af`. Não executou nova suíte longa. Critérios, evidências e limites em [auditoria](AUDITORIA_MODULO_2.md). Último saldo relatado 6%; saldo atual desconhecido. Próximo passo: avaliação humana e diagnóstico de física; nenhum módulo 3.
+
+
 ## Emergência do módulo 2 — 23/10/2026, saldo relatado 6%
 
 Módulo 2 A–E e quatro mecânicas aprovadas integrados no original. Doze suítes sem falhas: 67/54/1384/165/5839/1374/469/74/13/30/24/45 verificações. Percurso com IA ativa 5/5, Q/F adquiridos/usados, livro/final/menu, sem vida/dano/teleporte artificiais; vida final 80. Capturas reais 10 de mundo/UI e 12 de ataques. Arte de ataque apenas frontal; NPC/texto provisórios. Frames p95 7,380 ms no teste de quatro ataques; monitor de física ~37 ms persistente e discrepante, causa pendente. Sem módulo 3, EXE ou Salvar Tudo de abas em memória.

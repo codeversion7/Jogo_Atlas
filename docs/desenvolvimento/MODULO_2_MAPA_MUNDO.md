@@ -1,10 +1,15 @@
 # Módulo 2 — mapa, mundo, NPC e entrada
 
+## Encerramento técnico do módulo 2 — retomada de 23/10/2026
+
+Escopo funcional do protótipo concluído: mapa com descoberta em M, encontros editáveis, acompanhante interativo sem combate, menu/pausa/árvore/diálogo coordenados e quatro ataques aprovados. Auditoria conferiu fontes atuais sem alterações de gameplay desde a publicação, cobertura/resultados dos 12 testes anteriores, capturas, integridade dos 2131 arquivos do backup e SHA remoto `0ef88af`. Não executou nova suíte longa. Critérios, evidências e limites em [auditoria](AUDITORIA_MODULO_2.md). Último saldo relatado 6%; saldo atual desconhecido. Próximo passo: avaliação humana e diagnóstico de física; nenhum módulo 3.
+
+
 Execução de 23/10/2026 sobre `efa4523`, branch preservada `codex/preparo-git`. Somente módulo 2; sem configurações/acabamento/exportação do módulo 3.
 
 ## Preservação e fatias
 
-Backup inicial em `C:/Users/Arthur-Gamer/Documents/atlas/module2-backup-initial`, 1868 arquivos com SHA-256 conferido. Status e patch anteriores em `module2-preexisting-status.txt` / `module2-preexisting.patch`, no mesmo diretório de trabalho externo. Checkpoints incrementais em `module2-checkpoints/`, A layout, B descoberta, C encontros, D acompanhante, E menu integrado. Mapa/coordenação de UI e NPC foram integrados em conjunto antes dos checkpoints B/C/D para testar posse de entrada/pausa com o mesmo sistema. Arquivos preexistentes e abas não salvas do editor não foram descartados. Saldo atual desconhecido: não existe ferramenta de cota disponível neste ambiente; 47% é o último relato do usuário, não telemetria. Não inventamos reset/percentuais.
+Backup inicial em `C:/Users/Arthur-Gamer/Documents/atlas/module2-backup-initial`, 1868 arquivos com SHA-256 conferido. Status e patch anteriores em `module2-preexisting-status.txt` / `module2-preexisting.patch`, no mesmo diretório de trabalho externo. Checkpoints incrementais em `module2-checkpoints/`, A layout, B descoberta, C encontros, D acompanhante, E menu integrado. Mapa/coordenação de UI e NPC foram integrados em conjunto antes dos checkpoints B/C/D para testar posse de entrada/pausa com o mesmo sistema. Arquivos preexistentes e abas não salvas do editor não foram descartados. Saldo atual desconhecido: não existe ferramenta de cota disponível neste ambiente; 47% era o relato da preparação; depois o usuário informou 6%, também sem telemetria atual. Não inventamos reset/percentuais.
 
 ## A — mundo limitado e configurável
 
