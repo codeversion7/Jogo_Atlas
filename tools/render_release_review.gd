@@ -7,6 +7,7 @@ func run() -> void:
 	var game = load("res://scenes/playable.tscn").instantiate()
 	root.add_child(game)
 	current_scene = game
+	game.start_session()
 	root.size = Vector2i(640,360)
 	root.content_scale_size = Vector2i(640,360)
 	await process_frame

@@ -1,0 +1,264 @@
+{
+  "version": 1,
+  "scope": "front-facing visual review; not gameplay integration",
+  "canvas": [
+    128,
+    128
+  ],
+  "pivot": [
+    64,
+    64
+  ],
+  "sources": [
+    {
+      "path": "referencias/monstros/ataques_v1/b1_fenda_ataque_estudo.png",
+      "sha256": "0dfc80cea121740babfccdd5eca8298b42badc66814e90eea314ee0f57c9bb7f"
+    },
+    {
+      "path": "referencias/monstros/ataques_v1/b2_carcaca_ataque_estudo.png",
+      "sha256": "44d0b47308636ba392a33cb607c1e344b81eebd11d1bc8374778920dbd011174"
+    },
+    {
+      "path": "referencias/monstros/ataques_v1/b3_esporo_ataque_estudo.png",
+      "sha256": "ee2ecfbabd0a9199a0a7d8dadbd216fe831a7d67a2faebc6196af6e93b622620"
+    },
+    {
+      "path": "referencias/monstros/ataques_v1/b4_escavador_ataque_estudo.png",
+      "sha256": "a4457c5435ae37eecde96e9bb3aa1117649309a7692837fe79617bd5bc4df74c"
+    }
+  ],
+  "attacks": [
+    {
+      "id": "b1_fenda",
+      "body_source": "referencias/monstros/ataques_v1/b1_fenda_ataque_estudo.png",
+      "poses": [
+        {
+          "region": [
+            45,
+            175,
+            610,
+            410
+          ],
+          "anchor": [
+            307.0,
+            392
+          ],
+          "source_scale": 0.09
+        },
+        {
+          "region": [
+            720,
+            155,
+            440,
+            435
+          ],
+          "anchor": [
+            214.5,
+            427
+          ],
+          "source_scale": 0.09
+        },
+        {
+          "region": [
+            675,
+            695,
+            530,
+            440
+          ],
+          "anchor": [
+            258.5,
+            428
+          ],
+          "source_scale": 0.09
+        }
+      ],
+      "phases": [
+        {
+          "name": "windup",
+          "duration": 0.45,
+          "frames": 8
+        },
+        {
+          "name": "active",
+          "duration": 0.16,
+          "frames": 4
+        },
+        {
+          "name": "recovery",
+          "duration": 0.45,
+          "frames": 8
+        }
+      ],
+      "target_locked_at_warning": false,
+      "note": "Clean source keys plus native intermediate deformation and separate FX."
+    },
+    {
+      "id": "b2_carcaca",
+      "body_source": "referencias/monstros/ataques_v1/b2_carcaca_ataque_estudo.png",
+      "poses": [
+        {
+          "region": [
+            45,
+            150,
+            615,
+            425
+          ],
+          "anchor": [
+            311.5,
+            410
+          ],
+          "source_scale": 0.08
+        },
+        {
+          "region": [
+            680,
+            70,
+            650,
+            505
+          ],
+          "anchor": [
+            311.5,
+            490
+          ],
+          "source_scale": 0.08
+        },
+        {
+          "region": [
+            720,
+            665,
+            580,
+            440
+          ],
+          "anchor": [
+            278.0,
+            429
+          ],
+          "source_scale": 0.08
+        }
+      ],
+      "phases": [
+        {
+          "name": "windup",
+          "duration": 0.65,
+          "frames": 8
+        },
+        {
+          "name": "active",
+          "duration": 0.12,
+          "frames": 4
+        },
+        {
+          "name": "recovery",
+          "duration": 0.65,
+          "frames": 8
+        }
+      ],
+      "target_locked_at_warning": false,
+      "note": "Clean source keys plus native intermediate deformation and separate FX."
+    },
+    {
+      "id": "b3_esporo",
+      "body_source": "referencias/monstros/ataques_v1/b3_esporo_ataque_estudo.png",
+      "poses": [
+        {
+          "region": [
+            70,
+            80,
+            535,
+            430
+          ],
+          "anchor": [
+            269.5,
+            423
+          ],
+          "source_scale": 0.082
+        },
+        {
+          "region": [
+            730,
+            80,
+            535,
+            425
+          ],
+          "anchor": [
+            262.0,
+            425
+          ],
+          "source_scale": 0.082
+        }
+      ],
+      "phases": [
+        {
+          "name": "windup",
+          "duration": 0.5,
+          "frames": 6
+        },
+        {
+          "name": "launch",
+          "duration": 0.12,
+          "frames": 3
+        },
+        {
+          "name": "flight",
+          "duration": 0.55,
+          "frames": 8
+        },
+        {
+          "name": "impact",
+          "duration": 0.2,
+          "frames": 4
+        },
+        {
+          "name": "recovery",
+          "duration": 0.35,
+          "frames": 5
+        }
+      ],
+      "target_locked_at_warning": false,
+      "note": "Clean source keys plus native intermediate deformation and separate FX."
+    },
+    {
+      "id": "b4_escavador",
+      "body_source": "assets/monstros/b4_escavador/pixel_v2/b4_escavador_quatro_direcoes.png",
+      "poses": [
+        {
+          "region": [
+            49,
+            131,
+            552,
+            419
+          ],
+          "anchor": [
+            278.5,
+            416
+          ],
+          "source_scale": 0.081145584725537
+        }
+      ],
+      "phases": [
+        {
+          "name": "warning",
+          "duration": 0.65,
+          "frames": 8
+        },
+        {
+          "name": "breakthrough",
+          "duration": 0.2,
+          "frames": 5
+        },
+        {
+          "name": "impact",
+          "duration": 0.15,
+          "frames": 3
+        },
+        {
+          "name": "recovery",
+          "duration": 0.65,
+          "frames": 8
+        }
+      ],
+      "target_locked_at_warning": true,
+      "note": "Escavador uses the existing clean body for emergence; attack sheet supplies the visual reference."
+    }
+  ]
+}

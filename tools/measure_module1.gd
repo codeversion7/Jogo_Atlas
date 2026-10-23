@@ -10,6 +10,7 @@ func run() -> void:
 	var game = scene.instantiate()
 	root.add_child(game)
 	current_scene = game
+	game.start_session()
 	var ready_us := Time.get_ticks_usec()-start
 	game.ending = &"benchmark"
 	for kind in 4:

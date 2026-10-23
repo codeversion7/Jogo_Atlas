@@ -25,6 +25,7 @@ func run() -> void:
 	var game = load("res://scenes/playable.tscn").instantiate()
 	root.add_child(game)
 	current_scene = game
+	game.start_session()
 	var player = game.player
 	var panel = game.character_panel
 	await step()
@@ -75,6 +76,7 @@ func run() -> void:
 	game = scene.instantiate()
 	root.add_child(game)
 	current_scene = game
+	game.start_session()
 	check(game.player.attributes.owned.is_empty() and game.player.attributes.points == 0 and game.player.attributes.rewarded.is_empty(),"New run starts clean with no disk persistence")
 	game.queue_free()
 	await step()

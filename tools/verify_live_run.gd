@@ -13,6 +13,8 @@ var returns := 0
 var initial_max_health: int
 var initial_damage: int
 var capture := false
+var throws := 0
+var tracks := 0
 
 func _initialize() -> void:
 	run.call_deferred()
@@ -82,35 +84,60 @@ func fight() -> bool:
 		var nearest: Node2D
 		var distance := INF
 		var threat: Node2D
+		var escape := Vector2.ZERO
+		var imminent := false
 		for monster in game.enemies:
 			check(monster.is_physics_processing(),"Enemy AI stays enabled")
 			var d: float = player.position.distance_to(monster.position)
 			if d < distance:
 				distance = d
 				nearest = monster
-			if monster.state == &"windup" and monster.remaining < 0.16 and d < 38:
-				threat = monster
+			var runtime = monster.attack_runtime
+			if runtime != null and runtime.playing:
+				if monster.monster_kind == 3 and runtime.phase != &"recovery":
+					var mark: Vector2 = runtime.locked_point
+					if player.position.distance_to(mark)<runtime.settings.burrow_radius+player.hurt_radius+10:
+						escape = mark.direction_to(player.position)
+						if escape.is_zero_approx(): escape = Vector2.DOWN
+				elif monster.monster_kind == 2 and runtime.phase == &"windup":
+					var offset: Vector2 = player.combat_center()-monster.combat_center()
+					var side: Vector2 = runtime.locked_direction.orthogonal()
+					if absf(offset.dot(side))<28:
+						escape = side if offset.dot(side)>=0 else -side
+				elif monster.monster_kind in [0,1] and runtime.touches(player.combat_center(),player.hurt_radius+5):
+					imminent = true
+					if monster.state == &"windup" and monster.remaining<0.1: threat = monster
+		for projectile in get_nodes_in_group("atlas_monster_projectiles"):
+			if not projectile.exploding:
+				var offset: Vector2 = player.combat_center()-projectile.global_position
+				var side: Vector2 = projectile.direction.orthogonal()
+				if offset.dot(projectile.direction)>0 and offset.length()<75 and absf(offset.dot(side))<26:
+					escape = side if offset.dot(side)>=0 else -side
+					imminent = true
 		if nearest == null:
 			move(Vector2.ZERO)
 		else:
 			var direction: Vector2 = player.position.direction_to(nearest.position)
 			if player.state == &"ready":
-				if threat != null:
-					if player.try_parry(player.position.direction_to(threat.position)):
-						parries += 1
-				elif blade_can_reach(nearest,direction):
-					if player.try_attack(direction):
-						attacks += 1
-			if player.state in [&"windup",&"attack",&"parry"]:
+				if not escape.is_zero_approx():
+					if player.try_dodge(escape): dodges += 1
+				elif threat != null:
+					if player.try_parry(player.combat_center().direction_to(threat.combat_center())): parries += 1
+				elif not imminent:
+					if distance>45 and distance<100 and player.try_throw(direction): throws += 1
+					elif blade_can_reach(nearest,direction):
+						if player.try_attack(direction): attacks += 1
+			if not escape.is_zero_approx():
+				move(escape)
+			elif player.state in [&"windup",&"attack",&"parry"]:
 				move(Vector2.ZERO)
 			elif player.state == &"recovery" and distance < 43:
 				move(-direction)
 			elif not blade_can_reach(nearest,direction):
 				move(direction)
-			elif threat != null and player.state == &"ready" and player.try_dodge(-direction):
-				dodges += 1
 			else:
 				move(Vector2.ZERO)
+		if nearest != null and player.try_track():tracks += 1
 		await step()
 		budget -= 1
 	move(Vector2.ZERO)
@@ -132,11 +159,23 @@ func run() -> void:
 		return
 	root.add_child(game)
 	current_scene = game
+	game.start_session()
 	player = game.player
+	if "--debug-combat" in OS.get_cmdline_user_args():
+		player.health_changed.connect(func():
+			print("HEALTH=",player.health," state=",player.state," pos=",player.position," time=",ticks)
+			for monster in game.enemies: print(" enemy=",monster.monster_kind," ",monster.state," ",monster.remaining," dist=",monster.position.distance_to(player.position))
+		)
 	initial_max_health = player.max_health
 	initial_damage = player.dagger_damage
 	await step()
 	await shot("inicio")
+	# Real walking and public interaction, no teleport or NPC combat.
+	await walk_to(Vector2(150,235),false)
+	check(game.interact() == &"dialogue","Live run interacts with noncombat companion")
+	game.session_ui.close()
+	check(game.session_ui.claim(&"map"),"Live run opens discovered map")
+	game.session_ui.close()
 	var order := [0,1,2,4,3]
 	for index in order:
 		var attempts := 0
@@ -146,7 +185,7 @@ func run() -> void:
 				returns += 1
 				await step()
 			var center: Vector2 = game.layout.encounter_centers[index]
-			for waypoint in [Vector2(player.position.x,210),Vector2(center.x,210),center]:
+			for waypoint in [Vector2(player.position.x,game.layout.paths[1].y),Vector2(center.x,game.layout.paths[1].y),center]:
 				await walk_to(waypoint)
 				if game.active_encounter >= 0:
 					break
@@ -157,6 +196,12 @@ func run() -> void:
 				check(game.collect_page(),"Live horde releases page " + str(index+1))
 			attempts += 1
 		check(game.pages.has(index),"Live run collected distinct page " + str(index+1))
+		if game.pages.size() == 2 and not player.attributes.owned.has("throw.unlock"):
+			check(game.character_panel.open(),"Live tree opens after earned encounter points")
+			game.character_panel.purchase("throw.unlock")
+			game.character_panel.purchase("tracking.unlock")
+			game.character_panel.close()
+			check(player.attributes.owned.has("throw.unlock") and player.attributes.owned.has("tracking.unlock"),"Both active skills acquired through actual UI")
 		if game.pages.has(index):
 			await shot("pagina_"+str(index+1))
 		if not game.pages.has(index):
@@ -168,8 +213,15 @@ func run() -> void:
 			await step()
 		check(game.ending == &"complete","Live run reaches ending")
 		await shot("fim")
-	print("ATLAS_LIVE_RUN checks=",checks," failures=",failures," pages=",game.pages.size()," attacks=",attacks," parries=",parries," dodges=",dodges," returns=",returns," health=",player.health," simulated_seconds=",float(ticks)/60)
+	check(throws>0 and tracks>0,"Live run exercises Q and F acquired from encounters")
+
 	move(Vector2.ZERO)
+	var final_health: int = player.health
+	game.return_to_menu()
+	await step()
+	game = current_scene
+	check(game.session_ui.active == &"menu" and game.pages.is_empty(),"Ending returns to clean menu")
 	game.queue_free()
 	await process_frame
+	print("ATLAS_LIVE_RUN checks=",checks," failures=",failures," pages=",5," attacks=",attacks," throws=",throws," tracks=",tracks," parries=",parries," dodges=",dodges," returns=",returns," health=",final_health," simulated_seconds=",float(ticks)/60)
 	quit(0 if failures == 0 else 1)

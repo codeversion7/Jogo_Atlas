@@ -67,6 +67,7 @@ func run() -> void:
 		return
 	root.add_child(game)
 	current_scene = game
+	game.start_session()
 	root.size = Vector2i(640,360)
 	root.content_scale_size = Vector2i(640,360)
 	player = game.player

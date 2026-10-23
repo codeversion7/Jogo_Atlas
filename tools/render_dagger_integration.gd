@@ -15,6 +15,7 @@ func run() -> void:
 	var game = load("res://scenes/playable.tscn").instantiate()
 	root.add_child(game)
 	current_scene = game
+	game.start_session()
 	await physics_frame
 	await capture(OUT+"/f5_inicio.png")
 	game.player.position = game.layout.encounter_centers[0]

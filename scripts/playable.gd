@@ -8,7 +8,15 @@ const Book = preload("res://scripts/book_sequence.gd")
 const CharacterPanel = preload("res://scripts/ui/character_panel.gd")
 var character_panel: CanvasLayer
 var skills_bar: Label
-const PauseOverlay = preload("res://scripts/pause_overlay.gd")
+const SessionUI = preload("res://scripts/ui/session_ui.gd")
+const CompanionScene = preload("res://scenes/companion.tscn")
+const PathGrid = preload("res://scripts/world/path_grid.gd")
+var companion: CharacterBody2D
+var navigation = PathGrid.new()
+const Discovery = preload("res://scripts/world/discovery.gd")
+var session_ui: CanvasLayer
+var session_started := false
+var discovery = Discovery.new()
 @export var layout: Resource
 @onready var player = $World/Player
 var enemies: Array[CharacterBody2D] = []
@@ -36,13 +44,25 @@ var player_spawn := Vector2.ZERO
 var solid_rects: Array[Rect2] = []
 
 func _ready() -> void:
+	for error in layout.validate():push_error(error)
 	install_inputs()
 	player_spawn = layout.start
 	player.position = player_spawn
 	build_world()
+	navigation.build(layout.world_size,solid_rects)
+	companion = CompanionScene.instantiate()
+	companion.player = player
+	companion.navigation = navigation
+	companion.position = layout.companion_start
+	$World.add_child(companion)
+	discovery.layout = layout
 	build_interface()
 	player.died.connect(on_player_died)
-	print("ATLAS_PLAYABLE ready pages=0/5 regions=7 waves=3")
+	session_ui.claim(&"menu")
+	if get_tree().has_meta("atlas_autostart"):
+		get_tree().remove_meta("atlas_autostart")
+		start_session()
+	print("ATLAS_PLAYABLE ready pages=0/5 regions=7 waves=3 menu=",not session_started)
 
 func install_inputs() -> void:
 	for action in {"parry": MOUSE_BUTTON_RIGHT}:
@@ -83,44 +103,18 @@ func add_prop(kind: String, location: Vector2, size: Vector2, solid: bool = true
 func build_world() -> void:
 	var ground := Ground.new()
 	ground.z_index = -10
-	ground.world_size = layout.world_size
+	ground.layout = layout
 	$World.add_child(ground)
-	add_wall(Rect2(-24,-24,2288,24))
-	add_wall(Rect2(-24,800,2288,24))
-	add_wall(Rect2(-24,0,24,800))
-	add_wall(Rect2(2240,0,24,800))
-	add_wall(Rect2(1680,400,560,400))
-	# Passagens de 100–120px. Nenhuma porta prende o jogador dentro de uma horda.
-	for x in [560,1120,1680]:
-		add_wall(Rect2(x-12,0,24,138))
-		add_wall(Rect2(x-12,280,24,120))
-		for y in [90,132,310,370]:
-			add_prop("rock",Vector2(x,y),Vector2(32,24))
-	for segment in [Rect2(0,390,210,20),Rect2(350,390,410,20),Rect2(920,390,390,20),Rect2(1490,390,190,20)]:
-		add_wall(segment)
-		for x in range(int(segment.position.x)+20,int(segment.end.x),48):
-			add_prop("rock",Vector2(x,412),Vector2(38,26))
-	for row in 2:
-		for col in 4:
-			if row == 1 and col == 3:
-				continue
-			var base := Vector2(col*560,row*400)
-			for offset in [Vector2(60,100),Vector2(65,350),Vector2(490,350),Vector2(506,105)]:
-				add_prop("tree",base+offset,Vector2(24,18))
-			for offset in [Vector2(150,75),Vector2(425,345)]:
-				add_prop("rock",base+offset,Vector2(46,24))
-	add_prop("wreck",Vector2(180,154),Vector2(146,48))
-	add_prop("wreck",Vector2(370,320),Vector2(72,22))
-	add_prop("crate",Vector2(98,258),Vector2(28,24))
-	add_prop("beacon",Vector2(290,190),Vector2(14,10),false)
-	# A rota opcional termina em suprimentos cenográficos, sem recompensa inventada.
-	for point in [Vector2(230,580),Vector2(350,570),Vector2(380,640)]:
-		add_prop("crate",point,Vector2(28,22))
-	for center in [Vector2(1400,210),Vector2(1960,210),Vector2(1400,610)]:
-		for offset in [Vector2(-160,-75),Vector2(160,-75),Vector2(-160,125),Vector2(160,125)]:
-			add_prop("pillar",center+offset,Vector2(26,18))
-	for center in layout.encounter_centers:
-		add_prop("beacon",center+Vector2(-130,-65),Vector2(14,10),false)
+	for rect in layout.all_walls(): add_wall(rect)
+	for center in layout.encounter_centers:add_prop("beacon",center+layout.encounter_marker_offset,Vector2(14,10),false)
+	for entry in layout.scenery:
+		add_prop(entry.kind,entry.position,entry.size,entry.solid)
+		if entry.solid: solid_rects.append(Rect2(entry.position-Vector2(entry.size.x/2,entry.size.y),entry.size))
+	var camera: Camera2D = player.get_node("Camera2D")
+	camera.limit_left = 0
+	camera.limit_top = 0
+	camera.limit_right = int(layout.world_size.x)
+	camera.limit_bottom = int(layout.world_size.y)
 	markers = Node2D.new()
 	markers.name = "PageMarkers"
 	markers.z_index = -1
@@ -166,31 +160,32 @@ func build_interface() -> void:
 	modal.visible = false
 	hud.add_child(modal)
 	modal_text = make_label("",Vector2(26,28),17,modal)
-	var pause := PauseOverlay.new()
-	add_child(pause)
 	character_panel = CharacterPanel.new()
 	character_panel.player = player
 	character_panel.game = self
 	add_child(character_panel)
 	skills_bar = make_label("",Vector2(16,303),10)
+	session_ui = SessionUI.new()
+	session_ui.game = self
+	add_child(session_ui)
 
 func region_at(point: Vector2) -> int:
-	var col := clampi(int(point.x/560),0,3)
-	var row := clampi(int(point.y/400),0,1)
-	return mini(row*4+col,6)
+	return layout.region_at(point)
 
 func page_position(index: int) -> Vector2:
-	return layout.encounter_centers[index] + Vector2(40,20)
+	return layout.page_position(index)
 
 func _physics_process(delta: float) -> void:
+	if not session_started: return
+	discovery.observe(player)
 	elapsed += delta
 	markers.z_index = 20 if player.debug_areas else -1
 	markers.queue_redraw()
-	var region := region_at(player.position)
+	var region := maxi(0,region_at(player.position))
 	visited[region] = true
 	title.text = "ATLAS / " + layout.region_names[region].to_upper()
 	stats.text = "Vida %d/%d  F%.0f%%  E%d/%d  %d/5" % [player.health,player.max_health,player.hunger/player.max_hunger*100,player.shield,player.max_shield,pages.size()]
-	skills_bar.text = "Q adaga: %s   F rastreio: %s   Tab personagem ? %d ponto(s)" % [ability_status("throw"),ability_status("tracking"),player.attributes.points]
+	skills_bar.text = "Q adaga: %s   F rastreio: %s   Tab personagem · %d ponto(s)" % [ability_status("throw"),ability_status("tracking"),player.attributes.points]
 	if ending != &"none":
 		if ending == &"playing":
 			book.advance(delta)
@@ -219,8 +214,8 @@ func _physics_process(delta: float) -> void:
 			if not cleared.has(i) and player.position.distance_to(layout.encounter_centers[i]) < layout.encounter_radius:
 				begin_encounter(i)
 				break
-	if Input.is_action_just_pressed("interact"):
-		collect_page()
+	if Input.is_action_just_pressed("interact") and player.input_guard_frames <= 0:
+		interact()
 	if active_encounter >= 0:
 		objective.text = "Horda %d · onda %d/3 · inimigos %d" % [active_encounter+1,wave_index+1,enemies.size()]
 		hint.text = "Ataque, recue, retorne · laranja anuncia o golpe · ciano indica parry"
@@ -234,13 +229,15 @@ func _physics_process(delta: float) -> void:
 	for i in layout.encounter_centers.size():
 		if cleared.has(i) and not pages.has(i) and player.position.distance_to(page_position(i)) < 32:
 			hint.text = "E · recolher página %d — horda vencida" % [i+1]
+	if active_encounter < 0 and companion.can_interact():
+		hint.text = "E · conversar com acompanhante"
 	if player.debug_areas:
 		help.text = "F3 · ocultar áreas | Verde: física · Magenta: vulnerável · Ouro: adaga · Ciano: parry"
 	else:
 		help.text = "WASD mover · Mouse atacar/parry · Espaço esquiva · Q adaga · F rastreio · Tab árvore · Esc pausa"
 
 func begin_encounter(index: int) -> bool:
-	if index < 0 or index >= 5 or player.dead or active_encounter >= 0 or cleared.has(index):
+	if not session_started or index < 0 or index >= 5 or player.dead or active_encounter >= 0 or cleared.has(index):
 		return false
 	active_encounter = index
 	wave_index = -1
@@ -254,22 +251,22 @@ func valid_spawn(point: Vector2) -> bool:
 	params.shape = circle
 	params.transform = Transform2D(0,point)
 	params.collision_mask = 1 | 4
-	return get_world_2d().direct_space_state.intersect_shape(params,1).is_empty()
+	return get_world_2d().direct_space_state.intersect_shape(params,1).is_empty() and not navigation.path(point,player.global_position).is_empty()
 
 func spawn_wave() -> void:
 	wave_index += 1
 	encounter = &"fighting"
 	var center: Vector2 = layout.encounter_centers[active_encounter]
 	var planned: Array[Vector2] = []
-	for i in layout.wave_sizes[wave_index]:
+	for i in layout.wave_count(active_encounter,wave_index):
 		var point := Vector2.INF
 		for trial in 48:
-			var candidate: Vector2 = center + Vector2.from_angle(i*2.3+trial*0.7)*[115.0,85.0,140.0][trial/16]
+			var candidate: Vector2 = center + Vector2.from_angle(i*2.3+trial*0.7)*layout.spawn_radii[trial/16]
 			var separated := true
 			for other in planned:
 				if candidate.distance_to(other) < 28:
 					separated = false
-			if valid_spawn(candidate) and candidate.distance_to(player.position) > 60 and separated:
+			if valid_spawn(candidate) and candidate.distance_to(player.position) > layout.spawn_player_clearance and separated:
 				point = candidate
 				break
 		if not point.is_finite():
@@ -281,8 +278,10 @@ func spawn_wave() -> void:
 		planned.append(point)
 	for point in planned:
 		var monster := Monster.new()
-		# Quatro artes, mesmo comportamento provisório; ataques próprios ficam para depois.
-		monster.monster_kind = (active_encounter + enemies.size()) % 4
+		# Mecânicas aprovadas com parâmetros provisórios editáveis no layout.
+		monster.prepared_attacks = true
+		monster.attack_settings = layout.monster_attack_settings
+		monster.monster_kind = layout.monster_kind(active_encounter,enemies.size()+wave_index)
 		monster.position = point
 		monster.target = player
 		monster.defeated.connect(on_monster_defeated.bind(monster))
@@ -290,6 +289,7 @@ func spawn_wave() -> void:
 		$World.add_child(monster)
 
 func on_monster_defeated(monster: CharacterBody2D) -> void:
+	if monster not in enemies: return
 	enemies.erase(monster)
 	if enemies.is_empty() and encounter == &"fighting":
 		if wave_index+1 == layout.wave_sizes.size():
@@ -326,6 +326,8 @@ func return_player() -> bool:
 	if not player.dead:
 		return false
 	player.return_after_death(player_spawn)
+	companion.reset_at(layout.companion_start)
+	discovery.last_cell = Vector2i(-999,-999)
 	modal.visible = false
 	encounter = &"explore"
 	return true
@@ -349,7 +351,7 @@ func start_ending() -> void:
 
 func _unhandled_key_input(event: InputEvent) -> void:
 	if event is InputEventKey and event.pressed and not event.echo and ending == &"complete" and event.keycode == KEY_ENTER:
-		get_tree().reload_current_scene()
+		new_game()
 
 func draw_markers() -> void:
 	if player.debug_areas:
@@ -374,3 +376,29 @@ func ability_status(id: String) -> String:
 	if id == "tracking" and player.tracker.remaining > 0: return "ativo %.1fs"%player.tracker.remaining
 	var remaining: float = player.attributes.cooldowns[id]
 	return "%.1fs"%remaining if remaining > 0 else "pronto"
+
+func start_session() -> bool:
+	if session_started or session_ui.active != &"menu":return false
+	session_started = true
+	session_ui.release(&"menu")
+	player.input_guard_frames = 2
+	return true
+func new_game() -> void:
+	player.cancel_skills()
+	get_tree().paused = false
+	get_tree().set_meta("atlas_autostart",true)
+	get_tree().reload_current_scene()
+func return_to_menu() -> void:
+	player.cancel_skills()
+	get_tree().paused = false
+	if get_tree().has_meta("atlas_autostart"):get_tree().remove_meta("atlas_autostart")
+	get_tree().reload_current_scene()
+
+func interact() -> StringName:
+	if not session_started or get_tree().paused or player.dead:return &"none"
+	# A reachable, unlocked page has priority; never collect and speak on one E.
+	if collect_page():return &"page"
+	if active_encounter < 0 and ending == &"none" and companion.can_interact() and session_ui.claim(&"dialogue"):
+		companion.state = &"interact"
+		return &"dialogue"
+	return &"none"

@@ -81,7 +81,10 @@ func purchase(id: String) -> void:
 		notice.text = "Compra indisponível: confira pontos e requisito."
 	refresh()
 func open() -> bool:
-	if opened or get_tree().paused or player.dead or game.ending != &"none": return false
+	if opened or player.dead or game.ending != &"none": return false
+	if game.get("session_ui") != null:
+		if not game.session_ui.claim(&"tree"): return false
+	elif get_tree().paused: return false
 	opened = true
 	panel.visible = true
 	get_tree().paused = true
@@ -93,7 +96,8 @@ func close() -> void:
 	opened = false
 	panel.visible = false
 	player.input_guard_frames = 2
-	get_tree().paused = false
+	if game.get("session_ui") != null: game.session_ui.release(&"tree")
+	else: get_tree().paused = false
 func _process(delta: float) -> void:
 	if not opened: return
 	timer += delta
@@ -101,6 +105,7 @@ func _process(delta: float) -> void:
 		timer = 0
 		refresh()
 func _input(event: InputEvent) -> void:
+	if game.get("session_ui") != null: return
 	if event is InputEventKey and event.pressed and not event.echo:
 		if event.is_action_pressed("skill_tree") or (opened and event.keycode == KEY_ESCAPE):
 			if opened: close()

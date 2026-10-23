@@ -14,7 +14,10 @@ const COMBAT_OFFSET := Vector2(0, -8)
 @export var stagger_duration: float = 0.85
 @export var hurt_radius: float = 8.0
 @export var feet_radius: float = 6.0
-## Varia somente a apresentação; comportamento/ataques continuam compartilhados.
+## Arena legada mantém o setor de referência; o F5 habilita os quatro ataques preparados.
+@export var prepared_attacks: bool = false
+@export var attack_settings: Resource = preload("res://resources/monster_attacks.tres")
+var attack_runtime: Node2D
 @export_enum("Fenda", "Carcaça", "Esporo", "Escavador") var monster_kind: int = 0
 var visual: Node2D
 var health: int
@@ -53,6 +56,11 @@ func _ready() -> void:
 	visual.monster_kind = monster_kind
 	visual.z_index = -1
 	add_child(visual)
+	if prepared_attacks:
+		attack_runtime = preload("res://scripts/monster_attack_runtime.gd").new()
+		attack_runtime.actor = self
+		attack_runtime.settings = attack_settings
+		add_child(attack_runtime)
 	detour_side = 1.0 if get_instance_id() % 2 == 0 else -1.0
 
 func combat_center() -> Vector2:
@@ -64,22 +72,30 @@ func _physics_process(delta: float) -> void:
 	detour_wait = maxf(0, detour_wait - delta)
 	if dead:
 		visual.visible = false
+		if attack_runtime: attack_runtime.cancel()
 		death_time -= delta
 		queue_redraw()
 		if death_time <= 0:
 			queue_free()
 		return
 	if not is_instance_valid(target) or target.dead:
+		if attack_runtime: attack_runtime.cancel()
 		visual.set_motion(Vector2.ZERO)
 		queue_redraw()
 		return
 	var offset: Vector2 = target.combat_center() - combat_center()
+	if prepared_attacks and attack_runtime.playing:
+		attack_runtime.advance(delta)
+		queue_redraw()
+		return
 	if state == &"chase":
-		if offset.length() <= attack_reach and Geometry.clear_line(self, target.combat_center()):
+		var trigger: float = attack_settings.trigger_ranges[monster_kind] if prepared_attacks else attack_reach
+		if offset.length() <= trigger and Geometry.clear_line(self, target.combat_center()):
 			state = &"windup"
 			remaining = windup
 			attack_direction = offset.normalized() if not offset.is_zero_approx() else Vector2.RIGHT
 			hit_target = false
+			if prepared_attacks: attack_runtime.begin()
 		else:
 			velocity = chase_direction(offset.normalized()) * move_speed
 	else:
@@ -118,6 +134,7 @@ func chase_direction(desired: Vector2) -> Vector2:
 func stagger() -> void:
 	if dead:
 		return
+	if attack_runtime: attack_runtime.cancel()
 	state = &"stagger"
 	remaining = stagger_duration
 	queue_redraw()
@@ -131,6 +148,7 @@ func take_damage(amount: int) -> void:
 	visual.play_hurt(from_direction)
 	if health == 0:
 		dead = true
+		if attack_runtime: attack_runtime.cancel()
 		state = &"dead"
 		velocity = Vector2.ZERO
 		collision_layer = 0
@@ -154,7 +172,7 @@ func _draw() -> void:
 	if dead:
 		draw_ellipse_corpse(color)
 		return
-	if state in [&"windup", &"attack", &"recovery"]:
+	if not prepared_attacks and state in [&"windup", &"attack", &"recovery"]:
 		var alpha := 0.3 if state == &"attack" else 0.10
 		Geometry.draw_sector(self, COMBAT_OFFSET, attack_direction, attack_reach, PI / 3, Color(1, 0.5, 0.2, alpha))
 		if state == &"windup":

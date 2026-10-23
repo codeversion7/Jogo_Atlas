@@ -1,5 +1,18 @@
 # Decisões e pendências
 
+## Preservação emergencial — 23/10/2026
+
+Usuário informou 6% restantes. Implementação do módulo 2 e ataques aprovada nas 12 suítes do original; preservação/backup/checkpoint e publicação autorizada em andamento. Limitação material: vistas de ataque frontais e monitor de física elevado/discrepante, diagnóstico pendente. Sem módulo 3. Ver [relatório](../desenvolvimento/MODULO_2_MAPA_MUNDO.md).
+
+## Integração de ataques no módulo 2 — 23/10/2026
+
+Decisão explícita posterior do usuário: integrar animações e mecânicas de corte cruzado (Fenda), pancada (Carcaça), esfera explosiva (Esporo) e ataque na marca fixa (Escavador), com valores provisórios editáveis. Implementados no F5 sobre os recursos frontais preparados, preservando vida/dano e módulos anteriores. Corpo único e FX separados; aviso sem dano, impacto único, parry/esquiva/parede e cancelamento. Escavador trava marca no começo e só emerge em espaço livre. Apenas frente disponível para o corpo de ataque; alcance/tempos/raios ajustáveis e pendentes de balanceamento humano. Preparação frontal descrita abaixo passa a ser registro anterior à integração. Fluxo real com IA ativa 5839 verificações, 5/5 páginas, Q/F e final/menu, sem falhas; 74 casos de mecânicas. Detalhes e evidências em [Módulo 2](../desenvolvimento/MODULO_2_MAPA_MUNDO.md). Não executar módulo 3.
+
+## Módulo 2 — mundo, mapa e entrada integrados em 23/10/2026
+
+Mapa da primeira parte centralizado no recurso de layout, sete regiões e ampliação inferior controlada; M mostra somente células/marcos observados. Encontros têm distribuição editável dos quatro visuais e três ondas preservadas. Um acompanhante provisório não combatente segue por rotas com colisão e interage por E, com prioridade para páginas. F5 continua `scenes/playable.tscn`, agora com menu básico antes da simulação; menu/mapa/árvore/diálogo/pausa compartilham posse de entrada. Módulo 1, cinco páginas e livro mantidos. Detalhes, ajustes, testes e limites: [Módulo 2](../desenvolvimento/MODULO_2_MAPA_MUNDO.md). Sem módulo 3 ou EXE.
+
+
 ## Módulo 1 — personagem integrado em 23/10/2026
 
 Implementados atributos centralizados por instância, exatamente três ramos (adaga de retorno Q, rastreio F e parry inicial), aquisição por pontos de encontros, árvore/status em Tab e feedback de recargas. Vida/dano/esquiva base, lâmina visível, páginas e livro preservados. Parâmetros/decisões provisórias, testes, backup, medições e limites em [Módulo 1](../desenvolvimento/MODULO_1_PERSONAGEM.md). Laboratórios conservados em `scenes/review/`; F5 permanece `scenes/playable.tscn`. Sem módulos 2/3.
