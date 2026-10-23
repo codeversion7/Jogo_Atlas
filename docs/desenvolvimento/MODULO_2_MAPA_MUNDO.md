@@ -59,3 +59,7 @@ Fontes salvas não equivalem a “Salvar Tudo” de abas do editor; não fechamo
 ## Emergência — saldo relatado de 6%
 
 Usuário informou 6% em 23/10/2026 e solicitou emergência imediata. Nenhuma nova feature ou suíte longa após esse aviso. Fontes aplicadas por hashes, 12 suítes aprovadas no original, checkpoints A–F. Backup final integral relevante em `C:/Users/Arthur-Gamer/Documents/atlas/module2-backup-final`, com manifesto SHA-256 verificado; inclui alterações anteriores e pacote frontal preparado em paralelo. Backup inicial e pacote de ataques separados também preservados. Commit/push da tarefa autorizado, sem merge/force; SHA/confirmação serão anotados no checkpoint após publicação. Mudanças anteriores fora do escopo permanecem locais. Próximo passo técnico: avaliação humana F5 e diagnóstico da discrepância de monitor de física; não iniciar módulo 3 automaticamente. Ataques apenas frontais, NPC geométrico/texto neutro e balanceamento provisórios.
+
+## Publicação e checkpoint
+
+Implementação preservada no commit `d4a2922fed6d2d364a34c74f0c8cc08988bc9ed6`, enviada a `origin/codex/preparo-git` e confirmada por SHA remoto em 2026-10-23T17:03:59-03:00. Sem force-push/merge. Autenticação Git funcional. Árvore do índice exportada, importada do zero e entrada F5/menu iniciada sem erros; nenhuma suíte longa após emergência. Backup final verificado de 2131 arquivos, atualizado com este checkpoint. Próxima ação apenas avaliação humana/diagnóstico de física; sem módulo 3.
