@@ -47,3 +47,9 @@ Medição depois, mesma carga renderizada/resolução e 300 amostras: frame medi
 Publicação incluirá fontes do módulo, testes e dependências anteriores indispensáveis (ataque da adaga, integração visual dos monstros e laboratórios). Esses componentes preexistentes não são apresentados como autoria nova desta etapa. Alterações anteriores de `README.md`, `project.godot` (janela do usuário), `scenes/main.tscn`, `assets/personagem/revisao/atlas_rascunho.tres`, planos gerais, imagens antigas e pacotes/ZIPs ficam fora da publicação, preservados no backup/árvore local. Nos resumos/checkpoint existentes, somente o novo registro do módulo será staged, preservando seções locais anteriores fora do commit. Não há merge/force-push. O SHA/resultados remotos serão registrados no checkpoint após a verificação do destino.
 
 Validação adicional da publicação: árvore staged exportada em checkout isolado, importada do zero e nove suítes repetidas com as mesmas contagens e zero falhas. Isso confirma independência das alterações alheias deixadas fora do commit. Backup final: 1866 arquivos e manifesto SHA-256 verificado em `C:/Users/Arthur-Gamer/Documents/atlas/module1-backup-final-20261023`.
+
+## Publicação confirmada
+
+Implementação salva no commit `91d85e6f8213820009d2dd2fa72f1f8232768c3c`, enviada a `origin/codex/preparo-git`; SHA remoto conferido por `git ls-remote` em 23/10/2026 16:02:37 — America/Sao_Paulo (UTC−03:00). Sem force-push/merge. Este registro documental é posterior ao commit de implementação e não altera fontes de gameplay.
+
+Para usar: F5 → vença encontros para obter pontos → Tab para adquirir → Q arremessa / F rastreia. Parry inicial no botão direito, Espaço esquiva. Reservas F6 em `scenes/review/`. Balanceamento/avaliação humana e reprodução específica do lag no editor permanecem abertos; não bloqueiam a integração entregue. Não houve exportação EXE nem alegação de “Salvar Tudo” do editor.
