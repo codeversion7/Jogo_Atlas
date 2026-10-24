@@ -9,7 +9,7 @@ Execução iniciada sobre `7d94c88`, branch preservada `codex/preparo-git`, Godo
 | 03 Sobrevivência | validada | 52 verificações de sobrevivência, 45 do módulo 2, 74 de ataques; caminhada física à fogueira e 3 capturas | avançar à fase 04 |
 | 04 Escudo/livro | validada | 40 verificações; 1838 visual, 54 combate, 165 percurso; partida real 5897 com resgate/alimento verdadeiro e final; duas capturas de sustentação | avançar à fase 05 |
 | 05 Telas/áreas | validada | 23 verificações, 45 módulo 2, 165 percurso, 40 suporte/livro e partida real 5897; quatro capturas | avançar à fase 06 |
-| 06 Validação/entrega | implementada | 17 suítes aprovadas; original e índice limpo verificados; build/PCK 23; desempenho/limites registrados | concluir backup e publicação autorizada |
+| 06 Validação/entrega | validada | 17 suítes aprovadas, original/índice limpo, build/PCK 23 e implementação publicada com SHA remoto confirmado | avaliação humana; emergência7% encerra execução |
 
 ## Fase 01 — verificado nesta execução
 
@@ -108,4 +108,8 @@ A suíte de áudio final foi reforçada para38 verificações: caminhada real em
 
 Diferenças staged foram revisadas e verificadas com `git diff --cached --check` e busca de padrões de segredo. Entram somente código/testes/recursos do módulo e dependências necessárias previamente fornecidas do NPC/SONS/contrato; não são apresentadas como arte nova de autoria desta execução. README geral, rascunho, janela/viewport do usuário, export_presets, main.tscn e planos anteriores permanecem locais e preservados. No estado/decisões/histórico/checkpoint existentes, somente o novo bloco desta tarefa é selecionado. Backup final e SHA remoto serão confirmados no fechamento.
 
-Backup final concluído e conferido por SHA-256: **2574 arquivos** em `C:/Users/Arthur-Gamer/Documents/atlas/module3-backup-final`, incluindo alterações locais anteriores e originais. ZIP Windows também verificado por hashes próprios. Publicação autorizada é a única etapa restante desta execução.
+Backup final concluído e conferido por SHA-256: **2574 arquivos** em `C:/Users/Arthur-Gamer/Documents/atlas/module3-backup-final`, incluindo alterações locais anteriores e originais. ZIP Windows também verificado por hashes próprios. Implementação publicada; este checkpoint registra o encerramento emergencial.
+
+## Emergência e publicação confirmada — 7% informados
+
+Implementação no commit `d2628328501d2dccaa63d9e0d077a7caaf6b32b1`, enviada e confirmada em `origin/codex/preparo-git` em 2026-10-23T22:37:54-03:00. Autenticação funcional; sem force-push/merge. Usuário informou **7% restantes** e solicitou emergência: nenhuma feature, refatoração ou suíte longa iniciada após esse aviso. Backup final já verificado de2574 arquivos em `C:/Users/Arthur-Gamer/Documents/atlas/module3-backup-final` preservado sem refazer ou alterar; novo checkpoint incremental em `module3-checkpoints/07-emergency-7-percent`. ZIP Windows verificado em `C:/Users/Arthur-Gamer/Documents/atlas/ATLAS_Modulo3_Windows_debug.zip`. Fontes estão no disco; não se alega Salvar Tudo de memória do editor. Pendências: audição/mixagem, revisão artística/humana e causa dos picos raros de frame; ataques frontais e números provisórios permanecem registrados. Próxima ação: avaliação humana pelo F5/ZIP e definição de ajustes; não iniciar módulo4 automaticamente. Execução encerrada após publicar este checkpoint.

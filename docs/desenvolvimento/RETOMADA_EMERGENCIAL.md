@@ -2,11 +2,15 @@
 
 ## Módulo 3 — checkpoint de entrega de 23/10/2026
 
-Seis fases funcionais validadas; nenhuma feature nova pendente. Fonte no projeto original e cópia externa `C:/Users/Arthur-Gamer/Documents/atlas/module3-work`, checkpoints01–06. Backup inicial2408 arquivos com SHA-256 em `module3-backup-initial`; backup final de2574 arquivos verificado por SHA-256 em `module3-backup-final`; publicação em fechamento. Último saldo relatado75%, atual desconhecido, sem API de cota; nenhum limiar estimado. Sem pedido/alerta de emergência nesta execução; não iniciar módulo4.
+Seis fases funcionais validadas; nenhuma feature nova pendente. Fonte no projeto original e cópia externa `C:/Users/Arthur-Gamer/Documents/atlas/module3-work`, checkpoints01–06. Backup inicial2408 arquivos com SHA-256 em `module3-backup-initial`; backup final de2574 arquivos verificado por SHA-256 em `module3-backup-final`; implementação publicada e confirmada. Usuário informou7% e solicitou emergência imediata; finalizar somente salvamento/publicação e encerrar. Sem novas features, refatorações ou suítes longas. Não iniciar módulo4.
 
 17 suítes aprovadas; partida real5897 verificações, cinco páginas, uma partilha, amigo vivo e final/menu, sem overrides de vida/dano/ondas. Build debug local em `C:/Users/Arthur-Gamer/Documents/atlas/module3-build`, ZIP `ATLAS_Modulo3_Windows_debug.zip` e manifestoSHA. Smoke exportado23 checks, PCK real montado por harness mínimo fora da entrega; templates não aceitam --script. Ajuste do caminho da esfera preserva fonte e resolve dependência excluída do build. Configurações em user://, não save de campanha. Livro/gate e parry/proteção aprovados testados. Não houve Salvar Tudo de abas em memória.
 
 Limites: mixagem/escuta humanas e revisão artística, ataques frontais e valores provisórios; pico raro43,3ms ainda sem causa específica. Monitores de física são máximos de~1s, não mediana de ticks. Detalhes em [estado](MODULO_3_STATUS.md) e [uso](MODULO_3_USO.md). Próximo passo imediato: conferir índice limpo, backup final/commit/push autorizado e confirmar remoto; depois somente avaliação humana/ajustes definidos pelo responsável. Sem force-push/merge ou release pública.
+
+
+
+Implementação no commit `d2628328501d2dccaa63d9e0d077a7caaf6b32b1`, enviada e confirmada em `origin/codex/preparo-git` em 2026-10-23T22:37:54-03:00. Autenticação funcional; sem force-push/merge. Usuário informou **7% restantes** e solicitou emergência: nenhuma feature, refatoração ou suíte longa iniciada após esse aviso. Backup final já verificado de2574 arquivos em `C:/Users/Arthur-Gamer/Documents/atlas/module3-backup-final` preservado sem refazer ou alterar; novo checkpoint incremental em `module3-checkpoints/07-emergency-7-percent`. ZIP Windows verificado em `C:/Users/Arthur-Gamer/Documents/atlas/ATLAS_Modulo3_Windows_debug.zip`. Fontes estão no disco; não se alega Salvar Tudo de memória do editor. Pendências: audição/mixagem, revisão artística/humana e causa dos picos raros de frame; ataques frontais e números provisórios permanecem registrados. Próxima ação: avaliação humana pelo F5/ZIP e definição de ajustes; não iniciar módulo4 automaticamente. Execução encerrada após publicar este checkpoint.
 
 
 ## Encerramento técnico do módulo 2 — retomada de 23/10/2026
