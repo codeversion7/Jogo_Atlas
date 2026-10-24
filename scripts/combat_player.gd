@@ -2,10 +2,12 @@ extends "res://scripts/player.gd"
 ## Adjustable combat prototype: feet collide, body circles receive strikes.
 signal health_changed
 signal died
+const SessionAudio = preload("res://scripts/session_audio.gd")
 const Geometry = preload("res://scripts/combat_geometry.gd")
 const Dagger = preload("res://scripts/dagger_pose.gd")
 const EnemyTracker = preload("res://scripts/character/enemy_tracker.gd")
 var input_guard_frames := 0
+var companion_support: Node
 var tracker: Node2D
 const ReturningDagger = preload("res://scripts/character/returning_dagger.gd")
 var thrown_dagger: Node2D
@@ -161,6 +163,7 @@ func advance_action(delta: float) -> void:
 		return
 	if state == &"windup":
 		state = &"attack"
+		SessionAudio.event(self,"dagger")
 		remaining = attack_duration
 	elif state == &"attack":
 		state = &"recovery"
@@ -238,16 +241,20 @@ func try_dodge(direction: Vector2) -> bool:
 	return true
 
 func receive_attack(amount: int, source: Node2D) -> StringName:
-	if dead or state == &"dodge" or hurt_wait > 0.0 or amount <= 0:
+	if get_tree().paused or dead or state == &"dodge" or hurt_wait > 0.0 or amount <= 0:
 		return &"ignored"
 	if not Geometry.clear_line(self, source.combat_center()):
 		return &"ignored"
 	var incoming := combat_center().direction_to(source.combat_center())
 	if state == &"parry" and (incoming.is_zero_approx() or locked_direction.dot(incoming) >= 0.5):
-		source.stagger()
+		if companion_support!=null and companion_support.covers(source): source.stagger(0.5)
+		else: source.stagger()
+		SessionAudio.event(self,"parry")
 		parry_flash = 0.18
 		return &"parried"
-	attributes.absorb_damage(amount)
+	var mitigated := ceili(amount*0.5) if companion_support!=null and companion_support.covers(source) else amount
+	attributes.absorb_damage(mitigated)
+	if companion_support!=null: companion_support.after_hit(source)
 	hurt_wait = hurt_grace
 	feedback_wait = 0.18
 	health_changed.emit()
@@ -285,6 +292,8 @@ func _draw() -> void:
 		draw_arc(COMBAT_OFFSET, hurt_radius, 0, TAU, 24, Color.MAGENTA, 1.0)
 	if dead:
 		return
+	if companion_support!=null and companion_support.active and companion_support.eligible():
+		draw_arc(COMBAT_OFFSET,companion_support.config.marker_radius,companion_support.direction.angle()-companion_support.config.half_angle,companion_support.direction.angle()+companion_support.config.half_angle,24,Color(0.4,0.95,0.9),2)
 	var direction := locked_direction if state != &"ready" else aim
 	if debug_areas and state == &"attack" and feedback_wait <= 0.0:
 		var pose := Dagger.sample(&"attack_active", locked_direction, action_progress())

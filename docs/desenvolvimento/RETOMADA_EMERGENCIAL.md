@@ -1,5 +1,14 @@
 # Retomada emergencial — ATLAS
 
+## Módulo 3 — checkpoint de entrega de 23/10/2026
+
+Seis fases funcionais validadas; nenhuma feature nova pendente. Fonte no projeto original e cópia externa `C:/Users/Arthur-Gamer/Documents/atlas/module3-work`, checkpoints01–06. Backup inicial2408 arquivos com SHA-256 em `module3-backup-initial`; backup final de2574 arquivos verificado por SHA-256 em `module3-backup-final`; publicação em fechamento. Último saldo relatado75%, atual desconhecido, sem API de cota; nenhum limiar estimado. Sem pedido/alerta de emergência nesta execução; não iniciar módulo4.
+
+17 suítes aprovadas; partida real5897 verificações, cinco páginas, uma partilha, amigo vivo e final/menu, sem overrides de vida/dano/ondas. Build debug local em `C:/Users/Arthur-Gamer/Documents/atlas/module3-build`, ZIP `ATLAS_Modulo3_Windows_debug.zip` e manifestoSHA. Smoke exportado23 checks, PCK real montado por harness mínimo fora da entrega; templates não aceitam --script. Ajuste do caminho da esfera preserva fonte e resolve dependência excluída do build. Configurações em user://, não save de campanha. Livro/gate e parry/proteção aprovados testados. Não houve Salvar Tudo de abas em memória.
+
+Limites: mixagem/escuta humanas e revisão artística, ataques frontais e valores provisórios; pico raro43,3ms ainda sem causa específica. Monitores de física são máximos de~1s, não mediana de ticks. Detalhes em [estado](MODULO_3_STATUS.md) e [uso](MODULO_3_USO.md). Próximo passo imediato: conferir índice limpo, backup final/commit/push autorizado e confirmar remoto; depois somente avaliação humana/ajustes definidos pelo responsável. Sem force-push/merge ou release pública.
+
+
 ## Encerramento técnico do módulo 2 — retomada de 23/10/2026
 
 Escopo funcional do protótipo concluído: mapa com descoberta em M, encontros editáveis, acompanhante interativo sem combate, menu/pausa/árvore/diálogo coordenados e quatro ataques aprovados. Auditoria conferiu fontes atuais sem alterações de gameplay desde a publicação, cobertura/resultados dos 12 testes anteriores, capturas, integridade dos 2131 arquivos do backup e SHA remoto `0ef88af`. Não executou nova suíte longa. Critérios, evidências e limites em [auditoria](AUDITORIA_MODULO_2.md). Último saldo relatado 6%; saldo atual desconhecido. Próximo passo: avaliação humana e diagnóstico de física; nenhum módulo 3.

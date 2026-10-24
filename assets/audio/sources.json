@@ -1,0 +1,66 @@
+[
+  {
+    "event": "steps",
+    "source": "SONS/Andando _na_grama.mpeg",
+    "runtime": "assets/audio/steps.mp3",
+    "sha256": "a97e61c81571d55da491284d0a3bc885b97fbddc7515745f3ac0ae62fed413e3",
+    "conversion": "none; validated MP3 bitstream copied without recompression",
+    "human_audition": "pending"
+  },
+  {
+    "event": "burrow_warning",
+    "source": "SONS/Ataque_toupeira.mpeg",
+    "runtime": "assets/audio/burrow_warning.mp3",
+    "sha256": "8c438d99d5d2541ebce3ee8f7e7bda0fcc0750cd583a5be89f3ad49500b1f6e9",
+    "conversion": "none; validated MP3 bitstream copied without recompression",
+    "human_audition": "pending"
+  },
+  {
+    "event": "page",
+    "source": "SONS/Folha_do_livro_conquista.mpeg",
+    "runtime": "assets/audio/page.mp3",
+    "sha256": "fe6710f1862a7cd5f0ab4e645e5369ba8cbcd80cc0ff82f01c7c6e33ca8b1bfd",
+    "conversion": "none; validated MP3 bitstream copied without recompression",
+    "human_audition": "pending"
+  },
+  {
+    "event": "cross",
+    "source": "SONS/Monstro_de_garras.mpeg",
+    "runtime": "assets/audio/cross.mp3",
+    "sha256": "b7099e5497e94ed9b5cac231d61370234c422e1d41a12ec3d94e96a95a800ce1",
+    "conversion": "none; validated MP3 bitstream copied without recompression",
+    "human_audition": "pending"
+  },
+  {
+    "event": "burrow_impact",
+    "source": "SONS/Mosntro_de_terra_superfície.mpeg",
+    "runtime": "assets/audio/burrow_impact.mp3",
+    "sha256": "d54bdd216878ca9fa43c3ce04d31dabfd284c7a0d033e575455784b495da0749",
+    "conversion": "none; validated MP3 bitstream copied without recompression",
+    "human_audition": "pending"
+  },
+  {
+    "event": "parry",
+    "source": "SONS/Parry.mp3.mpeg",
+    "runtime": "assets/audio/parry.mp3",
+    "sha256": "f63a4614bd81ea5bd22ba5974f6022e19818e823cd29d40843f84a82068d6d60",
+    "conversion": "none; validated MP3 bitstream copied without recompression",
+    "human_audition": "pending"
+  },
+  {
+    "event": "dagger",
+    "source": "SONS/Som_da_espada.mp3.mpeg",
+    "runtime": "assets/audio/dagger.mp3",
+    "sha256": "abcd14bd051183b3812fd68e87a87ab30116f30514c6328a108a36eb2863a8e3",
+    "conversion": "none; validated MP3 bitstream copied without recompression",
+    "human_audition": "pending"
+  },
+  {
+    "event": "orb",
+    "source": "SONS/Som_do_tiro_venenoso_da_aranha.mpeg",
+    "runtime": "assets/audio/orb.mp3",
+    "sha256": "813de80621f0fb0d6c7ebb57199272c867d5d46723dcab85caca1a2139f30453",
+    "conversion": "none; validated MP3 bitstream copied without recompression",
+    "human_audition": "pending"
+  }
+]

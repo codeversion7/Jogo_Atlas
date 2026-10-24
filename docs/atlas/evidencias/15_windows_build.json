@@ -1,0 +1,13 @@
+{
+  "files": {
+    "ATLAS.exe": "51498b72b3a237f882ebd7d1787f06a4bc1eaf0572daab93837adcfd3cfdc107",
+    "ATLAS.pck": "9c21f48b57d700a0b670655dceb386402b70dfe0bff2a2f8013bb26e98f6edff",
+    "ATLAS.console.exe": "5514c7645ee897a01f540d3cf22ede5badf92394521a08bfab66a54d7369e6e6",
+    "GODOT_NOTICES.txt": "0eff509c4a3d90435752baf420e65607d7552842e60e8d8098cb12fdf4ed768f",
+    "LEIA-ME.txt": "ac766932285ff787f594610a1c207da16aed5cbe7ed99476a480fece7672b1f2"
+  },
+  "zip": "C:\\Users\\Arthur-Gamer\\Documents\\atlas\\ATLAS_Modulo3_Windows_debug.zip",
+  "zip_sha256": "286ff0f0e2294ef095422e8d282cf0508a8b88d3971986e6356d8f34badb79c5",
+  "zip_bytes": 41331122,
+  "smoke": "23 checks, 0 failures; exported harness mounts actual game pack without fallback gameplay resources"
+}

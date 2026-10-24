@@ -1,0 +1,10 @@
+ATLAS — NPC companheiro — visual aprovado v2
+Extraia o conteúdo deste ZIP na raiz do projeto Godot (ao lado de project.godot).
+Assets em res://assets/npcs/companheiro/pixel_v2/.
+Godot 4: abra companheiro_visual.tscn para visualizar a caminhada. O recurso companheiro_frames.tres contém idle_down/left/right/up e walk_down/left/right/up.
+PNG idle: 192 x 64, quatro células de 48 x 64. PNG caminhada: 192 x 256, quatro colunas e quatro linhas. Ordem das linhas: baixo, esquerda, direita, cima. Caminhada: quatro quadros a aproximadamente 7 fps.
+Use filtragem Nearest. Raiz visual junto aos pés; sem colisão, controle, acompanhamento ou habilidade defensiva implementados.
+Estética aprovada: homem 42–50, cabelo ondulado mal cortado com grisalhos, reservado, jaqueta azul petróleo assimétrica com ocre, roupa prática reparada, bracelete tecnológico gasto no braço esquerdo.
+Verificação: dimensões, alfa binário, recorte dentro das células, integridade do ZIP e inspeção visual. Quadros gerados tiveram correção de direção e alternância; caminhada ainda é uma base de protótipo, com variações de desenho entre quadros. Não foi executado ou validado no Godot neste ambiente. Confira transições de idle para walk e escala com o protagonista antes de produção.
+Prévia GIF acompanha cada direção. Não importar GIF para o AnimatedSprite2D: use PNG e TRES.
+Origem: geração integrada a partir do conceito aprovado, normalização por vizinho mais próximo, paleta compartilhada de 24 cores e montagem dos quadros.

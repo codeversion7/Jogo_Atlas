@@ -1,0 +1,82 @@
+[
+  {
+    "audition": "pending",
+    "bytes": 35108,
+    "decoder": "Godot AudioStreamMP3",
+    "length_seconds": 1.0971428155899,
+    "path": "res://SONS/Andando _na_grama.mpeg",
+    "playback_created": true,
+    "sha256": "a97e61c81571d55da491284d0a3bc885b97fbddc7515745f3ac0ae62fed413e3",
+    "candidate_event": "passos na grama"
+  },
+  {
+    "audition": "pending",
+    "bytes": 96768,
+    "decoder": "Godot AudioStreamMP3",
+    "length_seconds": 3.0239999294281,
+    "path": "res://SONS/Ataque_toupeira.mpeg",
+    "playback_created": true,
+    "sha256": "8c438d99d5d2541ebce3ee8f7e7bda0fcc0750cd583a5be89f3ad49500b1f6e9",
+    "candidate_event": "Escavador (candidato pelo nome)"
+  },
+  {
+    "audition": "pending",
+    "bytes": 196320,
+    "decoder": "Godot AudioStreamMP3",
+    "length_seconds": 9.81599998474121,
+    "path": "res://SONS/Folha_do_livro_conquista.mpeg",
+    "playback_created": true,
+    "sha256": "fe6710f1862a7cd5f0ab4e645e5369ba8cbcd80cc0ff82f01c7c6e33ca8b1bfd",
+    "candidate_event": "coleta/página (trecho longo a ajustar)"
+  },
+  {
+    "audition": "pending",
+    "bytes": 96768,
+    "decoder": "Godot AudioStreamMP3",
+    "length_seconds": 3.0239999294281,
+    "path": "res://SONS/Monstro_de_garras.mpeg",
+    "playback_created": true,
+    "sha256": "b7099e5497e94ed9b5cac231d61370234c422e1d41a12ec3d94e96a95a800ce1",
+    "candidate_event": "Fenda (candidato pelo nome)"
+  },
+  {
+    "audition": "pending",
+    "bytes": 96768,
+    "decoder": "Godot AudioStreamMP3",
+    "length_seconds": 3.0239999294281,
+    "path": "res://SONS/Mosntro_de_terra_superfície.mpeg",
+    "playback_created": true,
+    "sha256": "d54bdd216878ca9fa43c3ce04d31dabfd284c7a0d033e575455784b495da0749",
+    "candidate_event": "Carcaça (candidato pelo nome)"
+  },
+  {
+    "audition": "pending",
+    "bytes": 54334,
+    "decoder": "Godot AudioStreamMP3",
+    "length_seconds": 1.69795918464661,
+    "path": "res://SONS/Parry.mp3.mpeg",
+    "playback_created": true,
+    "sha256": "f63a4614bd81ea5bd22ba5974f6022e19818e823cd29d40843f84a82068d6d60",
+    "candidate_event": "parry confirmado"
+  },
+  {
+    "audition": "pending",
+    "bytes": 70217,
+    "decoder": "Godot AudioStreamMP3",
+    "length_seconds": 2.19428563117981,
+    "path": "res://SONS/Som_da_espada.mp3.mpeg",
+    "playback_created": true,
+    "sha256": "abcd14bd051183b3812fd68e87a87ab30116f30514c6328a108a36eb2863a8e3",
+    "candidate_event": "adaga/ataque"
+  },
+  {
+    "audition": "pending",
+    "bytes": 37616,
+    "decoder": "Godot AudioStreamMP3",
+    "length_seconds": 1.17551016807556,
+    "path": "res://SONS/Som_do_tiro_venenoso_da_aranha.mpeg",
+    "playback_created": true,
+    "sha256": "813de80621f0fb0d6c7ebb57199272c867d5d46723dcab85caca1a2139f30453",
+    "candidate_event": "Esporo/esfera (candidato pelo nome)"
+  }
+]

@@ -14,6 +14,7 @@ var playing := false
 var locked_point := Vector2.ZERO
 var locked_direction := Vector2.RIGHT
 var attempted := false
+var hit_ids: Dictionary = {}
 var sprite: AnimatedSprite2D
 var orb: Node2D
 
@@ -34,6 +35,7 @@ func begin() -> void:
 	actor.attack_direction = locked_direction
 	phase_index = -1
 	attempted = false
+	hit_ids.clear()
 	playing = true
 	visible = true
 	actor.visual.visible = false
@@ -78,6 +80,13 @@ func next_phase() -> void:
 		orb.damage = actor.damage
 		actor.get_parent().add_child(orb)
 		orb.global_position = actor.combat_center()
+	var sound := ""
+	if actor.monster_kind == 0 and phase == &"active": sound = "cross"
+	elif actor.monster_kind == 2 and phase == &"launch": sound = "orb"
+	elif actor.monster_kind == 3:
+		if phase == &"warning": sound = "burrow_warning"
+		elif phase == &"impact": sound = "burrow_impact"
+	if not sound.is_empty(): preload("res://scripts/session_audio.gd").event(actor,sound)
 	sample_body()
 
 func safe_emergence() -> bool:
@@ -99,11 +108,18 @@ func advance(delta: float) -> void:
 		if not playing: return
 	actor.remaining = maxf(0,duration-phase_time)
 	sample_body()
-	if not attempted and ((actor.monster_kind in [0,1] and phase == &"active") or (actor.monster_kind == 3 and phase == &"impact")):
-		if touches(actor.target.combat_center(),actor.target.hurt_radius) and Geometry.clear_line(actor,actor.target.combat_center()):
-			attempted = true
-			actor.hit_target = true
-			actor.target.receive_attack(actor.damage,actor)
+	if (actor.monster_kind in [0,1] and phase == &"active") or (actor.monster_kind == 3 and phase == &"impact"):
+		var recipients: Array = [actor.target]
+		for companion in get_tree().get_nodes_in_group("atlas_companion"):
+			if companion.player==actor.target: recipients.append(companion)
+		for recipient in recipients:
+			if recipient.dead or hit_ids.has(recipient.get_instance_id()): continue
+			if touches(recipient.combat_center(),recipient.hurt_radius) and Geometry.clear_line(actor,recipient.combat_center()):
+				hit_ids[recipient.get_instance_id()] = true
+				attempted = true
+				actor.hit_target = true
+				recipient.receive_attack(actor.damage,actor)
+				if not playing: break # Parry interrompe o golpe inteiro.
 	queue_redraw()
 
 func sample_body() -> void:

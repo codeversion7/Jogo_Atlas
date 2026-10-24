@@ -3,6 +3,9 @@ class_name AtlasRouteLayout
 ## Stable IDs and editable geometry shared by gameplay, discovery, camera and navigation.
 @export var world_size := Vector2(2240,960)
 @export var start := Vector2(180,220)
+@export var campfires: PackedVector2Array = [Vector2(280,300),Vector2(280,740)]
+@export var support_config: Resource = preload("res://resources/companion_support.tres")
+@export var survival_config: Resource = preload("res://resources/survival.tres")
 @export var companion_start := Vector2(125,235)
 @export var region_ids: PackedStringArray = ["wreck","roots","ruins","lookout","shelter","grove","archive"]
 @export var region_names: PackedStringArray = ["Destroços","Trilha das raízes","Pátio das ruínas","Mirante partido","Abrigo esquecido","Bosque profundo","Arquivo de pedra"]
@@ -12,6 +15,7 @@ class_name AtlasRouteLayout
 @export var paths: Array[Vector4] = [Vector4(120,220,530,210),Vector4(530,210,1960,210),Vector4(280,220,280,850),Vector4(840,210,840,850),Vector4(1400,210,1400,850),Vector4(280,610,1400,610),Vector4(280,850,1400,850)]
 @export var path_width := 50.0
 @export var barriers: Array[Rect2] = default_barriers()
+@export var page_area_ids: PackedStringArray = ["roots","ruins","lookout","grove","archive"]
 @export var encounter_ids: PackedStringArray = ["roots_page","ruins_page","lookout_page","grove_page","archive_page"]
 @export var encounter_centers: PackedVector2Array = [Vector2(840,210),Vector2(1400,210),Vector2(1960,210),Vector2(840,610),Vector2(1400,610)]
 @export var page_offsets: PackedVector2Array = [Vector2(40,20),Vector2(40,20),Vector2(40,20),Vector2(40,20),Vector2(40,20)]
@@ -27,7 +31,7 @@ class_name AtlasRouteLayout
 @export var discovery_cell_size := 40.0
 @export var discovery_radius := 96.0
 @export var scenery: Array[Dictionary] = default_scenery()
-@export var credits: PackedStringArray = [] # Only populate with verified attributions.
+@export var credits: PackedStringArray = ["Godot Engine", "Godot Engine contributors · licença MIT", "https://godotengine.org/license/"] # Verified engine attribution; no invented art authors.
 
 func region_at(point: Vector2) -> int:
 	for i in region_bounds.size():
@@ -71,8 +75,8 @@ func default_scenery() -> Array[Dictionary]:
 
 func validate() -> PackedStringArray:
 	var errors := PackedStringArray()
-	if region_ids.size()!=7 or region_names.size()!=7 or region_bounds.size()!=7 or region_colors.size()!=7:errors.append("Expected seven aligned region records")
-	if encounter_ids.size()!=5 or encounter_centers.size()!=5 or page_offsets.size()!=5 or monster_lineups.size()!=5:errors.append("Expected five aligned encounter/page records")
+	if region_ids.is_empty() or region_names.size()!=region_ids.size() or region_bounds.size()!=region_ids.size() or region_colors.size()!=region_ids.size():errors.append("Expected aligned region records")
+	if page_area_ids.size()!=5 or encounter_ids.size()!=5 or encounter_centers.size()!=5 or page_offsets.size()!=5 or monster_lineups.size()!=5:errors.append("Expected five aligned encounter/page records")
 	if wave_sizes.size()!=3:errors.append("Each encounter needs exactly three waves")
 	if world_size.x<=0 or world_size.y<=0 or region_at(start)<0 or region_at(companion_start)<0:errors.append("Invalid world size or safe start")
 	var ids: Dictionary = {}
@@ -83,6 +87,14 @@ func validate() -> PackedStringArray:
 	for id in encounter_ids:
 		if ids.has(id) or id.is_empty():errors.append("Encounter IDs must be unique and stable")
 		ids[id] = true
+	var linked: Dictionary = {}
+	for i in page_area_ids.size():
+		var area: String = page_area_ids[i]
+		if not region_ids.has(area) or linked.has(area): errors.append("Page areas must be five unique existing IDs")
+		linked[area] = true
+		if i<encounter_centers.size():
+			var region := region_at(encounter_centers[i])
+			if region>=0 and region_ids[region]!=area: errors.append("Encounter center must match its page area")
 	for center in encounter_centers:
 		if region_at(center)<0:errors.append("Encounter outside walkable regions")
 	return errors

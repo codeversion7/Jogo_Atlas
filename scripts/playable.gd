@@ -15,6 +15,14 @@ var companion: CharacterBody2D
 var navigation = PathGrid.new()
 const Discovery = preload("res://scripts/world/discovery.gd")
 var session_ui: CanvasLayer
+var settings: Node
+var audio: Node
+var support: Node
+var survival = preload("res://scripts/world/survival_state.gd").new()
+var camp_index := -1
+var food_generation := 0
+var hunger_bar: ProgressBar
+var companion_status: Label
 var session_started := false
 var discovery = Discovery.new()
 @export var layout: Resource
@@ -44,6 +52,7 @@ var player_spawn := Vector2.ZERO
 var solid_rects: Array[Rect2] = []
 
 func _ready() -> void:
+	survival.config = layout.survival_config
 	for error in layout.validate():push_error(error)
 	install_inputs()
 	player_spawn = layout.start
@@ -55,14 +64,25 @@ func _ready() -> void:
 	companion.navigation = navigation
 	companion.position = layout.companion_start
 	$World.add_child(companion)
+	support = preload("res://scripts/world/companion_support.gd").new()
+	support.game = self
+	support.config = layout.support_config
+	add_child(support)
 	discovery.layout = layout
+	settings = preload("res://scripts/session_settings.gd").new()
+	settings.name = "SessionSettings"
+	add_child(settings)
+	audio = preload("res://scripts/session_audio.gd").new()
+	audio.game = self
+	audio.name = "SessionAudio"
+	add_child(audio)
 	build_interface()
 	player.died.connect(on_player_died)
 	session_ui.claim(&"menu")
 	if get_tree().has_meta("atlas_autostart"):
 		get_tree().remove_meta("atlas_autostart")
 		start_session()
-	print("ATLAS_PLAYABLE ready pages=0/5 regions=7 waves=3 menu=",not session_started)
+	print("ATLAS_PLAYABLE ready pages=0/5 regions=",layout.region_ids.size()," waves=3 menu=",not session_started)
 
 func install_inputs() -> void:
 	for action in {"parry": MOUSE_BUTTON_RIGHT}:
@@ -142,7 +162,19 @@ func build_interface() -> void:
 	top.mouse_filter = Control.MOUSE_FILTER_IGNORE
 	hud.add_child(top)
 	title = make_label("ATLAS / DESTROÇOS",Vector2(16,6),15)
-	stats = make_label("",Vector2(350,8),12)
+	stats = make_label("",Vector2(350,8),11)
+	companion_status = make_label("",Vector2(350,27),10)
+	hunger_bar = ProgressBar.new()
+	hunger_bar.position = Vector2(350,41)
+	hunger_bar.size = Vector2(140,5)
+	hunger_bar.show_percentage = false
+	hunger_bar.mouse_filter = Control.MOUSE_FILTER_IGNORE
+	for style_name in ["background","fill"]:
+		var style := StyleBoxFlat.new()
+		style.bg_color = Color("b99350") if style_name=="fill" else Color("28312f")
+		for side in [SIDE_LEFT,SIDE_TOP,SIDE_RIGHT,SIDE_BOTTOM]: style.set_content_margin(side,0)
+		hunger_bar.add_theme_stylebox_override(style_name,style)
+	hud.add_child(hunger_bar)
 	objective = make_label("",Vector2(16,28),11)
 	var bottom := ColorRect.new()
 	bottom.position = Vector2(0,317)
@@ -179,6 +211,9 @@ func _physics_process(delta: float) -> void:
 	if not session_started: return
 	discovery.observe(player)
 	elapsed += delta
+	if not player.dead and ending==&"none": player.attributes.consume_hunger(delta,survival.config.hunger_per_second)
+	hunger_bar.value = player.hunger/player.max_hunger*100
+	companion_status.text = ("Amigo caído" if companion.dead else "Amigo %d/%d"%[companion.attributes.health,companion.attributes.health_max()])+" · crua %d / assada %d"%[survival.raw,survival.cooked]
 	markers.z_index = 20 if player.debug_areas else -1
 	markers.queue_redraw()
 	var region := maxi(0,region_at(player.position))
@@ -193,8 +228,8 @@ func _physics_process(delta: float) -> void:
 				ending_phases.append(book.phase)
 			if book.phase == &"complete":
 				ending = &"complete"
-				modal.visible = true
-				modal_text.text = "FIM DA PRIMEIRA PARTE\n\nCinco páginas reunidas. O livro desapareceu.\n\nEnter · nova partida    Esc · pausa"
+				modal.visible = false
+				session_ui.show_ending()
 		objective.text = "Livro: " + {&"flipping":"folheando",&"light":"torre de luz",&"vanishing":"desaparecendo",&"complete":"sequência concluída"}.get(book.phase,"")
 		hint.text = "Cinco páginas distintas reunidas"
 		return
@@ -205,6 +240,7 @@ func _physics_process(delta: float) -> void:
 		if Input.is_action_just_pressed("test_return"):
 			return_player()
 		return
+	if pages.size()==5 and start_ending(): return
 	if encounter == &"between":
 		wait_remaining -= delta
 		if wait_remaining <= 0:
@@ -226,11 +262,13 @@ func _physics_process(delta: float) -> void:
 			hint.text = "WASD para explorar · treine adaga, parry e esquiva antes de seguir à direita"
 		elif region == 4:
 			hint.text = "Abrigo opcional · suprimentos cenográficos, sem coleta"
-	for i in layout.encounter_centers.size():
-		if cleared.has(i) and not pages.has(i) and player.position.distance_to(page_position(i)) < 32:
-			hint.text = "E · recolher página %d — horda vencida" % [i+1]
-	if active_encounter < 0 and companion.can_interact():
-		hint.text = "E · conversar com acompanhante"
+	var nearby_hint := interaction_hint()
+	if not nearby_hint.is_empty(): hint.text = nearby_hint
+	if player.hunger<=0: hint.text += " · Fome vazia: procure carne e fogueira"
+	if pages.size()==5 and companion.dead:
+		objective.text = "5/5 páginas · reanime seu amigo na fogueira para abrir o livro"
+		if survival.raw==0 and survival.cooked==0 and survival.pickups.is_empty(): hint.text = "Sem carne restante · Esc → tela inicial permite reiniciar"
+
 	if player.debug_areas:
 		help.text = "F3 · ocultar áreas | Verde: física · Magenta: vulnerável · Ouro: adaga · Ciano: parry"
 	else:
@@ -239,6 +277,8 @@ func _physics_process(delta: float) -> void:
 func begin_encounter(index: int) -> bool:
 	if not session_started or index < 0 or index >= 5 or player.dead or active_encounter >= 0 or cleared.has(index):
 		return false
+	var area: int = layout.region_at(layout.encounter_centers[index])
+	if area<0 or layout.region_ids[area]!=layout.page_area_ids[index]: return false
 	active_encounter = index
 	wave_index = -1
 	spawn_wave()
@@ -290,6 +330,7 @@ func spawn_wave() -> void:
 
 func on_monster_defeated(monster: CharacterBody2D) -> void:
 	if monster not in enemies: return
+	if monster.dead and monster.health==0: survival.record_death(monster.get_instance_id(),monster.position)
 	enemies.erase(monster)
 	if enemies.is_empty() and encounter == &"fighting":
 		if wave_index+1 == layout.wave_sizes.size():
@@ -307,12 +348,15 @@ func collect_page() -> bool:
 	for i in layout.encounter_centers.size():
 		if cleared.has(i) and not pages.has(i) and player.position.distance_to(page_position(i)) <= 30:
 			pages[i] = true
+			audio.play_event(player,"page")
 			if pages.size() == 5:
 				start_ending()
 			return true
 	return false
 
 func on_player_died() -> void:
+	support.cancel()
+	audio.stop_all()
 	for monster in enemies:
 		if is_instance_valid(monster):
 			monster.queue_free()
@@ -325,6 +369,7 @@ func on_player_died() -> void:
 func return_player() -> bool:
 	if not player.dead:
 		return false
+	support.cancel()
 	player.return_after_death(player_spawn)
 	companion.reset_at(layout.companion_start)
 	discovery.last_cell = Vector2i(-999,-999)
@@ -332,7 +377,20 @@ func return_player() -> bool:
 	encounter = &"explore"
 	return true
 
-func start_ending() -> void:
+func start_ending() -> bool:
+	if pages.size()!=5 or companion.dead or player.dead or ending!=&"none" or get_tree().paused: return false
+	# Transição atômica: revalida amigo e encerra fontes de dano antes da animação.
+	support.cancel()
+	for monster in enemies:
+		if is_instance_valid(monster):
+			monster.set_physics_process(false)
+			if monster.attack_runtime!=null: monster.attack_runtime.cancel()
+			monster.queue_free()
+	enemies.clear()
+	for projectile in get_tree().get_nodes_in_group("atlas_monster_projectiles"):
+		projectile.set_physics_process(false)
+		projectile.queue_free()
+	companion.set_physics_process(false)
 	player.cancel_skills()
 	ending = &"playing"
 	player.state = &"ready"
@@ -348,12 +406,21 @@ func start_ending() -> void:
 	book.elapsed = 0.0
 	book.phase = &"flipping"
 	ending_phases.append(&"flipping")
+	return true
 
 func _unhandled_key_input(event: InputEvent) -> void:
 	if event is InputEventKey and event.pressed and not event.echo and ending == &"complete" and event.keycode == KEY_ENTER:
 		new_game()
 
 func draw_markers() -> void:
+	for point in layout.campfires:
+		markers.draw_circle(point,10,Color("514837"))
+		markers.draw_line(point+Vector2(-6,2),point+Vector2(6,-2),Color("9f7250"),3)
+		markers.draw_line(point+Vector2(6,2),point+Vector2(-6,-2),Color("9f7250"),3)
+		markers.draw_colored_polygon(PackedVector2Array([point+Vector2(-4,-2),point+Vector2(0,-14),point+Vector2(5,-2)]),Color("edab5b"))
+	for point in survival.pickups.values():
+		markers.draw_rect(Rect2(point-Vector2(4,6),Vector2(8,5)),Color("c28379"))
+		markers.draw_line(point-Vector2(2,5),point+Vector2(2,-3),Color("f2d6b2"),1)
 	if player.debug_areas:
 		for rect in solid_rects:
 			markers.draw_rect(rect,Color.LIME_GREEN,false,1)
@@ -396,9 +463,47 @@ func return_to_menu() -> void:
 
 func interact() -> StringName:
 	if not session_started or get_tree().paused or player.dead:return &"none"
-	# A reachable, unlocked page has priority; never collect and speak on one E.
+	# Prioridade: página > ingrediente > fogueira > conversa. Uma única ação por E.
 	if collect_page():return &"page"
+	for identity in survival.pickups:
+		if reachable(survival.pickups[identity],survival.config.pickup_distance) and survival.collect(identity): return &"meat"
+	for i in layout.campfires.size():
+		if ending==&"none" and reachable(layout.campfires[i],survival.config.camp_distance) and session_ui.claim(&"campfire"):
+			camp_index = i
+			session_ui.show_campfire()
+			return &"campfire"
 	if active_encounter < 0 and ending == &"none" and companion.can_interact() and session_ui.claim(&"dialogue"):
 		companion.state = &"interact"
 		return &"dialogue"
 	return &"none"
+
+func reachable(point: Vector2, distance: float) -> bool:
+	return player.position.distance_to(point)<=distance and preload("res://scripts/combat_geometry.gd").clear_line(player,point)
+func interaction_hint() -> String:
+	for i in layout.encounter_centers.size():
+		if cleared.has(i) and not pages.has(i) and reachable(page_position(i),30): return "E · recolher página %d — horda vencida"%[i+1]
+	for point in survival.pickups.values():
+		if reachable(point,survival.config.pickup_distance): return "E · recolher carne crua · leve à fogueira"
+	for point in layout.campfires:
+		if reachable(point,survival.config.camp_distance): return "E · fogueira: assar, comer, dividir ou reanimar"
+	if active_encounter<0 and companion.can_interact(): return "E · conversar com acompanhante"
+	return ""
+func safe_rescue_point() -> Vector2:
+	if camp_index<0 or camp_index>=layout.campfires.size(): return Vector2.INF
+	for offset in [Vector2(-24,0),Vector2(24,0),Vector2(0,24),Vector2(0,-24)]:
+		var point: Vector2 = layout.campfires[camp_index]+offset
+		var query := PhysicsShapeQueryParameters2D.new()
+		var circle := CircleShape2D.new()
+		circle.radius = 6
+		query.shape = circle
+		query.transform = Transform2D(0,point+Vector2(0,-3))
+		query.collision_mask = 1|4
+		if get_world_2d().direct_space_state.intersect_shape(query,1).is_empty() and not navigation.path(point,layout.campfires[camp_index]).is_empty(): return point
+	return Vector2.INF
+func camp_action(mode: String, generation: int) -> bool:
+	if session_ui.active!=&"campfire" or generation!=food_generation or player.dead or ending!=&"none" or camp_index<0: return false
+	if not reachable(layout.campfires[camp_index],survival.config.camp_distance): return false
+	if mode=="share" and not companion.can_interact(): return false
+	var success: bool = survival.cook(generation) if mode=="cook" else survival.consume(mode,generation,player,companion,safe_rescue_point() if mode=="revive" else Vector2.INF)
+	if success: session_ui.show_campfire()
+	return success

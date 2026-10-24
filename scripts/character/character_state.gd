@@ -55,6 +55,9 @@ func reward_encounter(id: int) -> bool:
 	return true
 func tick(delta: float) -> void:
 	for id in cooldowns: cooldowns[id] = maxf(0,float(cooldowns[id])-maxf(0,delta))
+func consume_hunger(delta: float, rate: float) -> void:
+	if is_finite(delta) and is_finite(rate): hunger -= maxf(0,delta)*maxf(0,rate)
+	# Zero permanece zero: sem dano/fome letal ou alteração de dash oculta.
 func absorb_damage(amount: int) -> int:
 	# Clamp input, mitigate with ceil, consume shield, then subtract health.
 	if amount <= 0: return 0

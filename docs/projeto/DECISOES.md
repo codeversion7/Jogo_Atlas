@@ -1,5 +1,12 @@
 # Decisões e pendências
 
+## Módulo 3 — seis fases implementadas e validadas em 23/10/2026
+
+Integrados áudio real e preferências, fome/carne/fogueira, vida/queda/resgate do amigo, suporte frontal de 5 s +0,2 por partilha, redução50% sem reflexão, parry protegido0,5 s, livro com5 páginas/amigo vivo, telas ATLAS e cinco áreas principais expansíveis. Módulos1/2 e assets preservados. Fases/testes/números provisórios/evidências em [MODULO_3_STATUS](../desenvolvimento/MODULO_3_STATUS.md); uso em [MODULO_3_USO](../desenvolvimento/MODULO_3_USO.md).
+
+17 suítes sem falhas de asserção/script; fluxo real5897, 5/5, uma partilha, amigo vivo, Q/F usados, vida93. Build debug Windows local e23 checks no template exportado montando PCK real, sem editor; ZIP externo verificado. Monitores de física são máximos por janelas de~1s, não custos de cada tick: frames p95~7,23ms com pico raro43,3ms; causa do pico não isolada, sem alegar lag resolvido. Escuta/mixagem e avaliação artística humanas pendentes; ataques frontais e valores provisórios. Créditos do engine comprovados por fonte oficial, sem autores de assets inventados. Preservação/publicação autorizada em fechamento; sem módulo4 ou release pública.
+
+
 ## Encerramento técnico do módulo 2 — retomada de 23/10/2026
 
 Escopo funcional do protótipo concluído: mapa com descoberta em M, encontros editáveis, acompanhante interativo sem combate, menu/pausa/árvore/diálogo coordenados e quatro ataques aprovados. Auditoria conferiu fontes atuais sem alterações de gameplay desde a publicação, cobertura/resultados dos 12 testes anteriores, capturas, integridade dos 2131 arquivos do backup e SHA remoto `0ef88af`. Não executou nova suíte longa. Critérios, evidências e limites em [auditoria](../desenvolvimento/AUDITORIA_MODULO_2.md). Último saldo relatado 6%; saldo atual desconhecido. Próximo passo: avaliação humana e diagnóstico de física; nenhum módulo 3.

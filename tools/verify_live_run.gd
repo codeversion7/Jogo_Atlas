@@ -36,14 +36,14 @@ func shot(name: String) -> void:
 		var result := root.get_texture().get_image().save_png("res://docs/atlas/evidencias/06_live_"+name+".png")
 		check(result == OK,"Live capture "+name)
 
-func move(direction: Vector2) -> void:
+func move(direction: Vector2, probe: float = 18.0) -> void:
 	for action in ["move_up","move_down","move_left","move_right"]:
 		Input.action_release(action)
 	var choice := direction
-	if not choice.is_zero_approx() and player.test_move(player.global_transform,choice*18):
+	if not choice.is_zero_approx() and player.test_move(player.global_transform,choice*probe):
 		for angle in [PI/4,-PI/4,PI/2,-PI/2]:
 			var alternative := choice.rotated(angle)
-			if not player.test_move(player.global_transform,alternative*18):
+			if not player.test_move(player.global_transform,alternative*probe):
 				choice = alternative
 				break
 	if choice.x < -0.05:
@@ -61,7 +61,7 @@ func walk_to(point: Vector2, allow_encounter: bool = true) -> bool:
 		if player.dead or (allow_encounter and game.active_encounter >= 0):
 			move(Vector2.ZERO)
 			return false
-		move(player.position.direction_to(point))
+		move(player.position.direction_to(point),minf(18.0,player.position.distance_to(point)))
 		await step()
 		budget -= 1
 	move(Vector2.ZERO)
@@ -192,6 +192,8 @@ func run() -> void:
 			if game.active_encounter >= 0:
 				await fight()
 			if not player.dead and game.cleared.has(index):
+				await gather_meat()
+			if not player.dead and game.cleared.has(index) and not game.pages.has(index):
 				await walk_to(game.page_position(index))
 				check(game.collect_page(),"Live horde releases page " + str(index+1))
 			attempts += 1
@@ -209,6 +211,8 @@ func run() -> void:
 	check(game.pages.size() == 5,"All pages obtained with AI active")
 	check(player.max_health == initial_max_health and player.dagger_damage == initial_damage,"Player balance was not overridden")
 	if game.pages.size() == 5:
+		if game.companion.dead:
+			await rescue_friend()
 		for i in 330:
 			await step()
 		check(game.ending == &"complete","Live run reaches ending")
@@ -217,11 +221,46 @@ func run() -> void:
 
 	move(Vector2.ZERO)
 	var final_health: int = player.health
+	var final_shares: int = game.survival.shares
+	var friend_alive: bool = not game.companion.dead
 	game.return_to_menu()
 	await step()
 	game = current_scene
 	check(game.session_ui.active == &"menu" and game.pages.is_empty(),"Ending returns to clean menu")
 	game.queue_free()
 	await process_frame
-	print("ATLAS_LIVE_RUN checks=",checks," failures=",failures," pages=",5," attacks=",attacks," throws=",throws," tracks=",tracks," parries=",parries," dodges=",dodges," returns=",returns," health=",final_health," simulated_seconds=",float(ticks)/60)
+	print("ATLAS_LIVE_RUN checks=",checks," failures=",failures," pages=",5," attacks=",attacks," throws=",throws," tracks=",tracks," parries=",parries," dodges=",dodges," returns=",returns," health=",final_health," shares=",final_shares," friend_alive=",friend_alive," simulated_seconds=",float(ticks)/60)
 	quit(0 if failures == 0 else 1)
+
+func follow_route(destination: Vector2) -> bool:
+	var route: PackedVector2Array = game.navigation.path(player.position,destination)
+	if route.is_empty(): return false
+	for point in route:
+		if player.dead: return false
+		if not await walk_to(point,false): return false
+	return await walk_to(destination,false)
+func gather_meat() -> void:
+	if game.survival.raw+game.survival.cooked>0 or game.ending!=&"none": return
+	var point := Vector2.INF
+	var distance := INF
+	for value in game.survival.pickups.values():
+		var d: float = player.position.distance_to(value)
+		if d<180 and d<distance:
+			point = value
+			distance = d
+	if not point.is_finite(): return
+	if await follow_route(point):
+		var action: StringName = game.interact()
+		await step()
+		if action==&"page" and game.ending==&"none": game.interact()
+func rescue_friend() -> void:
+	check(game.survival.raw+game.survival.cooked>0,"Live rescue uses actual dropped/collected meat")
+	if game.survival.raw+game.survival.cooked<=0: return
+	check(await follow_route(game.layout.campfires[0]),"Live route reaches camp with fallen friend")
+	check(game.interact()==&"campfire","Actual E flow opens camp for rescue")
+	if game.session_ui.active!=&"campfire": return
+	if game.survival.cooked==0: game.session_ui.actions.get_child(0).pressed.emit()
+	game.session_ui.actions.get_child(2).pressed.emit()
+	check(not game.companion.dead and game.survival.shares>0,"Cooked portion rescues real friend and grants share bonus")
+	game.session_ui.close()
+	await step()

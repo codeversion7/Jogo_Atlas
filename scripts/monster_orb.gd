@@ -15,7 +15,7 @@ func _ready() -> void:
 	add_to_group("atlas_monster_projectiles")
 	sprite = Sprite2D.new()
 	var texture := AtlasTexture.new()
-	texture.atlas = load("res://referencias/monstros/ataques_v1/b3_esporo_ataque_estudo.png")
+	texture.atlas = load("res://assets/monstros/ataques_v1/spore_orb_source.png")
 	texture.region = Rect2(946,511,88,88)
 	sprite.texture = texture
 	sprite.scale = Vector2.ONE * 0.085
@@ -26,9 +26,9 @@ func _ready() -> void:
 	queue_redraw()
 
 func combat_center() -> Vector2: return global_position
-func stagger() -> void:
+func stagger(duration_override: float = -1.0) -> void:
 	cancelled = true
-	if is_instance_valid(caster): caster.stagger()
+	if is_instance_valid(caster): caster.stagger(duration_override)
 	queue_free()
 
 func _physics_process(delta: float) -> void:
@@ -52,9 +52,17 @@ func _physics_process(delta: float) -> void:
 	var fraction := get_world_2d().direct_space_state.cast_motion(query)
 	var wall_hit: bool = fraction[0] < 1.0
 	if wall_hit: destination = start + query.motion * fraction[0]
-	var closest := Geometry2D.get_closest_point_to_segment(target.combat_center(),start,destination)
-	var hit: bool = closest.distance_to(target.combat_center()) <= settings.orb_radius + target.hurt_radius
-	global_position = closest if hit else destination
+	var hit := false
+	var impact := destination
+	var distance := INF
+	for recipient in recipients():
+		if recipient.dead: continue
+		var closest := Geometry2D.get_closest_point_to_segment(recipient.combat_center(),start,destination)
+		if closest.distance_to(recipient.combat_center()) <= settings.orb_radius+recipient.hurt_radius and start.distance_to(closest)<distance:
+			distance = start.distance_to(closest)
+			impact = closest
+			hit = true
+	global_position = impact
 	if hit or wall_hit or age >= settings.orb_lifetime:
 		explode()
 	queue_redraw()
@@ -64,12 +72,18 @@ func explode() -> void:
 	exploding = true
 	age = 0.0
 	sprite.visible = false
-	if not attempted and global_position.distance_to(target.combat_center()) <= settings.explosion_radius + target.hurt_radius:
-		attempted = true
-		# receive_attack mantém obstrução, esquiva, escudo e parry. A origem é a esfera.
-		target.receive_attack(damage,self)
+	for recipient in recipients():
+		if cancelled: break
+		if not recipient.dead and global_position.distance_to(recipient.combat_center())<=settings.explosion_radius+recipient.hurt_radius:
+			attempted = true
+			recipient.receive_attack(damage,self)
 	queue_redraw()
 
+func recipients() -> Array:
+	var result: Array = [target]
+	for companion in get_tree().get_nodes_in_group("atlas_companion"):
+		if companion.player==target: result.append(companion)
+	return result
 func _draw() -> void:
 	if exploding:
 		draw_circle(Vector2.ZERO,settings.explosion_radius,Color(0.4,0.9,0.15,0.25))

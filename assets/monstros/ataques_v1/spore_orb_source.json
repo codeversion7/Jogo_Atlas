@@ -1,0 +1,6 @@
+{
+  "source": "referencias/monstros/ataques_v1/b3_esporo_ataque_estudo.png",
+  "runtime": "assets/monstros/ataques_v1/spore_orb_source.png",
+  "sha256": "ee2ecfbabd0a9199a0a7d8dadbd216fe831a7d67a2faebc6196af6e93b622620",
+  "change": "bit-exact runtime copy; no new art or recompression"
+}

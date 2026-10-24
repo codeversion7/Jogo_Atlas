@@ -45,7 +45,7 @@ func run() -> void:
 	current_scene = game
 	player = game.player
 	check(not game.session_started and game.session_ui.active == &"menu" and paused,"F5 enters menu before simulation")
-	check(game.session_ui.actions.get_child_count() == 2,"No fake Continue/settings/credits without verified attribution")
+	check(game.session_ui.actions.get_child_count() == 3+(0 if game.layout.credits.is_empty() else 1),"Menu has working settings and only explicit verified credits")
 	check(game.layout.validate().is_empty(),"Layout records validate before use")
 	var start: Vector2 = player.position
 	await step(10)
@@ -53,7 +53,7 @@ func run() -> void:
 	game.session_ui.actions.get_child(0).pressed.emit()
 	await step(3)
 	check(game.session_started and not paused,"New-game button uses public session entry")
-	check(game.layout.region_ids.size() == 7 and game.layout.encounter_ids.size() == 5,"Stable seven regions and five encounter/page IDs")
+	check(game.layout.region_ids.size()>=5 and game.layout.region_names.size()==game.layout.region_ids.size() and game.layout.encounter_ids.size()==5 and game.layout.page_area_ids.size()==5,"Aligned expandable regions and five stable encounter/page IDs")
 	check(game.layout.world_size.y == 960 and player.get_node("Camera2D").limit_bottom == 960,"Controlled extension and camera share layout")
 	check(game.discovery.known(player.position) and not game.discovery.known(Vector2(1400,210)),"Local discovery never unlocks distant region")
 	check(not game.discovery.known(Vector2(180,140)),"Solid wreck blocks local discovery behind it")
@@ -140,8 +140,8 @@ func run() -> void:
 	game.layout.credits = PackedStringArray(["Atribuição de teste · fixture isolada"])
 	root.add_child(game)
 	current_scene = game
-	check(game.session_ui.actions.get_child_count()==3,"Credits button exists only with explicit attribution data")
-	game.session_ui.actions.get_child(1).pressed.emit()
+	check(game.session_ui.actions.get_child_count()==4,"Credits button exists only with explicit attribution data")
+	game.session_ui.actions.get_child(2).pressed.emit()
 	check(game.session_ui.text.text.contains("fixture isolada"),"Credits display provided attribution without invented names")
 	game.queue_free()
 	await step()

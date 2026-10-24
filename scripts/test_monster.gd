@@ -131,12 +131,12 @@ func chase_direction(desired: Vector2) -> Vector2:
 		detour_wait = 0.75
 	return desired.rotated(PI / 2 * detour_side)
 
-func stagger() -> void:
+func stagger(duration_override: float = -1.0) -> void:
 	if dead:
 		return
 	if attack_runtime: attack_runtime.cancel()
 	state = &"stagger"
-	remaining = stagger_duration
+	remaining = duration_override if is_finite(duration_override) and duration_override>0 else stagger_duration
 	queue_redraw()
 
 func take_damage(amount: int) -> void:

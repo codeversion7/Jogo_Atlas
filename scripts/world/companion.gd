@@ -1,5 +1,14 @@
 extends CharacterBody2D
-## Neutral geometric placeholder; noncombatant, never in enemy/target groups.
+## Acompanhante não combatente; visual independente das regras de navegação.
+const Visual = preload("res://scripts/companion_visual.gd")
+signal fallen
+signal revived
+const Geometry = preload("res://scripts/combat_geometry.gd")
+var attributes = preload("res://scripts/character/character_state.gd").new()
+var dead := false
+var hurt_radius := 8.0
+var hurt_wait := 0.0
+var visual: Node2D
 @export var follow_speed := 120.0
 @export var follow_distance := 42.0
 @export var interaction_distance := 44.0
@@ -22,15 +31,24 @@ func _ready() -> void:
 	shape.shape = circle
 	shape.position = Vector2(0,-3)
 	add_child(shape)
+	visual = Visual.new()
+	add_child(visual)
 func can_interact() -> bool:
-	if not is_instance_valid(player) or player.dead or position.distance_to(player.position)>interaction_distance:return false
+	if dead or not is_instance_valid(player) or player.dead or position.distance_to(player.position)>interaction_distance:return false
 	var ray := PhysicsRayQueryParameters2D.create(global_position+Vector2(0,-8),player.combat_center(),1)
 	return get_world_2d().direct_space_state.intersect_ray(ray).is_empty()
 func _physics_process(delta: float) -> void:
+	hurt_wait = maxf(0,hurt_wait-delta)
+	if dead:
+		velocity = Vector2.ZERO
+		state = &"fallen"
+		queue_redraw()
+		return
 	elapsed += delta
 	velocity = Vector2.ZERO
 	if not is_instance_valid(player) or player.dead:
 		state = &"idle"
+		visual.set_motion(Vector2.ZERO)
 		return
 	remaining -= delta
 	if position.distance_to(player.position) <= follow_distance:
@@ -44,19 +62,48 @@ func _physics_process(delta: float) -> void:
 		while route_index<route.size() and global_position.distance_to(route[route_index])<5:route_index += 1
 		if route_index<route.size():velocity = global_position.direction_to(route[route_index])*maxf(1,follow_speed)
 	move_and_slide()
+	visual.set_motion(velocity)
 	queue_redraw()
 func reset_at(safe_point: Vector2) -> void:
+	if dead: return # Retornar o jogador não reanima o amigo gratuitamente.
 	# Only used at session start / death return, never normal obstacle recovery.
 	position = safe_point
 	velocity = Vector2.ZERO
 	route.clear()
 	remaining = 0
 	state = &"idle"
+	if is_instance_valid(visual):visual.play("idle",0)
+func combat_center() -> Vector2: return global_position+Vector2(0,-8)
+func receive_attack(amount: int, source: Node2D) -> StringName:
+	if dead or hurt_wait>0 or amount<=0 or get_tree().paused or not Geometry.clear_line(self,source.combat_center()): return &"ignored"
+	attributes.absorb_damage(amount)
+	hurt_wait = 0.35
+	visual.play("hurt")
+	if attributes.health==0:
+		dead = true
+		state = &"fallen"
+		velocity = Vector2.ZERO
+		route.clear()
+		visual.modulate = Color(0.45,0.45,0.45)
+		fallen.emit()
+	queue_redraw()
+	return &"hit"
+func heal(amount: int) -> void:
+	if not dead: attributes.health += maxi(0,amount)
+	queue_redraw()
+func revive_at(point: Vector2, health: int) -> void:
+	if not dead: return
+	dead = false
+	attributes.health = maxi(1,health)
+	visual.modulate = Color.WHITE
+	reset_at(point)
+	hurt_wait = 0.35
+	revived.emit()
 func _draw() -> void:
+	if dead:
+		draw_line(Vector2(-4,-38),Vector2(4,-30),Color.SALMON,2)
+		draw_line(Vector2(-4,-30),Vector2(4,-38),Color.SALMON,2)
+	else:
+		draw_rect(Rect2(-9,-38,18,2),Color(0.05,0.08,0.08))
+		draw_rect(Rect2(-9,-38,18.0*attributes.health/attributes.health_max(),2),Color(0.4,0.8,0.8))
 	draw_rect(Rect2(-7,-3,14,5),Color(0.03,0.07,0.08,0.6))
-	var bob := 1.0 if state == &"follow" and int(elapsed*8)%2==0 else 0.0
-	draw_rect(Rect2(-6,-27+bob,12,12),Color("253844"))
-	draw_rect(Rect2(-4,-25+bob,8,7),Color("98b9ac"))
-	draw_colored_polygon(PackedVector2Array([Vector2(-5,-17+bob),Vector2(5,-17+bob),Vector2(8,-5),Vector2(-8,-5)]),Color("638b96"))
-	draw_rect(Rect2(-5,-5,4,5),Color("24333a"))
-	draw_rect(Rect2(2,-5,4,5),Color("24333a"))

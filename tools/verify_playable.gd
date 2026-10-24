@@ -117,7 +117,10 @@ func run() -> void:
 	game.ending = &"route_test"
 	for point in [Vector2(500,210),Vector2(620,210),Vector2(840,210),Vector2(1110,210),Vector2(1400,210),Vector2(1960,210),Vector2(1400,210),Vector2(1400,450),Vector2(1400,610),Vector2(840,610),Vector2(840,450),Vector2(840,210),Vector2(280,210),Vector2(280,610),Vector2(180,610),Vector2(280,610),Vector2(280,220),Vector2(180,220)]:
 		await walk_to(point)
-	check(game.visited.size() == 7,"All seven regions reached")
+	var original_regions_reached := true
+	for id in ["wreck","roots","ruins","lookout","shelter","grove","archive"]:
+		if not game.visited.has(game.layout.region_ids.find(id)): original_regions_reached = false
+	check(original_regions_reached,"All original route regions reached; extra regions remain allowed")
 	await shot("rota_opcional")
 	game.ending = &"none"
 	# Inicia a primeira horda por movimento até o gatilho, não chamada direta.
@@ -139,7 +142,7 @@ func run() -> void:
 	Input.action_press("test_return")
 	await step()
 	Input.action_release("test_return")
-	check(not player.dead and player.health == old_max/2 and player.hunger == 25,"R returns with half health and 25% hunger")
+	check(not player.dead and player.health == old_max/2 and player.hunger<=25 and absf(player.hunger-25)<=game.survival.config.hunger_per_second*2.0/Engine.physics_ticks_per_second+0.00001,"R returns at half health and 25% hunger, then drains only elapsed active ticks")
 	check(player.position.distance_to(game.player_spawn) < 1,"Return goes to wreck")
 	# Região temporariamente sem espaço: aguarda em vez de gerar dentro de sólidos.
 	var blocked := StaticBody2D.new()
@@ -228,7 +231,7 @@ func run() -> void:
 	await step(100)
 	check(game.ending == &"complete","Ending finishes")
 	check(game.ending_phases == [&"flipping",&"light",&"vanishing",&"complete"],"Canonical book order")
-	check(game.modal.visible and not player.is_physics_processing(),"Ending UI shown and combat disabled")
+	check(game.session_ui.active==&"ending" and not player.is_physics_processing(),"Ending UI uses shared coordinator and combat is disabled")
 	await shot("fim")
 	var old_instance: int = game.get_instance_id()
 	var restart_key := InputEventKey.new()
@@ -236,8 +239,11 @@ func run() -> void:
 	restart_key.pressed = true
 	Input.parse_input_event(restart_key)
 	await step(4)
+	restart_key = restart_key.duplicate()
 	restart_key.pressed = false
 	Input.parse_input_event(restart_key)
+	Input.flush_buffered_events()
+	await step(2) # Native focused button activates on release; scene reload is deferred.
 	check(current_scene != null and current_scene.get_instance_id() != old_instance,"Enter starts a new scene")
 	game = current_scene
 	check(game.pages.is_empty() and game.ending == &"none","New run explicitly resets pages and ending")
