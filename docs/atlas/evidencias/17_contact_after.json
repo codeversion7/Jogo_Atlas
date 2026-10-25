@@ -1,0 +1,166 @@
+{
+  "checks": 134,
+  "failures": 0,
+  "last_active_cases": [
+    {
+      "delta": 0.00833333333333333,
+      "direction": 0,
+      "health_after": 25
+    },
+    {
+      "delta": 0.0166666666666667,
+      "direction": 0,
+      "health_after": 25
+    },
+    {
+      "delta": 0.0333333333333333,
+      "direction": 0,
+      "health_after": 25
+    },
+    {
+      "delta": 0.1,
+      "direction": 0,
+      "health_after": 25
+    },
+    {
+      "delta": 0.00833333333333333,
+      "direction": 1,
+      "health_after": 25
+    },
+    {
+      "delta": 0.0166666666666667,
+      "direction": 1,
+      "health_after": 25
+    },
+    {
+      "delta": 0.0333333333333333,
+      "direction": 1,
+      "health_after": 25
+    },
+    {
+      "delta": 0.1,
+      "direction": 1,
+      "health_after": 25
+    },
+    {
+      "delta": 0.00833333333333333,
+      "direction": 2,
+      "health_after": 25
+    },
+    {
+      "delta": 0.0166666666666667,
+      "direction": 2,
+      "health_after": 25
+    },
+    {
+      "delta": 0.0333333333333333,
+      "direction": 2,
+      "health_after": 25
+    },
+    {
+      "delta": 0.1,
+      "direction": 2,
+      "health_after": 25
+    },
+    {
+      "delta": 0.00833333333333333,
+      "direction": 3,
+      "health_after": 25
+    },
+    {
+      "delta": 0.0166666666666667,
+      "direction": 3,
+      "health_after": 25
+    },
+    {
+      "delta": 0.0333333333333333,
+      "direction": 3,
+      "health_after": 25
+    },
+    {
+      "delta": 0.1,
+      "direction": 3,
+      "health_after": 25
+    },
+    {
+      "delta": 0.00833333333333333,
+      "direction": 4,
+      "health_after": 25
+    },
+    {
+      "delta": 0.0166666666666667,
+      "direction": 4,
+      "health_after": 25
+    },
+    {
+      "delta": 0.0333333333333333,
+      "direction": 4,
+      "health_after": 25
+    },
+    {
+      "delta": 0.1,
+      "direction": 4,
+      "health_after": 25
+    },
+    {
+      "delta": 0.00833333333333333,
+      "direction": 5,
+      "health_after": 25
+    },
+    {
+      "delta": 0.0166666666666667,
+      "direction": 5,
+      "health_after": 25
+    },
+    {
+      "delta": 0.0333333333333333,
+      "direction": 5,
+      "health_after": 25
+    },
+    {
+      "delta": 0.1,
+      "direction": 5,
+      "health_after": 25
+    },
+    {
+      "delta": 0.00833333333333333,
+      "direction": 6,
+      "health_after": 25
+    },
+    {
+      "delta": 0.0166666666666667,
+      "direction": 6,
+      "health_after": 25
+    },
+    {
+      "delta": 0.0333333333333333,
+      "direction": 6,
+      "health_after": 25
+    },
+    {
+      "delta": 0.1,
+      "direction": 6,
+      "health_after": 25
+    },
+    {
+      "delta": 0.00833333333333333,
+      "direction": 7,
+      "health_after": 25
+    },
+    {
+      "delta": 0.0166666666666667,
+      "direction": 7,
+      "health_after": 25
+    },
+    {
+      "delta": 0.0333333333333333,
+      "direction": 7,
+      "health_after": 25
+    },
+    {
+      "delta": 0.1,
+      "direction": 7,
+      "health_after": 25
+    }
+  ]
+}

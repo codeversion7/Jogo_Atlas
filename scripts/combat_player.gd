@@ -1,14 +1,19 @@
 extends "res://scripts/player.gd"
 ## Adjustable combat prototype: feet collide, body circles receive strikes.
+const Melee = preload("res://scripts/character/melee_geometry.gd")
+@export var melee_reach: Resource = preload("res://resources/character/melee_reach.tres")
+var reach_level: int:
+	get: return attributes.melee_level()
+var active_interval := Vector2(-1,-1)
+var active_motion_fraction := 1.0
+var target_positions: Dictionary = {}
 signal health_changed
 signal died
 const SessionAudio = preload("res://scripts/session_audio.gd")
 const Geometry = preload("res://scripts/combat_geometry.gd")
 const Dagger = preload("res://scripts/dagger_pose.gd")
-const EnemyTracker = preload("res://scripts/character/enemy_tracker.gd")
 var input_guard_frames := 0
 var companion_support: Node
-var tracker: Node2D
 const ReturningDagger = preload("res://scripts/character/returning_dagger.gd")
 var thrown_dagger: Node2D
 signal skills_changed
@@ -99,13 +104,11 @@ func _ready() -> void:
 	$CollisionShape2D.position = Vector2(0, -3)
 	add_to_group("atlas_combat_player")
 	install_skill_inputs()
-	tracker = EnemyTracker.new()
-	tracker.name = "EnemyTracker"
-	tracker.wielder = weakref(self)
-	add_child(tracker)
+	attributes.retire_tracking()
 
 func install_skill_inputs() -> void:
-	for entry in [["throw_dagger",KEY_Q],["track_enemies",KEY_F],["skill_tree",KEY_TAB]]:
+	if InputMap.has_action("track_enemies"): InputMap.erase_action("track_enemies")
+	for entry in [["throw_dagger",KEY_Q],["skill_tree",KEY_TAB]]:
 		if not InputMap.has_action(entry[0]):
 			InputMap.add_action(entry[0])
 			var event := InputEventKey.new()
@@ -121,6 +124,7 @@ func combat_center() -> Vector2:
 	return global_position + COMBAT_OFFSET
 
 func _physics_process(delta: float) -> void:
+	var origin_before := global_position
 	attributes.tick(delta)
 	hurt_wait = maxf(0.0, hurt_wait - delta)
 	feedback_wait = maxf(0.0, feedback_wait - delta)
@@ -137,8 +141,6 @@ func _physics_process(delta: float) -> void:
 	var mouse_direction := combat_center().direction_to(get_global_mouse_position())
 	if not mouse_direction.is_zero_approx():
 		aim = mouse_direction
-	if Input.is_action_just_pressed("track_enemies") and accept_actions:
-		try_track()
 	if Input.is_action_just_pressed("throw_dagger") and accept_actions:
 		try_throw(aim)
 	elif Input.is_action_just_pressed("attack") and accept_actions:
@@ -150,12 +152,21 @@ func _physics_process(delta: float) -> void:
 	velocity = locked_direction * dodge_speed if state == &"dodge" else movement * move_speed
 	move_and_slide()
 	visual.set_motion(get_real_velocity())
-	if state == &"attack":
-		strike_targets()
+	if active_interval.x>=0:
+		strike_sweep(active_interval,origin_before,origin_before.lerp(global_position,active_motion_fraction))
+	var positions: Dictionary = {}
+	for target in get_tree().get_nodes_in_group("atlas_combat_targets"):
+		positions[target.get_instance_id()] = target.combat_center()
+	target_positions = positions
 	update_visual()
 	queue_redraw()
 
 func advance_action(delta: float) -> void:
+	active_interval = Vector2(-1,-1)
+	active_motion_fraction = 1.0
+	if state==&"attack":
+		active_interval = Vector2(action_progress(),clampf(1.0-(remaining-delta)/maxf(0.001,attack_duration),0,1))
+		active_motion_fraction = minf(1.0,maxf(0,remaining)/maxf(delta,0.000001))
 	if state == &"ready":
 		return
 	remaining -= delta
@@ -165,6 +176,7 @@ func advance_action(delta: float) -> void:
 		state = &"attack"
 		SessionAudio.event(self,"dagger")
 		remaining = attack_duration
+		active_interval = Vector2.ZERO
 	elif state == &"attack":
 		state = &"recovery"
 		remaining = attack_recovery
@@ -208,17 +220,22 @@ func try_attack(direction: Vector2) -> bool:
 	return true
 
 func strike_targets() -> void:
-	if dead or is_instance_valid(thrown_dagger) or state != &"attack" or feedback_wait > 0.0:
-		return
-	var pose := Dagger.sample(&"attack_active", locked_direction, action_progress())
-	var points := Dagger.visible_blade(pose)
+	if state!=&"attack":return
+	strike_sweep(Vector2.ONE*action_progress(),global_position,global_position,false)
+
+func strike_sweep(interval: Vector2, origin_from: Vector2, origin_to: Vector2, moving_targets: bool = true) -> void:
+	if dead or get_tree().paused or is_instance_valid(thrown_dagger) or feedback_wait>0:return
+	if state not in [&"attack",&"recovery"]:return
+	var reach: float = melee_reach.radius(reach_level)
 	for target in get_tree().get_nodes_in_group("atlas_combat_targets"):
 		var id := target.get_instance_id()
-		if target.dead or id in struck:
-			continue
-		for point in points:
-			var contact := global_position + point
-			if contact.distance_to(target.combat_center()) <= target.hurt_radius + 1.0 and Geometry.clear_line(self, contact) and Geometry.clear_line(self, target.combat_center()):
+		if target.dead or id in struck:continue
+		var target_to: Vector2 = target.combat_center()
+		var target_from: Vector2 = target_positions.get(id,target_to) if moving_targets else target_to
+		var contacts := Melee.blade_contacts(locked_direction,interval,origin_from,origin_to,target_from,target_to,target.hurt_radius)
+		if Melee.wave_touches(locked_direction,target_from-origin_from-COMBAT_OFFSET,target_to-origin_to-COMBAT_OFFSET,target.hurt_radius,reach,melee_reach.half_angle):contacts.append(target_to)
+		for contact in contacts:
+			if Geometry.clear_line(self,contact) and Geometry.clear_line(self,target_to):
 				struck.append(id)
 				target.take_damage(dagger_damage)
 				break
@@ -287,6 +304,8 @@ func return_after_death(location: Vector2) -> void:
 	queue_redraw()
 
 func _draw() -> void:
+	if state==&"attack" and not dead and feedback_wait<=0 and not is_instance_valid(thrown_dagger):
+		Melee.draw_wave(self,COMBAT_OFFSET,locked_direction,melee_reach.radius(reach_level),melee_reach.half_angle)
 	if debug_areas:
 		draw_arc(Vector2(0, -3), feet_radius, 0, TAU, 24, Color.LIME_GREEN, 1.0)
 		draw_arc(COMBAT_OFFSET, hurt_radius, 0, TAU, 24, Color.MAGENTA, 1.0)
@@ -332,11 +351,7 @@ func dagger_returned(projectile: Node2D) -> void:
 		if is_instance_valid(visual): visual.set_weapon_in_flight(false)
 		skills_changed.emit()
 
-func try_track() -> bool:
-	return tracker.start() if is_instance_valid(tracker) else false
-
 func cancel_skills() -> void:
-	if is_instance_valid(tracker): tracker.cancel()
 	if is_instance_valid(thrown_dagger): thrown_dagger.finish()
 
 func _exit_tree() -> void:

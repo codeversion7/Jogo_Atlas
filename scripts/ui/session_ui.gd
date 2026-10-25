@@ -59,7 +59,7 @@ func claim(kind: StringName) -> bool:
 		&"pause":
 			title.text = "PAUSA"
 			text.position = Vector2(28,72)
-			text.text = "WASD mover · mouse atacar/parry · Espaço esquiva\nQ adaga · F rastreio · Tab personagem · M mapa\nE interagir · R retornar após morte"
+			text.text = "WASD mover · mouse atacar/parry · Espaço esquiva\nQ adaga · Tab personagem · M mapa\nE interagir · R retornar após morte"
 			button("Continuar · Esc",close)
 			button("Voltar à tela inicial",game.return_to_menu)
 			button("Configurações",open_settings)

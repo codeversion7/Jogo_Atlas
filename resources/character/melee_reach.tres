@@ -1,0 +1,7 @@
+[gd_resource type="Resource" load_steps=2 format=3]
+[ext_resource type="Script" path="res://scripts/character/melee_reach_config.gd" id="1"]
+[resource]
+script = ExtResource("1")
+first_reach = 34.0
+second_reach = 46.0
+half_angle = 0.85

@@ -111,9 +111,8 @@ func run() -> void:
 	var known_before: int = game.discovery.cells.size()
 	player.attributes.points = 2
 	player.attributes.buy("throw.unlock")
-	player.attributes.buy("tracking.unlock")
+	player.attributes.buy("reach.first")
 	player.try_throw(Vector2.RIGHT)
-	player.try_track()
 	player.hurt_wait = 0
 	player.receive_attack(9999,player)
 	await step()

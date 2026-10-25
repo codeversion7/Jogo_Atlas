@@ -1,5 +1,9 @@
 # Estado atual — 25/10/2026
 
+## Módulo 4 — execução iniciada em 25/10/2026
+
+Fechamento anterior confirmado no SHA4462421; execução sequencial, sem agentes extras. Fases01–02 implementadas/validadas: contato final/intermediário da adaga corrigido após reprodução, onda34/46px ligada a dois upgrades; rastreio/F/Passo ágil removidos, esquiva base preservada. Árvore em cena própria e HUD de vida/fome à esquerda. Números provisórios; nenhuma compra gratuita. Estado/testes/backup/pendências em [MODULO_4_STATUS](../desenvolvimento/MODULO_4_STATUS.md). Novas regras seguintes só constam implementadas quando a fase correspondente estiver validada.
+
 ## Fechamento técnico do módulo 3 — 25/10/2026
 
 Retomada autorizada para encerrar as pendências. Identificada e corrigida a recarga recorrente da arte da esfera: recursos compartilhados por `preload`, materiais individuais, sem mudar combate. Na carga gráfica equivalente de 1.200 frames, máximo 48,944→8,180 ms; frames >16,67 ms 5→0. Recorte dos passos ajustado para conter o pico real da fonte, sem modificar originais ou ganhos. Auditoria numérica dos oito áudios aprovada; áudio/configurações38, monstros79, suporte/livro40 e percurso real5897 sem falhas. Cópia limpa também validada. [Relatório e limites](../desenvolvimento/MODULO_3_FECHAMENTO.md).

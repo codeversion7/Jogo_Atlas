@@ -1,0 +1,12 @@
+{
+  "active_remaining": 0.001,
+  "delta": 0.0333333333333333,
+  "direction": "right",
+  "fixture": "last active contact before transition",
+  "health_after": 50,
+  "health_before": 50,
+  "miss_reproduced": true,
+  "state_after": "recovery",
+  "target_dead": false,
+  "wall": false
+}

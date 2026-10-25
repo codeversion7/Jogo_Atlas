@@ -14,7 +14,7 @@ var initial_max_health: int
 var initial_damage: int
 var capture := false
 var throws := 0
-var tracks := 0
+var reach_purchases := 0
 
 func _initialize() -> void:
 	run.call_deferred()
@@ -137,7 +137,6 @@ func fight() -> bool:
 				move(direction)
 			else:
 				move(Vector2.ZERO)
-		if nearest != null and player.try_track():tracks += 1
 		await step()
 		budget -= 1
 	move(Vector2.ZERO)
@@ -201,9 +200,10 @@ func run() -> void:
 		if game.pages.size() == 2 and not player.attributes.owned.has("throw.unlock"):
 			check(game.character_panel.open(),"Live tree opens after earned encounter points")
 			game.character_panel.purchase("throw.unlock")
-			game.character_panel.purchase("tracking.unlock")
+			game.character_panel.purchase("reach.first")
+			if player.reach_level>0:reach_purchases += 1
 			game.character_panel.close()
-			check(player.attributes.owned.has("throw.unlock") and player.attributes.owned.has("tracking.unlock"),"Both active skills acquired through actual UI")
+			check(player.attributes.owned.has("throw.unlock") and player.attributes.owned.has("reach.first"),"Return dagger and first reach purchased through tree")
 		if game.pages.has(index):
 			await shot("pagina_"+str(index+1))
 		if not game.pages.has(index):
@@ -217,7 +217,7 @@ func run() -> void:
 			await step()
 		check(game.ending == &"complete","Live run reaches ending")
 		await shot("fim")
-	check(throws>0 and tracks>0,"Live run exercises Q and F acquired from encounters")
+	check(throws>0 and reach_purchases>0,"Live run exercises Q and purchased visible reach")
 
 	move(Vector2.ZERO)
 	var final_health: int = player.health
@@ -229,7 +229,7 @@ func run() -> void:
 	check(game.session_ui.active == &"menu" and game.pages.is_empty(),"Ending returns to clean menu")
 	game.queue_free()
 	await process_frame
-	print("ATLAS_LIVE_RUN checks=",checks," failures=",failures," pages=",5," attacks=",attacks," throws=",throws," tracks=",tracks," parries=",parries," dodges=",dodges," returns=",returns," health=",final_health," shares=",final_shares," friend_alive=",friend_alive," simulated_seconds=",float(ticks)/60)
+	print("ATLAS_LIVE_RUN checks=",checks," failures=",failures," pages=",5," attacks=",attacks," throws=",throws," reach_purchases=",reach_purchases," parries=",parries," dodges=",dodges," returns=",returns," health=",final_health," shares=",final_shares," friend_alive=",friend_alive," simulated_seconds=",float(ticks)/60)
 	quit(0 if failures == 0 else 1)
 
 func follow_route(destination: Vector2) -> bool:

@@ -5,7 +5,7 @@ const Monster = preload("res://scripts/test_monster.gd")
 const Prop = preload("res://scripts/world_prop.gd")
 const Ground = preload("res://scripts/world_ground.gd")
 const Book = preload("res://scripts/book_sequence.gd")
-const CharacterPanel = preload("res://scripts/ui/character_panel.gd")
+const CharacterPanel = preload("res://scenes/ui/skill_tree.tscn")
 var character_panel: CanvasLayer
 var skills_bar: Label
 const SessionUI = preload("res://scripts/ui/session_ui.gd")
@@ -21,6 +21,8 @@ var support: Node
 var survival = preload("res://scripts/world/survival_state.gd").new()
 var camp_index := -1
 var food_generation := 0
+var health_bar: ProgressBar
+var hunger_text: Label
 var hunger_bar: ProgressBar
 var companion_status: Label
 var session_started := false
@@ -162,10 +164,29 @@ func build_interface() -> void:
 	top.mouse_filter = Control.MOUSE_FILTER_IGNORE
 	hud.add_child(top)
 	title = make_label("ATLAS / DESTROÇOS",Vector2(16,6),15)
-	stats = make_label("",Vector2(350,8),11)
-	companion_status = make_label("",Vector2(350,27),10)
+	var vitals := ColorRect.new()
+	vitals.position = Vector2(8,235)
+	vitals.size = Vector2(160,61)
+	vitals.color = Color(0.025,0.045,0.05,0.9)
+	vitals.mouse_filter = Control.MOUSE_FILTER_IGNORE
+	hud.add_child(vitals)
+	stats = make_label("",Vector2(16,239),10)
+	health_bar = ProgressBar.new()
+	health_bar.position = Vector2(16,254)
+	health_bar.size = Vector2(140,6)
+	health_bar.show_percentage = false
+	health_bar.mouse_filter = Control.MOUSE_FILTER_IGNORE
+	for style_name in ["background","fill"]:
+		var style := StyleBoxFlat.new()
+		style.bg_color = Color("c76856") if style_name=="fill" else Color("28312f")
+		for side in [SIDE_LEFT,SIDE_TOP,SIDE_RIGHT,SIDE_BOTTOM]:style.set_content_margin(side,0)
+		health_bar.add_theme_stylebox_override(style_name,style)
+	hud.add_child(health_bar)
+	health_bar.size.y = 6
+	hunger_text = make_label("",Vector2(16,266),10)
+	companion_status = make_label("",Vector2(350,8),10)
 	hunger_bar = ProgressBar.new()
-	hunger_bar.position = Vector2(350,41)
+	hunger_bar.position = Vector2(16,282)
 	hunger_bar.size = Vector2(140,5)
 	hunger_bar.show_percentage = false
 	hunger_bar.mouse_filter = Control.MOUSE_FILTER_IGNORE
@@ -175,6 +196,7 @@ func build_interface() -> void:
 		for side in [SIDE_LEFT,SIDE_TOP,SIDE_RIGHT,SIDE_BOTTOM]: style.set_content_margin(side,0)
 		hunger_bar.add_theme_stylebox_override(style_name,style)
 	hud.add_child(hunger_bar)
+	hunger_bar.size.y = 5
 	objective = make_label("",Vector2(16,28),11)
 	var bottom := ColorRect.new()
 	bottom.position = Vector2(0,317)
@@ -183,7 +205,7 @@ func build_interface() -> void:
 	bottom.mouse_filter = Control.MOUSE_FILTER_IGNORE
 	hud.add_child(bottom)
 	hint = make_label("",Vector2(16,320),12)
-	help = make_label("WASD mover · Mouse atacar/parry · Espaço esquiva · Q adaga · F rastreio · Tab árvore · Esc pausa",Vector2(16,342),10)
+	help = make_label("WASD mover · Mouse atacar/parry · Espaço esquiva · Q adaga · Tab árvore · Esc pausa",Vector2(16,342),10)
 	modal = ColorRect.new()
 	modal.position = Vector2(72,75)
 	modal.size = Vector2(496,205)
@@ -192,7 +214,7 @@ func build_interface() -> void:
 	modal.visible = false
 	hud.add_child(modal)
 	modal_text = make_label("",Vector2(26,28),17,modal)
-	character_panel = CharacterPanel.new()
+	character_panel = CharacterPanel.instantiate()
 	character_panel.player = player
 	character_panel.game = self
 	add_child(character_panel)
@@ -213,14 +235,16 @@ func _physics_process(delta: float) -> void:
 	elapsed += delta
 	if not player.dead and ending==&"none": player.attributes.consume_hunger(delta,survival.config.hunger_per_second)
 	hunger_bar.value = player.hunger/player.max_hunger*100
+	health_bar.value = 100.0*player.health/player.max_health
+	hunger_text.text = "Fome %.0f/%.0f"%[player.hunger,player.max_hunger]
 	companion_status.text = ("Amigo caído" if companion.dead else "Amigo %d/%d"%[companion.attributes.health,companion.attributes.health_max()])+" · crua %d / assada %d"%[survival.raw,survival.cooked]
 	markers.z_index = 20 if player.debug_areas else -1
 	markers.queue_redraw()
 	var region := maxi(0,region_at(player.position))
 	visited[region] = true
 	title.text = "ATLAS / " + layout.region_names[region].to_upper()
-	stats.text = "Vida %d/%d  F%.0f%%  E%d/%d  %d/5" % [player.health,player.max_health,player.hunger/player.max_hunger*100,player.shield,player.max_shield,pages.size()]
-	skills_bar.text = "Q adaga: %s   F rastreio: %s   Tab personagem · %d ponto(s)" % [ability_status("throw"),ability_status("tracking"),player.attributes.points]
+	stats.text = "Vida %d/%d · E%d"%[player.health,player.max_health,player.shield]
+	skills_bar.text = "Q adaga: %s · Onda %d · Tab árvore · %d ponto(s)"%[ability_status("throw"),player.reach_level,player.attributes.points]
 	if ending != &"none":
 		if ending == &"playing":
 			book.advance(delta)
@@ -272,7 +296,7 @@ func _physics_process(delta: float) -> void:
 	if player.debug_areas:
 		help.text = "F3 · ocultar áreas | Verde: física · Magenta: vulnerável · Ouro: adaga · Ciano: parry"
 	else:
-		help.text = "WASD mover · Mouse atacar/parry · Espaço esquiva · Q adaga · F rastreio · Tab árvore · Esc pausa"
+		help.text = "WASD mover · Mouse atacar/parry · Espaço esquiva · Q adaga · Tab árvore · Esc pausa"
 
 func begin_encounter(index: int) -> bool:
 	if not session_started or index < 0 or index >= 5 or player.dead or active_encounter >= 0 or cleared.has(index):
@@ -440,7 +464,6 @@ func draw_markers() -> void:
 func ability_status(id: String) -> String:
 	if not player.attributes.owned.has(id+".unlock"): return "bloqueado"
 	if id == "throw" and is_instance_valid(player.thrown_dagger): return "em voo"
-	if id == "tracking" and player.tracker.remaining > 0: return "ativo %.1fs"%player.tracker.remaining
 	var remaining: float = player.attributes.cooldowns[id]
 	return "%.1fs"%remaining if remaining > 0 else "pronto"
 

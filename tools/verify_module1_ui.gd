@@ -29,11 +29,11 @@ func run() -> void:
 	var player = game.player
 	var panel = game.character_panel
 	await step()
-	check(player.Attributes.BRANCHES.size() == 3 and player.Attributes.BRANCHES == ["throw","tracking","parry"],"Exactly three named skill branches")
+	check(player.Attributes.BRANCHES.size() == 3 and player.Attributes.BRANCHES == ["throw","reach","parry"],"Exactly three named skill branches")
 	check(player.try_parry(Vector2.RIGHT),"Parry available without purchase or points")
 	player.state = &"ready"
 	check(player.attributes.points == 0 and not player.attributes.buy("throw.unlock"),"No purchases without session points")
-	check(not player.attributes.buy("tracking.stride"),"Dependent upgrades require parent")
+	check(not player.attributes.buy("reach.second"),"Dependent upgrades require parent")
 	check(player.attributes.reward_encounter(0) and not player.attributes.reward_encounter(0),"Encounter rewards only once")
 	check(player.attributes.reward_encounter(1),"Two encounters fund both active abilities before last encounter")
 	await key(KEY_TAB)
@@ -41,21 +41,24 @@ func run() -> void:
 	var cooldown: float = player.dodge_wait
 	var health: int = player.health
 	panel.buttons["throw.unlock"].pressed.emit()
-	panel.buttons["tracking.unlock"].pressed.emit()
-	check(player.attributes.points == 0 and player.attributes.owned.has("throw.unlock") and player.attributes.owned.has("tracking.unlock"),"UI acquires both active branches with correct costs")
+	panel.buy_button.pressed.emit()
+	panel.buttons["reach.first"].pressed.emit()
+	panel.buy_button.pressed.emit()
+	check(player.attributes.points == 0 and player.attributes.owned.has("throw.unlock") and player.attributes.owned.has("reach.first"),"UI acquires return dagger and first reach upgrade with correct costs")
 	panel.buttons["throw.unlock"].pressed.emit()
+	panel.buy_button.pressed.emit()
 	check(player.attributes.points == 0 and not player.attributes.buy("no-such-node"),"Repeated/unknown purchases cannot spend points")
-	check(not player.try_attack(Vector2.RIGHT) and not player.try_throw(Vector2.RIGHT) and not player.try_track(),"UI cannot activate combat while paused")
+	check(not player.try_attack(Vector2.RIGHT) and not player.try_throw(Vector2.RIGHT) and not player.has_method("try_track"),"UI cannot activate combat while paused")
 	panel.buttons["throw.unlock"].grab_focus()
 	await key(KEY_TAB)
 	check(not panel.opened and not paused,"Tab closes panel even with focused button")
 	await step(3)
 	check(player.state == &"ready" and player.health == health and player.dodge_wait == cooldown,"Closing interface causes no accidental attack or cooldown")
 	player.attributes.points = 4
-	for id in ["throw.edge","tracking.stride","parry.focus","parry.guard"]:
+	for id in ["throw.edge","reach.second","parry.focus","parry.guard"]:
 		check(player.attributes.buy(id),"Attribute upgrade bought: "+id)
 	check(player.dagger_damage == 30 and player.attributes.throw_damage() == 30,"Explicit edge upgrade modifies melee and projectile damage")
-	check(is_equal_approx(player.dodge_distance,36.48) and is_equal_approx(player.dodge_speed,228),"Dash modifier changes coherent distance and speed")
+	check(is_equal_approx(player.dodge_distance,30.4) and is_equal_approx(player.dodge_speed,190),"Base dash preserved without retired stride bonus")
 	check(is_equal_approx(player.parry_window,0.20) and is_equal_approx(player.resistance,0.10) and player.shield == 20,"Parry branch applies configured window/resistance/shield")
 	for i in 3:
 		panel.open()

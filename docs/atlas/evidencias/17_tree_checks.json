@@ -1,0 +1,17 @@
+{
+  "checks": 16,
+  "failures": 0,
+  "fixture": "encounter rewards supplied to test actual UI purchases; health and hunger not overridden",
+  "windows": [
+    {
+      "actual": "(640, 360)",
+      "requested": "(640, 360)",
+      "viewport": "(640, 360)"
+    },
+    {
+      "actual": "(1920, 1080)",
+      "requested": "(1920, 1080)",
+      "viewport": "(640, 360)"
+    }
+  ]
+}

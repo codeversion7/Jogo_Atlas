@@ -1,20 +1,21 @@
 extends RefCounted
 signal changed
 const DEFAULT = preload("res://resources/character/default_character.tres")
-const BRANCHES := ["throw", "tracking", "parry"]
+const BRANCHES := ["throw", "reach", "parry"]
 const NODES := {
 	"throw.unlock":{"branch":"throw","label":"Adaga de retorno","requires":"","unlock":true},
 	"throw.edge":{"branch":"throw","label":"Fio preciso","requires":"throw.unlock","unlock":false},
-	"tracking.unlock":{"branch":"tracking","label":"Rastreio próximo","requires":"","unlock":true},
-	"tracking.stride":{"branch":"tracking","label":"Passo ágil","requires":"tracking.unlock","unlock":false},
+	"reach.first":{"branch":"reach","label":"Onda curta","requires":"","unlock":true},
+	"reach.second":{"branch":"reach","label":"Onda ampliada","requires":"reach.first","unlock":false},
 	"parry.focus":{"branch":"parry","label":"Foco","requires":"","unlock":false},
 	"parry.guard":{"branch":"parry","label":"Guarda","requires":"parry.focus","unlock":false}}
 var config: Resource = DEFAULT
 var overrides: Dictionary = {}
 var owned: Dictionary = {}
+var spent_costs: Dictionary = {}
 var rewarded: Dictionary = {}
 var points: int = 0
-var cooldowns := {"dodge":0.0,"throw":0.0,"tracking":0.0}
+var cooldowns := {"dodge":0.0,"throw":0.0}
 var health: int = 100:
 	set(value): health = clampi(value,0,health_max())
 var hunger: float = 100.0:
@@ -29,12 +30,23 @@ func hunger_max() -> float: return clampf(float(value("hunger_max")),1.0,99999.0
 func damage() -> int: return clampi(int(value("melee_damage")) + (config.edge_damage_bonus if owned.has("throw.edge") else 0),0,99999)
 func resistance() -> float: return clampf(float(value("resistance"))+(config.guard_resistance_bonus if owned.has("parry.guard") else 0),0,0.8)
 func shield_max() -> int: return clampi(int(value("shield_max"))+(config.guard_shield_bonus if owned.has("parry.guard") else 0),0,99999)
-func dodge_distance() -> float: return clampf(float(value("dodge_distance"))+(config.stride_distance_bonus if owned.has("tracking.stride") else 0),0,1000)
+func dodge_distance() -> float: return clampf(float(value("dodge_distance")),0,1000)
 func dodge_duration() -> float: return clampf(float(value("dodge_duration")),0.01,10)
 func dodge_cooldown() -> float: return clampf(float(value("dodge_cooldown")),0.01,120)
 func parry_window() -> float: return clampf(float(value("parry_window"))+(config.focus_window_bonus if owned.has("parry.focus") else 0),0.01,2)
 func parry_recovery() -> float: return clampf(float(value("parry_recovery")),0.01,10)
 func throw_damage() -> int: return clampi(int(config.throw_damage)+(config.edge_damage_bonus if owned.has("throw.edge") else 0),0,99999)
+func melee_level() -> int: return 2 if owned.has("reach.second") and owned.has("reach.first") else 1 if owned.has("reach.first") else 0
+func retire_tracking() -> void:
+	var removed := false
+	for id in ["tracking.unlock","tracking.stride"]:
+		if not owned.has(id):continue
+		owned.erase(id)
+		points += maxi(0,int(spent_costs.get(id,0)))
+		spent_costs.erase(id)
+		removed = true
+	cooldowns.erase("tracking")
+	if removed:changed.emit()
 func cost(id: String) -> int:
 	if not NODES.has(id): return 0
 	return maxi(1,config.unlock_cost if NODES[id].unlock else config.upgrade_cost)
@@ -42,7 +54,8 @@ func can_buy(id: String) -> bool:
 	return NODES.has(id) and not owned.has(id) and points >= cost(id) and (NODES[id].requires == "" or owned.has(NODES[id].requires))
 func buy(id: String) -> bool:
 	if not can_buy(id): return false
-	points -= cost(id)
+	spent_costs[id] = cost(id)
+	points -= spent_costs[id]
 	owned[id] = true
 	if id == "parry.guard": shield = shield_max() # Acquisition grants this shield once; no regeneration.
 	changed.emit()

@@ -116,40 +116,12 @@ func run() -> void:
 	player.thrown_dagger.turn_back()
 	await step(3)
 	check(not is_instance_valid(player.thrown_dagger),"Return timeout prevents permanent projectile loss")
-	check(not player.try_track(),"Tracking locked until acquired")
-	player.attributes.points = 1
-	check(player.attributes.buy("tracking.unlock"),"Tracking acquired with separate branch")
-	var near = target(player.position+Vector2(60,0))
-	var far = target(player.position+Vector2(200,0))
-	check(player.try_track() and player.tracker.targets.size() == 1,"Tracking finds only living nearby enemies")
-	var scans_before: int = player.tracker.scans
-	await step(6)
-	check(player.tracker.scans == scans_before,"Tracking does not scan full group every frame")
-	near.position = player.position+Vector2(300,0)
-	await step()
-	check(player.tracker.targets.is_empty(),"Indicator removed immediately outside radius")
-	far.position = player.position+Vector2(50,0)
-	await step(14)
-	check(player.tracker.targets.size() == 1,"Entering radius appears on next limited scan")
-	far.take_damage(999)
-	await step()
-	check(player.tracker.targets.is_empty(),"Dead target indicator removed immediately")
-	var active_time: float = player.tracker.remaining
-	var track_cd: float = player.attributes.cooldowns.tracking
-	paused = true
-	await create_timer(0.1,true).timeout
-	check(is_equal_approx(active_time,player.tracker.remaining) and is_equal_approx(track_cd,player.attributes.cooldowns.tracking),"Tracking duration and cooldown freeze in pause")
-	paused = false
-	await step(250)
-	check(player.tracker.remaining == 0 and player.tracker.targets.is_empty(),"Tracking expires and clears feedback")
-	check(not player.try_track(),"Tracking cooldown enforced after active duration")
-	player.attributes.cooldowns.tracking = 0
-	player.try_track()
-	player.hurt_wait = 0
-	player.receive_attack(9999,player)
-	check(player.tracker.targets.is_empty() and player.tracker.remaining == 0,"Death cancels tracking")
-	player.return_after_death(Vector2(120,180))
-	near.queue_free()
+	check(not player.has_method("try_track") and not InputMap.has_action("track_enemies"),"Tracking input and active API removed")
+	player.attributes.points = 2
+	check(not player.attributes.buy("reach.second"),"Second reach requires first")
+	check(player.attributes.buy("reach.first") and player.reach_level==1,"First reach acquired with points")
+	check(player.attributes.buy("reach.second") and player.reach_level==2,"Second reach acquired with points")
+	check(is_equal_approx(player.dodge_distance,30.4),"Reach does not grant retired dash bonus")
 	reset_throw()
 	player.try_throw(Vector2.UP)
 	var orphan = player.thrown_dagger
