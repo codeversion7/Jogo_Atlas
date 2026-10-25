@@ -1,0 +1,16 @@
+{
+  "files": {
+    "ATLAS.exe": "51498b72b3a237f882ebd7d1787f06a4bc1eaf0572daab93837adcfd3cfdc107",
+    "ATLAS.pck": "fb1b7c00aa3cac7cc4fae11ba652dc5124124bdb4fe36bf8202b88edc15ddda5",
+    "ATLAS.console.exe": "5514c7645ee897a01f540d3cf22ede5badf92394521a08bfab66a54d7369e6e6",
+    "GODOT_NOTICES.txt": "0eff509c4a3d90435752baf420e65607d7552842e60e8d8098cb12fdf4ed768f",
+    "LEIA-ME.txt": "ebbbf5a0419074babc08fcab553598cadc2a3e3c94269f1c20c830777f230fa1"
+  },
+  "zip": "C:\\Users\\Arthur-Gamer\\OneDrive\\Documentos\\ChatGPT\\GODOT-ATLAS\\builds\\ATLAS_Modulo3_Fechamento_20261025_Windows_debug.zip",
+  "zip_sha256": "2c8b86c41134bbdc9393369979a509b8e48fd581660e58cea3ad95f11017d1dd",
+  "zip_bytes": 44313686,
+  "smoke": "25 checks, 0 failures; actual exported PCK with ECFG header validated; normal EXE reaches main menu without errors",
+  "clean_base": "77553f7 plus scripts/monster_orb.gd and scripts/session_audio.gd from this task",
+  "prior_verified_backup_untouched": "C:\\Users\\Arthur-Gamer\\Documents\\atlas\\module3-backup-final",
+  "prior_verified_zip_untouched": "C:\\Users\\Arthur-Gamer\\Documents\\atlas\\ATLAS_Modulo3_Windows_debug.zip"
+}

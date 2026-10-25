@@ -1,5 +1,8 @@
 extends Node2D
 ## Projétil físico varrido contra mundo/jogador. Explode uma vez, sem dano por frame.
+## Retenção compartilhada evita reler/uploadar a textura após cada esfera ser liberada.
+const SOURCE_TEXTURE = preload("res://assets/monstros/ataques_v1/spore_orb_source.png")
+const CUTOUT_SHADER = preload("res://assets/monstros/ataques_v1/attack_cutout.gdshader")
 var caster: CharacterBody2D
 var target: CharacterBody2D
 var settings: Resource
@@ -15,12 +18,12 @@ func _ready() -> void:
 	add_to_group("atlas_monster_projectiles")
 	sprite = Sprite2D.new()
 	var texture := AtlasTexture.new()
-	texture.atlas = load("res://assets/monstros/ataques_v1/spore_orb_source.png")
+	texture.atlas = SOURCE_TEXTURE
 	texture.region = Rect2(946,511,88,88)
 	sprite.texture = texture
 	sprite.scale = Vector2.ONE * 0.085
 	var material_instance := ShaderMaterial.new()
-	material_instance.shader = load("res://assets/monstros/ataques_v1/attack_cutout.gdshader")
+	material_instance.shader = CUTOUT_SHADER
 	sprite.material = material_instance
 	add_child(sprite)
 	queue_redraw()

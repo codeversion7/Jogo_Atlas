@@ -1,6 +1,6 @@
 # ATLAS — uso do módulo 3
 
-F5 abre `scenes/playable.tscn`: Novo jogo, Configurações, Créditos do engine e Sair. Viewport640×360; janela local do usuário preservada. Build local Windows em `C:/Users/Arthur-Gamer/Documents/atlas/module3-build/ATLAS.exe`, com ATLAS.pck junto; ZIP correspondente no diretório externo de trabalho. Não é release pública.
+F5 abre `scenes/playable.tscn`: Novo jogo, Configurações, Créditos do engine e Sair. Viewport640×360; janela local do usuário preservada. Build atualizado de 25/10 em `builds/modulo3-fechamento-20261025/ATLAS.exe`, com ATLAS.pck junto; ZIP `builds/ATLAS_Modulo3_Fechamento_20261025_Windows_debug.zip`. Build/ZIP anteriores externos preservados. Não é release pública.
 
 - WASD move; esquerdo ataca; direito faz parry; Espaço esquiva.
 - Q adaga e F rastreio após aquisição por pontos em Tab; exatamente três ramos preservados.
@@ -22,4 +22,4 @@ Volumes Master/Efeitos/Música e mute, janela/tela cheia e escala inteira ficam 
 
 ## Evidência e limites
 
-Resultados por fase/testes/capturas/build/backup/publicação em `MODULO_3_STATUS.md`. Arte do NPC/ataques e sons originais preservados, sem geração de imagens. Escuta/mixagem humanas e revisão artística pendentes; ataques só frontais. Picos raros de frame ainda merecem investigação: não declarar lag resolvido. Não iniciar módulo4 sem novo pedido.
+Resultados por fase/testes/capturas/build/backup/publicação em `MODULO_3_STATUS.md`. Arte do NPC/ataques e sons originais preservados, sem geração de imagens. Escuta/mixagem humanas e revisão artística pendentes; ataques só frontais. A recarga recorrente da esfera foi corrigida e a carga medida ficou sem picos acima de16,67ms; isso não garante desempenho universal. Fechamento e aceite humano em `MODULO_3_FECHAMENTO.md`. Não iniciar módulo4 sem novo pedido.

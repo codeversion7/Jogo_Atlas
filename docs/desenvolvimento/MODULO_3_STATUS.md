@@ -1,5 +1,13 @@
 # Módulo 3 — estado por fase
 
+## Fechamento técnico do módulo 3 — 25/10/2026
+
+Retomada autorizada para encerrar as pendências. Identificada e corrigida a recarga recorrente da arte da esfera: recursos compartilhados por `preload`, materiais individuais, sem mudar combate. Na carga gráfica equivalente de 1.200 frames, máximo 48,944→8,180 ms; frames >16,67 ms 5→0. Recorte dos passos ajustado para conter o pico real da fonte, sem modificar originais ou ganhos. Auditoria numérica dos oito áudios aprovada; áudio/configurações38, monstros79, suporte/livro40 e percurso real5897 sem falhas. Cópia limpa também validada. [Relatório e limites](MODULO_3_FECHAMENTO.md).
+
+Escopo funcional do módulo encerrado tecnicamente. Aceite humano de áudio/arte e partida prolongada continua não realizado; números editáveis/frentes disponíveis não viram design final por inferência. Backup final anterior preservado; somente checkpoint incremental novo. Mudanças locais anteriores mantidas fora da seleção Git. Nenhum módulo seguinte.
+
+**Saldo consultado nesta retomada:** 99% disponíveis na janela de 5 horas e 100% na semanal (conta, não tarefa); substitui o relato histórico de 7%. A ferramenta passou a estar disponível em 25/10.
+
 Execução iniciada sobre `7d94c88`, branch preservada `codex/preparo-git`, Godot 4.7.2. Backup inicial SHA-256 de 2408 arquivos em `C:/Users/Arthur-Gamer/Documents/atlas/module3-backup-initial`; inclui alterações locais anteriores e mídia. Memória não salva do editor não coberta. Fetch sem divergências, índice vazio, identidade existente preservada. Saldo atual desconhecido, sem ferramenta real disponível; último relato 75%.
 
 | Fase | Estado | Arquivos/evidência | Próximo passo |
@@ -9,7 +17,7 @@ Execução iniciada sobre `7d94c88`, branch preservada `codex/preparo-git`, Godo
 | 03 Sobrevivência | validada | 52 verificações de sobrevivência, 45 do módulo 2, 74 de ataques; caminhada física à fogueira e 3 capturas | avançar à fase 04 |
 | 04 Escudo/livro | validada | 40 verificações; 1838 visual, 54 combate, 165 percurso; partida real 5897 com resgate/alimento verdadeiro e final; duas capturas de sustentação | avançar à fase 05 |
 | 05 Telas/áreas | validada | 23 verificações, 45 módulo 2, 165 percurso, 40 suporte/livro e partida real 5897; quatro capturas | avançar à fase 06 |
-| 06 Validação/entrega | validada | 17 suítes aprovadas, original/índice limpo, build/PCK 23 e implementação publicada com SHA remoto confirmado | avaliação humana; emergência7% encerra execução |
+| 06 Validação/entrega | validada | 17 suítes aprovadas, original/índice limpo, build/PCK 23 e implementação publicada com SHA remoto confirmado | fechamento técnico de 25/10 documentado; aceite humano separado |
 
 ## Fase 01 — verificado nesta execução
 

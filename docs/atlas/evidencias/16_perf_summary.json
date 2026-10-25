@@ -1,0 +1,102 @@
+{
+  "16_profile_combat_dummy.json": {
+    "wall_ms": {
+      "median": 6.97,
+      "p95": 7.855,
+      "max": 53.393
+    },
+    "physics_callbacks_ms": {
+      "median": 0.0,
+      "p95": 0.519,
+      "max": 45.642
+    },
+    "draw_signal_span_ms": {
+      "median": 6.532,
+      "p95": 7.401,
+      "max": 9.082
+    },
+    "samples": 1200,
+    "frames_over_16_67_ms": 5,
+    "raw_sha256": "bdffa0f85facdf88063a1af92076424de20c6629dabc9f4d9dfb51202e808aa9"
+  },
+  "16_profile_combat_normal.json": {
+    "wall_ms": {
+      "median": 6.965,
+      "p95": 7.928,
+      "max": 48.944
+    },
+    "physics_callbacks_ms": {
+      "median": 0.0,
+      "p95": 0.518,
+      "max": 40.765
+    },
+    "draw_signal_span_ms": {
+      "median": 6.525,
+      "p95": 7.47,
+      "max": 8.352
+    },
+    "samples": 1200,
+    "frames_over_16_67_ms": 5,
+    "raw_sha256": "588aafd37e1c53a5181641604144a4caa9a3a46f8b92a2d866cf810262883b52"
+  },
+  "16_profile_combat_normal_after.json": {
+    "wall_ms": {
+      "median": 6.942,
+      "p95": 7.556,
+      "max": 8.18
+    },
+    "physics_callbacks_ms": {
+      "median": 0.0,
+      "p95": 0.507,
+      "max": 0.67
+    },
+    "draw_signal_span_ms": {
+      "median": 6.565,
+      "p95": 7.271,
+      "max": 7.925
+    },
+    "samples": 1200,
+    "frames_over_16_67_ms": 0,
+    "raw_sha256": "f8e72ff07f7ce25485dc5bbe1035a426068244fa5b73538e51b1d65da144b2e0"
+  },
+  "16_profile_combat_normal_retained.json": {
+    "wall_ms": {
+      "median": 6.952,
+      "p95": 7.555,
+      "max": 7.919
+    },
+    "physics_callbacks_ms": {
+      "median": 0.0,
+      "p95": 0.476,
+      "max": 0.683
+    },
+    "draw_signal_span_ms": {
+      "median": 6.556,
+      "p95": 7.156,
+      "max": 7.656
+    },
+    "samples": 1200,
+    "frames_over_16_67_ms": 0,
+    "raw_sha256": "46d9102a4916b5eaabde44c97e0f96489848cd9734c0baf830807682c6f73dfb"
+  },
+  "16_profile_idle_normal.json": {
+    "wall_ms": {
+      "median": 6.96,
+      "p95": 7.857,
+      "max": 13.751
+    },
+    "physics_callbacks_ms": {
+      "median": 0.0,
+      "p95": 0.321,
+      "max": 0.495
+    },
+    "draw_signal_span_ms": {
+      "median": 6.569,
+      "p95": 7.439,
+      "max": 13.583
+    },
+    "samples": 1200,
+    "frames_over_16_67_ms": 0,
+    "raw_sha256": "bbdda6e90ec9b604faad49230e36f4820e661b04f997abee0233f9aba4a05978"
+  }
+}

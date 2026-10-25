@@ -2,6 +2,9 @@ extends Node
 ## Vozes locais à sessão. Sem loop, trilha inventada ou estado persistente.
 const STREAMS := {"steps":preload("res://assets/audio/steps.mp3"),"dagger":preload("res://assets/audio/dagger.mp3"),"parry":preload("res://assets/audio/parry.mp3"),"page":preload("res://assets/audio/page.mp3"),"cross":preload("res://assets/audio/cross.mp3"),"orb":preload("res://assets/audio/orb.mp3"),"burrow_warning":preload("res://assets/audio/burrow_warning.mp3"),"burrow_impact":preload("res://assets/audio/burrow_impact.mp3")}
 const GAINS := {"steps":-17.0,"dagger":-10.0,"parry":-7.0,"page":-12.0,"cross":-12.0,"orb":-12.0,"burrow_warning":-14.0,"burrow_impact":-12.0}
+# A fonte de grama concentra o passo em 0,2–0,4 s; não tocar só a introdução baixa.
+const STARTS := {"steps":0.16}
+const STEP_DURATION := 0.24
 var game: Node2D
 var voices: Array[Node] = []
 var recent: Dictionary = {}
@@ -42,11 +45,11 @@ func play_event(actor: Node, key: String, tag: String = "") -> void:
 	voice.set_meta("event",key)
 	voice.set_meta("emitter",weakref(actor))
 	voice.set_meta("age",0.0)
-	voice.set_meta("limit",0.22 if key=="steps" else minf(voice.stream.get_length(),2.0) if key!="page" else voice.stream.get_length())
+	voice.set_meta("limit",STEP_DURATION if key=="steps" else minf(voice.stream.get_length(),2.0) if key!="page" else voice.stream.get_length())
 	add_child(voice)
 	voice.global_position = actor.global_position if actor is Node2D else game.player.global_position
 	voices.append(voice)
-	voice.play()
+	voice.play(STARTS.get(key,0.0))
 	events_played += 1
 func clean_finished() -> void:
 	for voice in voices.duplicate():

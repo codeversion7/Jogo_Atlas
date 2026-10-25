@@ -1,4 +1,10 @@
-# Estado atual — 22/10/2026
+# Estado atual — 25/10/2026
+
+## Fechamento técnico do módulo 3 — 25/10/2026
+
+Retomada autorizada para encerrar as pendências. Identificada e corrigida a recarga recorrente da arte da esfera: recursos compartilhados por `preload`, materiais individuais, sem mudar combate. Na carga gráfica equivalente de 1.200 frames, máximo 48,944→8,180 ms; frames >16,67 ms 5→0. Recorte dos passos ajustado para conter o pico real da fonte, sem modificar originais ou ganhos. Auditoria numérica dos oito áudios aprovada; áudio/configurações38, monstros79, suporte/livro40 e percurso real5897 sem falhas. Cópia limpa também validada. [Relatório e limites](../desenvolvimento/MODULO_3_FECHAMENTO.md).
+
+Escopo funcional do módulo encerrado tecnicamente. Aceite humano de áudio/arte e partida prolongada continua não realizado; números editáveis/frentes disponíveis não viram design final por inferência. Backup final anterior preservado; somente checkpoint incremental novo. Mudanças locais anteriores mantidas fora da seleção Git. Nenhum módulo seguinte.
 
 ## Módulo 3 — seis fases implementadas e validadas em 23/10/2026
 

@@ -23,6 +23,7 @@ func run() -> void:
 		get_tree().quit(1)
 		return
 	print("ATLAS_EXPORT_TEST_USER_DIR ",ProjectSettings.globalize_path("user://"))
+	check(FileAccess.get_file_as_bytes("res://project.binary").slice(0,4)==PackedByteArray([69,67,70,71]),"Primary game pack contains a valid binary project header")
 	check(not FileAccess.file_exists("res://tools/verify_export_runtime.gd"),"Primary game pack excludes development tools")
 	check(not OS.has_feature("editor"),"Runtime is the exported template, not editor binary")
 	game = load("res://scenes/playable.tscn").instantiate()
@@ -64,6 +65,8 @@ func run() -> void:
 			orb.set_physics_process(false)
 			check(orb.sprite.texture.atlas!=null,"Export orb uses production asset, not excluded reference source")
 			orb.queue_free()
+			await step(3)
+			check(ResourceLoader.has_cached("res://assets/monstros/ataques_v1/spore_orb_source.png"),"Export retains orb art after projectile removal")
 		monster.queue_free()
 	game.survival.raw = 1 # Fixture to confirm settings persistence is not a campaign save.
 	game.return_to_menu()

@@ -167,6 +167,30 @@ func run() -> void:
 		check(not is_instance_valid(projectile),"Esfera termina sem órfão: "+mode)
 		if mode == "wall": wall.queue_free()
 		await clean(caster)
+	# Repeated projectile lifetimes must not evict/reload the heavy immutable art.
+	var resource_caster = fixture(2,Vector2(80,0))
+	resource_caster.set_physics_process(false)
+	var texture_id := 0
+	var shader_id := 0
+	var material_ids: Array[int] = []
+	for emission in 3:
+		var projectile := Orb.new()
+		projectile.caster = resource_caster
+		projectile.target = player
+		projectile.settings = resource_caster.attack_settings
+		game.get_node("World").add_child(projectile)
+		projectile.set_physics_process(false)
+		var next_texture_id: int = projectile.sprite.texture.atlas.get_instance_id()
+		var next_shader_id: int = projectile.sprite.material.shader.get_instance_id()
+		if emission>0:
+			check(next_texture_id==texture_id and next_shader_id==shader_id,"Esferas sucessivas reutilizam arte após liberar a anterior")
+		check(not projectile.sprite.material.get_instance_id() in material_ids,"Esferas mantêm material individual")
+		material_ids.append(projectile.sprite.material.get_instance_id())
+		texture_id = next_texture_id
+		shader_id = next_shader_id
+		projectile.queue_free()
+		await step(3)
+	await clean(resource_caster)
 	game.queue_free()
 	await process_frame
 	print("ATLAS_MONSTER_RUNTIME checks=",checks," failures=",failures)
