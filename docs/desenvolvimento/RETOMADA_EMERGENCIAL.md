@@ -1,5 +1,11 @@
 # Retomada emergencial — ATLAS
 
+## Módulo 4 — seis fases validadas em 25/10/2026
+
+Contato da adaga corrigido após reprodução; varredura temporal/onda compartilhada, upgrades40/52px, três ramos sem rastreio/F/Passo ágil. Árvore em cena própria, HUD final em cápsulas com recorte real e animação apenas visual, conforme refinamento posterior preservado. Reativação10% por visita sem progresso duplicado; fome própria, lotes/cotas, roubo20%, prioridade de resgate e vingança5/10s só com carne acessível. Altar da primeira vitória original,5/5/amigo vivo/sem confronto/E, destruição visual local e sequência canônica. Sem automatismo pela quinta página ou reanimação.
+
+Percurso real final na cópia limpa5029 sem falhas; template exportado30 checks e entrada normal aprovados. Números/arte e aceite humano continuam provisórios; não há feature obrigatória pendente. [Estado, testes e limitações](../desenvolvimento/MODULO_4_STATUS.md), [uso/configuração](../desenvolvimento/MODULO_4_USO.md). Backup inicial/final e checkpoints em backups/modulo4; ZIP Windows em builds/ATLAS_Modulo4_20261025_Windows_debug.zip. Alterações locais anteriores/prompt posterior preservados; somente escopo próprio selecionado para Git, sem force/merge.
+
 ## Fechamento técnico do módulo 3 — 25/10/2026
 
 Retomada autorizada para encerrar as pendências. Identificada e corrigida a recarga recorrente da arte da esfera: recursos compartilhados por `preload`, materiais individuais, sem mudar combate. Na carga gráfica equivalente de 1.200 frames, máximo 48,944→8,180 ms; frames >16,67 ms 5→0. Recorte dos passos ajustado para conter o pico real da fonte, sem modificar originais ou ganhos. Auditoria numérica dos oito áudios aprovada; áudio/configurações38, monstros79, suporte/livro40 e percurso real5897 sem falhas. Cópia limpa também validada. [Relatório e limites](../desenvolvimento/MODULO_3_FECHAMENTO.md).

@@ -31,6 +31,8 @@ func mouse_click(point: Vector2) -> void:
 		await step(2)
 func finish_fixture() -> void:
 	# Fixture do gate; não representa páginas conquistadas em combate.
+	game.record_first_victory(0) # Explicit final/altar rendering fixture.
+	game.player.position = game.altar.position
 	game.pages = {0:true,1:true,2:true,3:true,4:true}
 	check(game.start_ending(),"Live friend and five-page fixture enters actual sequence")
 	await step(330)

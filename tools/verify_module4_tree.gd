@@ -17,7 +17,7 @@ func run() -> void:
 	current_scene = game
 	game.start_session()
 	await settle()
-	check(game.health_bar.size.y<=6 and game.hunger_bar.size.y<=5,"Barras não crescem pelo mínimo do tema nem cobrem rótulos")
+	check(game.health_bar.size.y==18 and game.hunger_bar.size.y==18,"Cápsulas têm altura legível e não cobrem rótulos")
 	var player = game.player
 	var panel = game.character_panel
 	check(panel.scene_file_path=="res://scenes/ui/skill_tree.tscn","Partida instancia a cena própria da árvore")
@@ -46,7 +46,7 @@ func run() -> void:
 		panel.buttons[id].pressed.emit()
 		panel.buy_button.pressed.emit()
 	check(player.reach_level==2 and player.attributes.points==0,"Dois upgrades adquiridos pela seleção/confirmação da UI")
-	check(player.melee_reach.radius(player.reach_level)==46,"Compra alimenta o mesmo alcance da geometria visual/física")
+	check(player.melee_reach.radius(player.reach_level)==52,"Compra alimenta o mesmo alcance da geometria visual/física")
 	panel.buy_button.pressed.emit()
 	check(player.attributes.points==0 and player.reach_level==2,"Compra repetida não altera saldo ou alcance")
 	var windows: Array = []

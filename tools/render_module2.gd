@@ -47,7 +47,7 @@ func run() -> void:
 	game.character_panel.open()
 	await shot("07_arvore_coordenada")
 	game.character_panel.purchase("throw.unlock")
-	game.character_panel.purchase("tracking.unlock")
+	game.character_panel.purchase("reach.first")
 	game.character_panel.close()
 	var monster = load("res://scripts/test_monster.gd").new()
 	monster.monster_kind = 2
@@ -56,9 +56,8 @@ func run() -> void:
 	game.get_node("World").add_child(monster)
 	monster.set_physics_process(false)
 	game.player.try_throw(Vector2.RIGHT)
-	game.player.try_track()
 	for i in 4:await physics_frame
-	await shot("08_q_f_e_npc")
+	await shot("08_q_alcance_e_npc")
 	game.session_ui.claim(&"pause")
 	await shot("09_pausa")
 	game.session_ui.actions.get_child(1).pressed.emit()

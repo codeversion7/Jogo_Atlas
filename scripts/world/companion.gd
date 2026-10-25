@@ -15,6 +15,7 @@ var visual: Node2D
 @export var path_interval := 0.35
 var player: Node2D
 var navigation: RefCounted
+var stay_at := Vector2.INF
 var state: StringName = &"idle"
 var route := PackedVector2Array()
 var route_index := 0
@@ -51,12 +52,14 @@ func _physics_process(delta: float) -> void:
 		visual.set_motion(Vector2.ZERO)
 		return
 	remaining -= delta
-	if position.distance_to(player.position) <= follow_distance:
-		state = &"idle"
+	var destination: Vector2 = player.global_position if stay_at==Vector2.INF else stay_at
+	if position.distance_to(destination) <= (follow_distance if stay_at==Vector2.INF else 5.0):
+		state = &"idle" if stay_at==Vector2.INF else &"waiting"
 	else:
 		state = &"follow"
 		if remaining <= 0 or route.is_empty():
-			route = navigation.path(global_position,player.global_position)
+			route = navigation.path(global_position,destination)
+			if stay_at!=Vector2.INF and not route.is_empty():route.append(destination)
 			route_index = 1 if route.size()>1 else 0
 			remaining = maxf(0.1,path_interval)
 		while route_index<route.size() and global_position.distance_to(route[route_index])<5:route_index += 1
@@ -68,6 +71,7 @@ func reset_at(safe_point: Vector2) -> void:
 	if dead: return # Retornar o jogador não reanima o amigo gratuitamente.
 	# Only used at session start / death return, never normal obstacle recovery.
 	position = safe_point
+	stay_at = Vector2.INF
 	velocity = Vector2.ZERO
 	route.clear()
 	remaining = 0

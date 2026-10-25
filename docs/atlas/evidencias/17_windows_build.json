@@ -1,0 +1,16 @@
+{
+  "files": {
+    "ATLAS.exe": "51498b72b3a237f882ebd7d1787f06a4bc1eaf0572daab93837adcfd3cfdc107",
+    "ATLAS.pck": "21469c0026d3ce44a8a566b08c503710857153a0988bb2f332777d37311892df",
+    "ATLAS.console.exe": "5514c7645ee897a01f540d3cf22ede5badf92394521a08bfab66a54d7369e6e6",
+    "GODOT_NOTICES.txt": "0eff509c4a3d90435752baf420e65607d7552842e60e8d8098cb12fdf4ed768f",
+    "LEIA-ME.txt": "61f26b00e0e5fade39ec7b5e65551f8dda44fef05fa3bc8616ead04acb87210e"
+  },
+  "zip": "C:\\Users\\Arthur-Gamer\\OneDrive\\Documentos\\ChatGPT\\GODOT-ATLAS\\builds\\ATLAS_Modulo4_20261025_Windows_debug.zip",
+  "zip_sha256": "04c46dcf04c0f29443fcf021814bfaefd78099c8aad527ac7a7bd6e64a0bf26d",
+  "zip_bytes": 44328935,
+  "smoke_checks": 30,
+  "smoke_failures": 0,
+  "normal_exe_entry": "main menu reached without script errors",
+  "scope": "module4 including subsequent rounded HUD refinement; debug local, no public release"
+}

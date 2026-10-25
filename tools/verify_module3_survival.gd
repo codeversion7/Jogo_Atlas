@@ -31,6 +31,7 @@ func run() -> void:
 	root.add_child(game)
 	current_scene = game
 	game.start_session()
+	game.survival.steal_roll_override = func():return 1.0
 	player = game.player
 	await step(3)
 	var hunger: float = player.hunger

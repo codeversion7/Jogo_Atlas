@@ -70,6 +70,7 @@ func walk_to(point: Vector2, allow_encounter: bool = true) -> bool:
 
 func blade_can_reach(monster: Node2D, direction: Vector2) -> bool:
 	# The bot must approach the visible blade, not the retired uniform sector.
+	if player.reach_level>0 and player.Melee.wave_touches(direction,monster.combat_center()-player.combat_center(),monster.combat_center()-player.combat_center(),monster.hurt_radius,player.melee_reach.radius(player.reach_level),player.melee_reach.half_angle):return true
 	var pose_script = preload("res://scripts/dagger_pose.gd")
 	for progress in [0.125,0.375,0.625,0.875]:
 		var pose: Dictionary = pose_script.sample(&"attack_active",direction,progress)
@@ -213,9 +214,16 @@ func run() -> void:
 	if game.pages.size() == 5:
 		if game.companion.dead:
 			await rescue_friend()
-		for i in 330:
-			await step()
-		check(game.ending == &"complete","Live run reaches ending")
+		check(game.ending==&"none","Fifth page and rescue do not auto-start final")
+		check(await follow_route(game.altar.position),"Live route walks back to first-victory altar")
+		if game.active_encounter>=0:await fight()
+		for i in 15:await step()
+		Input.action_press("interact")
+		await step()
+		Input.action_release("interact")
+		check(game.ending==&"playing","Real E input at altar starts final")
+		for i in 330:await step()
+		check(game.ending==&"complete","Live run reaches ending")
 		await shot("fim")
 	check(throws>0 and reach_purchases>0,"Live run exercises Q and purchased visible reach")
 
@@ -236,8 +244,9 @@ func follow_route(destination: Vector2) -> bool:
 	var route: PackedVector2Array = game.navigation.path(player.position,destination)
 	if route.is_empty(): return false
 	for point in route:
-		if player.dead: return false
-		if not await walk_to(point,false): return false
+		if player.dead:return false
+		if game.active_encounter>=0 and not await fight():return false
+		if not await walk_to(point,false):return false
 	return await walk_to(destination,false)
 func gather_meat() -> void:
 	if game.survival.raw+game.survival.cooked>0 or game.ending!=&"none": return

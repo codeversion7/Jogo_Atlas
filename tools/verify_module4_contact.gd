@@ -41,6 +41,9 @@ func run() -> void:
 	var rows: Array = []
 	for i in 8:
 		var direction := Vector2.RIGHT.rotated(i*TAU/8)
+		for progress in [0.0,0.25,0.5,0.75,1.0]:
+			for point in Pose.visible_blade(Pose.sample(&"attack_active",direction,progress)):
+				check((point-player.COMBAT_OFFSET).length()<player.melee_reach.first_reach,"Primeiro upgrade excede todo o metal base nesta direção")
 		for delta in [1.0/120,1.0/60,1.0/30,0.1]:
 			reset(direction)
 			var points := Pose.visible_blade(Pose.sample(&"attack_active",direction,1.0))
@@ -86,6 +89,17 @@ func run() -> void:
 	player.strike_targets()
 	check(target.health==50,"Pausa bloqueia contato")
 	paused = false
+	reset(Vector2.RIGHT)
+	player.state = &"windup"
+	player.remaining = 1.0/30
+	var initial_metal := Pose.visible_blade(Pose.sample(&"attack_active",Vector2.RIGHT,0.0))
+	target.position = player.position+initial_metal[-1]-Vector2(0,-8)
+	Input.action_press("move_down")
+	player._physics_process(1.0/30)
+	Input.action_release("move_down")
+	check(target.health==50,"Trecho de movimento ainda em preparação não causa dano retroativo")
+	reset(Vector2.RIGHT,2)
+	target.position = player.combat_center()+Vector2(30,0)-Vector2(0,-8)
 	var wall := StaticBody2D.new()
 	wall.collision_layer = 1
 	var shape := CollisionShape2D.new()

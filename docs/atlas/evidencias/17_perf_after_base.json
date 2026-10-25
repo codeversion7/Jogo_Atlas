@@ -1,0 +1,30 @@
+{
+  "driver": "WASAPI",
+  "engine": "4.7.2-stable (official)",
+  "fixture": true,
+  "frames_over_16_67_ms": 1,
+  "mode": "combat",
+  "notes": "Physics callbacks wall span: physics_frame to last priority node. Draw signal span includes native rendering/presentation; attribution requires controlled comparison. Neither is per-function CPU profiler.",
+  "reach_level": 0,
+  "rendered": true,
+  "resolution": "(1920, 1080)",
+  "sample_count": 1200,
+  "sample_stats": {
+    "draw_signal_span_ms": {
+      "max": 58.871,
+      "median": 6.561,
+      "p95": 7.192
+    },
+    "physics_callbacks_ms": {
+      "max": 0.974,
+      "median": 0.0,
+      "p95": 0.599
+    },
+    "wall_ms": {
+      "max": 59.24,
+      "median": 6.954,
+      "p95": 7.688
+    }
+  },
+  "viewport": "(640, 360)"
+}

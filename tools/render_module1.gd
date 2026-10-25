@@ -19,9 +19,9 @@ func run() -> void:
 	game.player.attributes.reward_encounter(1)
 	await shot("03_aquisicao")
 	game.character_panel.purchase("throw.unlock")
-	game.character_panel.purchase("tracking.unlock")
+	game.character_panel.purchase("reach.first")
 	game.player.attributes.points = 4
-	for id in ["throw.edge","tracking.stride","parry.focus","parry.guard"]: game.character_panel.purchase(id)
+	for id in ["throw.edge","reach.second","parry.focus","parry.guard"]: game.character_panel.purchase(id)
 	await shot("04_status_aprimorado")
 	game.character_panel.close()
 	for kind in 2:
@@ -31,10 +31,9 @@ func run() -> void:
 		target.target = game.player
 		game.get_node("World").add_child(target)
 		target.set_physics_process(false)
-	game.player.try_track()
 	game.player.try_throw(Vector2.RIGHT)
 	for i in 5: await physics_frame
-	await shot("05_rastreio_e_voo")
+	await shot("05_alcance_e_voo")
 	game.character_panel.open()
 	await shot("06_pausa_com_recargas")
 	game.character_panel.close()

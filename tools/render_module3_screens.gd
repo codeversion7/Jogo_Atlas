@@ -17,6 +17,8 @@ func run() -> void:
 	await shot("atlas_credits")
 	game.session_ui.return_to_menu_panel()
 	game.start_session()
+	game.record_first_victory(0) # Explicit final/altar rendering fixture.
+	game.player.position = game.altar.position
 	game.pages = {0:true,1:true,2:true,3:true,4:true} # Fixture de renderização do gate/final.
 	assert(game.start_ending())
 	for i in 330: await physics_frame

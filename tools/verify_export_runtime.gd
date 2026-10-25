@@ -47,6 +47,18 @@ func run() -> void:
 	await step(12)
 	Input.action_release("move_right")
 	check(game.player.position.x>before.x+5,"Export moves with normal physical controls")
+	check(game.character_panel.scene_file_path=="res://scenes/ui/skill_tree.tscn","Export loads actual skill tree scene")
+	check(game.health_bar.has_method("fill_points") and game.health_bar.fill_points(0).is_empty() and game.hunger_bar.size.y==18,"Export includes clipped rounded vital capsules")
+	check(not game.player.has_method("try_track") and not InputMap.has_action("track_enemies"),"Export has no retired active tracking")
+	game.player.attributes.reward_encounter(0) # Explicit points fixture for exported UI contract.
+	game.player.attributes.reward_encounter(1)
+	game.character_panel.open()
+	for id in ["reach.first","reach.second"]:
+		game.character_panel.buttons[id].pressed.emit()
+		game.character_panel.buy_button.pressed.emit()
+	check(game.player.reach_level==2 and game.player.melee_reach.radius(2)==52,"Export purchases both real wave upgrades")
+	game.character_panel.close()
+	check(game.revisits.config.chance==0.1 and game.survival.config.steal_chance==0.2,"Export includes module4 encounter/food rules")
 	for kind in 4:
 		var monster = load("res://scripts/test_monster.gd").new()
 		monster.prepared_attacks = true

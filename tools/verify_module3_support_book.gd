@@ -202,7 +202,12 @@ func run() -> void:
 	check(not game.start_ending(),"Book transition waits until paused camp UI closes")
 	game.session_ui.close()
 	await step(3)
-	check(game.ending==&"playing" and game.pages.size()==5 and not friend.is_physics_processing(),"Revival resumes unique final without recollecting fifth page")
+	check(game.ending==&"none" and game.pages.size()==5,"Revival preserves pages but does not auto-start final")
+	game.record_first_victory(0) # Explicit altar fixture; real victory event tested separately.
+	player.position = game.altar.position
+	player.feedback_wait = 0
+	player.state = &"ready"
+	check(game.interact()==&"altar" and not friend.is_physics_processing(),"Manual altar interaction starts unique final after rescue")
 	check(not game.start_ending() and game.ending_phases.size()==1,"Final transition cannot trigger twice")
 	var hunger: float = player.hunger
 	await step(330)

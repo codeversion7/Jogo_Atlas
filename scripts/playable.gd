@@ -5,6 +5,7 @@ const Monster = preload("res://scripts/test_monster.gd")
 const Prop = preload("res://scripts/world_prop.gd")
 const Ground = preload("res://scripts/world_ground.gd")
 const Book = preload("res://scripts/book_sequence.gd")
+const VitalCapsule = preload("res://scripts/ui/vital_capsule.gd")
 const CharacterPanel = preload("res://scenes/ui/skill_tree.tscn")
 var character_panel: CanvasLayer
 var skills_bar: Label
@@ -13,6 +14,13 @@ const CompanionScene = preload("res://scenes/companion.tscn")
 const PathGrid = preload("res://scripts/world/path_grid.gd")
 var companion: CharacterBody2D
 var navigation = PathGrid.new()
+var revisits = preload("res://scripts/world/revisits.gd").new()
+var reactivated_encounter := false
+var revenge = preload("res://scripts/world/companion_revenge.gd").new()
+var revenge_bar: ProgressBar
+var revenge_label: Label
+var first_victory_id := ""
+var altar: Node2D
 const Discovery = preload("res://scripts/world/discovery.gd")
 var session_ui: CanvasLayer
 var settings: Node
@@ -64,6 +72,8 @@ func _ready() -> void:
 	companion = CompanionScene.instantiate()
 	companion.player = player
 	companion.navigation = navigation
+	revisits.game = self
+	revenge.game = self
 	companion.position = layout.companion_start
 	$World.add_child(companion)
 	support = preload("res://scripts/world/companion_support.gd").new()
@@ -164,39 +174,32 @@ func build_interface() -> void:
 	top.mouse_filter = Control.MOUSE_FILTER_IGNORE
 	hud.add_child(top)
 	title = make_label("ATLAS / DESTROÇOS",Vector2(16,6),15)
-	var vitals := ColorRect.new()
-	vitals.position = Vector2(8,235)
-	vitals.size = Vector2(160,61)
-	vitals.color = Color(0.025,0.045,0.05,0.9)
-	vitals.mouse_filter = Control.MOUSE_FILTER_IGNORE
-	hud.add_child(vitals)
-	stats = make_label("",Vector2(16,239),10)
-	health_bar = ProgressBar.new()
-	health_bar.position = Vector2(16,254)
-	health_bar.size = Vector2(140,6)
-	health_bar.show_percentage = false
-	health_bar.mouse_filter = Control.MOUSE_FILTER_IGNORE
-	for style_name in ["background","fill"]:
-		var style := StyleBoxFlat.new()
-		style.bg_color = Color("c76856") if style_name=="fill" else Color("28312f")
-		for side in [SIDE_LEFT,SIDE_TOP,SIDE_RIGHT,SIDE_BOTTOM]:style.set_content_margin(side,0)
-		health_bar.add_theme_stylebox_override(style_name,style)
+	health_bar = VitalCapsule.new()
+	health_bar.position = Vector2(16,249)
+	health_bar.tint = Color("cb705e")
 	hud.add_child(health_bar)
-	health_bar.size.y = 6
-	hunger_text = make_label("",Vector2(16,266),10)
+	health_bar.size = Vector2(156,18)
+	hunger_bar = VitalCapsule.new()
+	hunger_bar.position = Vector2(16,276)
+	hunger_bar.tint = Color("b89951")
+	hunger_bar.symbol = "food"
+	hud.add_child(hunger_bar)
+	hunger_bar.size = Vector2(156,18)
+	stats = make_label("",Vector2(38,250),10)
+	hunger_text = make_label("",Vector2(38,277),10)
 	companion_status = make_label("",Vector2(350,8),10)
-	hunger_bar = ProgressBar.new()
-	hunger_bar.position = Vector2(16,282)
-	hunger_bar.size = Vector2(140,5)
-	hunger_bar.show_percentage = false
-	hunger_bar.mouse_filter = Control.MOUSE_FILTER_IGNORE
+	revenge_bar = ProgressBar.new()
+	revenge_bar.position = Vector2(180,284)
+	revenge_bar.show_percentage = false
 	for style_name in ["background","fill"]:
 		var style := StyleBoxFlat.new()
-		style.bg_color = Color("b99350") if style_name=="fill" else Color("28312f")
-		for side in [SIDE_LEFT,SIDE_TOP,SIDE_RIGHT,SIDE_BOTTOM]: style.set_content_margin(side,0)
-		hunger_bar.add_theme_stylebox_override(style_name,style)
-	hud.add_child(hunger_bar)
-	hunger_bar.size.y = 5
+		style.bg_color = Color("bd6b55") if style_name=="fill" else Color("28312f")
+		for side in [SIDE_LEFT,SIDE_TOP,SIDE_RIGHT,SIDE_BOTTOM]:style.set_content_margin(side,0)
+		revenge_bar.add_theme_stylebox_override(style_name,style)
+	hud.add_child(revenge_bar)
+	revenge_bar.size = Vector2(140,5)
+	revenge_bar.visible = false
+	revenge_label = make_label("",Vector2(180,266),10)
 	objective = make_label("",Vector2(16,28),11)
 	var bottom := ColorRect.new()
 	bottom.position = Vector2(0,317)
@@ -233,11 +236,17 @@ func _physics_process(delta: float) -> void:
 	if not session_started: return
 	discovery.observe(player)
 	elapsed += delta
-	if not player.dead and ending==&"none": player.attributes.consume_hunger(delta,survival.config.hunger_per_second)
+	if not player.dead and ending==&"none":
+		player.attributes.consume_hunger(delta,survival.config.hunger_per_second)
+		if not companion.dead:companion.attributes.consume_hunger(delta,survival.config.companion_hunger_per_second)
+		revenge.tick(delta)
+	revenge_bar.visible = revenge.elapsed>0
+	revenge_bar.value = revenge.elapsed/maxf(0.1,survival.config.revenge_interval)*100
+	revenge_label.text = "Carne visível: recolha · %.1f/10s · -5 vida"%revenge.elapsed if revenge.elapsed>0 else ""
 	hunger_bar.value = player.hunger/player.max_hunger*100
 	health_bar.value = 100.0*player.health/player.max_health
 	hunger_text.text = "Fome %.0f/%.0f"%[player.hunger,player.max_hunger]
-	companion_status.text = ("Amigo caído" if companion.dead else "Amigo %d/%d"%[companion.attributes.health,companion.attributes.health_max()])+" · crua %d / assada %d"%[survival.raw,survival.cooked]
+	companion_status.text = ("Amigo caído" if companion.dead else "Amigo %d/%d"%[companion.attributes.health,companion.attributes.health_max()])+" F%.0f · crua%d/assada%d"%[companion.attributes.hunger,survival.raw,survival.cooked]
 	markers.z_index = 20 if player.debug_areas else -1
 	markers.queue_redraw()
 	var region := maxi(0,region_at(player.position))
@@ -264,7 +273,7 @@ func _physics_process(delta: float) -> void:
 		if Input.is_action_just_pressed("test_return"):
 			return_player()
 		return
-	if pages.size()==5 and start_ending(): return
+	revisits.tick()
 	if encounter == &"between":
 		wait_remaining -= delta
 		if wait_remaining <= 0:
@@ -277,7 +286,7 @@ func _physics_process(delta: float) -> void:
 	if Input.is_action_just_pressed("interact") and player.input_guard_frames <= 0:
 		interact()
 	if active_encounter >= 0:
-		objective.text = "Horda %d · onda %d/3 · inimigos %d" % [active_encounter+1,wave_index+1,enemies.size()]
+		objective.text = ("Reativação · " if reactivated_encounter else "")+"Horda %d · onda %d/3 · inimigos %d" % [active_encounter+1,wave_index+1,enemies.size()]
 		hint.text = "Ataque, recue, retorne · laranja anuncia o golpe · ciano indica parry"
 	else:
 		objective.text = "Encontre as cinco páginas · progresso mantido entre retornos"
@@ -289,6 +298,7 @@ func _physics_process(delta: float) -> void:
 	var nearby_hint := interaction_hint()
 	if not nearby_hint.is_empty(): hint.text = nearby_hint
 	if player.hunger<=0: hint.text += " · Fome vazia: procure carne e fogueira"
+	if pages.size()==5 and not companion.dead:objective.text = "5/5 páginas · volte ao altar do primeiro encontro vencido · E"
 	if pages.size()==5 and companion.dead:
 		objective.text = "5/5 páginas · reanime seu amigo na fogueira para abrir o livro"
 		if survival.raw==0 and survival.cooked==0 and survival.pickups.is_empty(): hint.text = "Sem carne restante · Esc → tela inicial permite reiniciar"
@@ -298,11 +308,17 @@ func _physics_process(delta: float) -> void:
 	else:
 		help.text = "WASD mover · Mouse atacar/parry · Espaço esquiva · Q adaga · Tab árvore · Esc pausa"
 
-func begin_encounter(index: int) -> bool:
-	if not session_started or index < 0 or index >= 5 or player.dead or active_encounter >= 0 or cleared.has(index):
+func begin_encounter(index: int, repeated: bool = false) -> bool:
+	if not session_started or index < 0 or index >= 5 or player.dead or active_encounter >= 0 or cleared.has(index)!=repeated or ending!=&"none" or get_tree().paused:
 		return false
 	var area: int = layout.region_at(layout.encounter_centers[index])
 	if area<0 or layout.region_ids[area]!=layout.page_area_ids[index]: return false
+	if repeated and companion.dead:return false
+	reactivated_encounter = repeated
+	if repeated:
+		companion.stay_at = layout.encounter_centers[index]
+		companion.route.clear()
+		companion.remaining = 0
 	active_encounter = index
 	wave_index = -1
 	spawn_wave()
@@ -358,8 +374,12 @@ func on_monster_defeated(monster: CharacterBody2D) -> void:
 	enemies.erase(monster)
 	if enemies.is_empty() and encounter == &"fighting":
 		if wave_index+1 == layout.wave_sizes.size():
-			player.attributes.reward_encounter(active_encounter)
-			cleared[active_encounter] = true
+			if not reactivated_encounter:
+				player.attributes.reward_encounter(active_encounter)
+				record_first_victory(active_encounter)
+				cleared[active_encounter] = true
+				revisits.note_completed(active_encounter)
+			revisits.release()
 			active_encounter = -1
 			encounter = &"explore"
 		else:
@@ -373,12 +393,12 @@ func collect_page() -> bool:
 		if cleared.has(i) and not pages.has(i) and player.position.distance_to(page_position(i)) <= 30:
 			pages[i] = true
 			audio.play_event(player,"page")
-			if pages.size() == 5:
-				start_ending()
 			return true
 	return false
 
 func on_player_died() -> void:
+	revenge.reset()
+	revisits.release()
 	support.cancel()
 	audio.stop_all()
 	for monster in enemies:
@@ -395,14 +415,46 @@ func return_player() -> bool:
 		return false
 	support.cancel()
 	player.return_after_death(player_spawn)
+	health_bar.snap_to(100.0*player.health/player.max_health)
+	hunger_bar.snap_to(100.0*player.hunger/player.max_hunger)
 	companion.reset_at(layout.companion_start)
 	discovery.last_cell = Vector2i(-999,-999)
 	modal.visible = false
 	encounter = &"explore"
 	return true
 
+func record_first_victory(index: int) -> bool:
+	if first_victory_id!="" or index<0 or index>=layout.encounter_ids.size():return false
+	if reactivated_encounter:return false
+	first_victory_id = layout.encounter_ids[index]
+	var center: Vector2 = layout.encounter_centers[index]
+	var point := Vector2.INF
+	for offset in [Vector2.ZERO,Vector2(24,0),Vector2(-24,0),Vector2(0,24),Vector2(0,-24),Vector2(48,0),Vector2(-48,0)]:
+		var candidate: Vector2 = center+offset
+		var query := PhysicsShapeQueryParameters2D.new()
+		var circle := CircleShape2D.new()
+		circle.radius = 10
+		query.shape = circle
+		query.transform = Transform2D(0,candidate)
+		query.collision_mask = 1
+		if get_world_2d().direct_space_state.intersect_shape(query,1).is_empty() and not navigation.path(player.position,candidate).is_empty():point = candidate;break
+	if not point.is_finite():push_error("Sem ponto livre para altar no primeiro encontro");return false
+	altar = preload("res://scripts/world/altar.gd").new()
+	altar.game = self
+	altar.position = point
+	altar.visible = discovery.known(point)
+	$World.add_child(altar)
+	return true
+func altar_hint() -> String:
+	if pages.size()!=5:return "Altar · reúna as cinco páginas (%d/5)"%pages.size()
+	if companion.dead:return "Altar · reanime seu amigo na fogueira"
+	if active_encounter>=0 or not enemies.is_empty():return "Altar · termine o confronto antes do livro"
+	return "E · colocar o livro no altar"
+
 func start_ending() -> bool:
-	if pages.size()!=5 or companion.dead or player.dead or ending!=&"none" or get_tree().paused: return false
+	if pages.size()!=5 or companion.dead or player.dead or ending!=&"none" or get_tree().paused:return false
+	if not is_instance_valid(altar) or active_encounter>=0 or not enemies.is_empty() or player.state!=&"ready" or player.feedback_wait>0:return false
+	if not reachable(altar.position,altar.interact_distance):return false
 	# Transição atômica: revalida amigo e encerra fontes de dano antes da animação.
 	support.cancel()
 	for monster in enemies:
@@ -426,7 +478,8 @@ func start_ending() -> bool:
 	player.queue_redraw()
 	player.visual.set_motion(Vector2.ZERO)
 	player.visual.set_action(&"idle",Vector2.DOWN,0)
-	book.position = player.position + Vector2(0,-25)
+	book.position = altar.position
+	altar.begin()
 	book.elapsed = 0.0
 	book.phase = &"flipping"
 	ending_phases.append(&"flipping")
@@ -485,6 +538,9 @@ func return_to_menu() -> void:
 	get_tree().reload_current_scene()
 
 func interact() -> StringName:
+	if player.dead or ending!=&"none" or get_tree().paused:return &"none"
+	if not player.dead and ending==&"none" and is_instance_valid(altar) and reachable(altar.position,altar.interact_distance):
+		return &"altar" if start_ending() else &"altar_locked"
 	if not session_started or get_tree().paused or player.dead:return &"none"
 	# Prioridade: página > ingrediente > fogueira > conversa. Uma única ação por E.
 	if collect_page():return &"page"
@@ -503,6 +559,7 @@ func interact() -> StringName:
 func reachable(point: Vector2, distance: float) -> bool:
 	return player.position.distance_to(point)<=distance and preload("res://scripts/combat_geometry.gd").clear_line(player,point)
 func interaction_hint() -> String:
+	if is_instance_valid(altar) and reachable(altar.position,altar.interact_distance):return altar_hint()
 	for i in layout.encounter_centers.size():
 		if cleared.has(i) and not pages.has(i) and reachable(page_position(i),30): return "E · recolher página %d — horda vencida"%[i+1]
 	for point in survival.pickups.values():
@@ -528,5 +585,5 @@ func camp_action(mode: String, generation: int) -> bool:
 	if not reachable(layout.campfires[camp_index],survival.config.camp_distance): return false
 	if mode=="share" and not companion.can_interact(): return false
 	var success: bool = survival.cook(generation) if mode=="cook" else survival.consume(mode,generation,player,companion,safe_rescue_point() if mode=="revive" else Vector2.INF)
-	if success: session_ui.show_campfire()
+	if success or not survival.last_result.is_empty(): session_ui.show_campfire()
 	return success

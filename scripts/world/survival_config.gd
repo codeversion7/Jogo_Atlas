@@ -9,3 +9,9 @@ extends Resource
 @export var revive_health := 50
 @export var pickup_distance := 26.0
 @export var camp_distance := 36.0
+
+@export var companion_hunger_per_second := 0.05
+@export var companion_meal_hunger := 35.0
+@export_range(0,1) var steal_chance := 0.20
+@export var revenge_interval := 10.0
+@export var revenge_damage := 5

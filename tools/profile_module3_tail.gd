@@ -28,10 +28,14 @@ func run() -> void:
 	if "--retain-orb-resources" in args:
 		pinned_resources.append(load("res://assets/monstros/ataques_v1/spore_orb_source.png"))
 		pinned_resources.append(load("res://assets/monstros/ataques_v1/attack_cutout.gdshader"))
+	DisplayServer.window_set_size(Vector2i(1920,1080))
 	var game = load("res://scenes/playable.tscn").instantiate()
 	root.add_child(game)
 	current_scene = game
 	game.start_session()
+	if "--reach-2" in args:
+		game.player.attributes.owned["reach.first"] = true
+		game.player.attributes.owned["reach.second"] = true
 	game.ending = &"benchmark" # Explicit performance fixture; not a real playthrough.
 	if mode=="combat":
 		for kind in 4:
@@ -74,7 +78,25 @@ func run() -> void:
 	var suffix := "dummy" if AudioServer.get_driver_name()=="Dummy" else "normal"
 	if not pinned_resources.is_empty(): suffix += "_retained"
 	if "--after" in args: suffix += "_after"
-	var file := FileAccess.open("res://docs/atlas/evidencias/16_profile_"+mode+"_"+suffix+".json",FileAccess.WRITE)
+	var output := "res://docs/atlas/evidencias/16_profile_"+mode+"_"+suffix+".json"
+	for arg in args:
+		if arg.begins_with("--out="):output = arg.trim_prefix("--out=")
+	if "--summary" in args:
+		var stats: Dictionary = {}
+		for key in ["wall_ms","physics_callbacks_ms","draw_signal_span_ms"]:
+			var values: Array = []
+			for row in samples:values.append(row[key])
+			values.sort()
+			stats[key] = {"median":values[values.size()/2],"p95":values[int(values.size()*0.95)],"max":values.back()}
+		report["sample_stats"] = stats
+		report["sample_count"] = samples.size()
+		var slow := 0
+		for row in samples:
+			if row.wall_ms>1000.0/60:slow += 1
+		report["frames_over_16_67_ms"] = slow
+		report["reach_level"] = 2 if "--reach-2" in args else 0
+		report.erase("samples")
+	var file := FileAccess.open(output,FileAccess.WRITE)
 	file.store_string(JSON.stringify(report,"  "))
 	print("ATLAS_TAIL_PROFILE mode=",mode," driver=",AudioServer.get_driver_name()," samples=",samples.size())
 	game.audio.stop_all()

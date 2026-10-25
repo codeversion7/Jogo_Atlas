@@ -208,7 +208,11 @@ func run() -> void:
 			check(player.max_health == old_max,"Maximum health never permanently reduced")
 		# Restore the player to ready through the actual recovery clock before next horde.
 		await step(35)
-	check(game.pages.size() == 5 and game.ending == &"playing","5/5 starts book")
+	check(game.pages.size()==5 and game.ending==&"none","5/5 waits for manual altar")
+	player.position = game.altar.position # This verifier already uses position fixtures; live run walks back.
+	player.state = &"ready"
+	player.feedback_wait = 0
+	check(game.interact()==&"altar","E at first-victory altar starts book")
 	var book_clock: float = game.book.elapsed
 	pause_key.pressed = true
 	Input.parse_input_event(pause_key)

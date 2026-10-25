@@ -6,6 +6,7 @@ var reach_level: int:
 	get: return attributes.melee_level()
 var active_interval := Vector2(-1,-1)
 var active_motion_fraction := 1.0
+var active_origin_fraction := 0.0
 var target_positions: Dictionary = {}
 signal health_changed
 signal died
@@ -153,7 +154,7 @@ func _physics_process(delta: float) -> void:
 	move_and_slide()
 	visual.set_motion(get_real_velocity())
 	if active_interval.x>=0:
-		strike_sweep(active_interval,origin_before,origin_before.lerp(global_position,active_motion_fraction))
+		strike_sweep(active_interval,origin_before.lerp(global_position,active_origin_fraction),origin_before.lerp(global_position,active_motion_fraction),true,Vector2(active_origin_fraction,active_motion_fraction))
 	var positions: Dictionary = {}
 	for target in get_tree().get_nodes_in_group("atlas_combat_targets"):
 		positions[target.get_instance_id()] = target.combat_center()
@@ -162,8 +163,10 @@ func _physics_process(delta: float) -> void:
 	queue_redraw()
 
 func advance_action(delta: float) -> void:
+	var remaining_before := remaining
 	active_interval = Vector2(-1,-1)
 	active_motion_fraction = 1.0
+	active_origin_fraction = 0.0
 	if state==&"attack":
 		active_interval = Vector2(action_progress(),clampf(1.0-(remaining-delta)/maxf(0.001,attack_duration),0,1))
 		active_motion_fraction = minf(1.0,maxf(0,remaining)/maxf(delta,0.000001))
@@ -177,6 +180,7 @@ func advance_action(delta: float) -> void:
 		SessionAudio.event(self,"dagger")
 		remaining = attack_duration
 		active_interval = Vector2.ZERO
+		active_origin_fraction = clampf(remaining_before/maxf(delta,0.000001),0,1)
 	elif state == &"attack":
 		state = &"recovery"
 		remaining = attack_recovery
@@ -223,7 +227,7 @@ func strike_targets() -> void:
 	if state!=&"attack":return
 	strike_sweep(Vector2.ONE*action_progress(),global_position,global_position,false)
 
-func strike_sweep(interval: Vector2, origin_from: Vector2, origin_to: Vector2, moving_targets: bool = true) -> void:
+func strike_sweep(interval: Vector2, origin_from: Vector2, origin_to: Vector2, moving_targets: bool = true, time_slice := Vector2(0,1)) -> void:
 	if dead or get_tree().paused or is_instance_valid(thrown_dagger) or feedback_wait>0:return
 	if state not in [&"attack",&"recovery"]:return
 	var reach: float = melee_reach.radius(reach_level)
@@ -231,9 +235,11 @@ func strike_sweep(interval: Vector2, origin_from: Vector2, origin_to: Vector2, m
 		var id := target.get_instance_id()
 		if target.dead or id in struck:continue
 		var target_to: Vector2 = target.combat_center()
-		var target_from: Vector2 = target_positions.get(id,target_to) if moving_targets else target_to
-		var contacts := Melee.blade_contacts(locked_direction,interval,origin_from,origin_to,target_from,target_to,target.hurt_radius)
-		if Melee.wave_touches(locked_direction,target_from-origin_from-COMBAT_OFFSET,target_to-origin_to-COMBAT_OFFSET,target.hurt_radius,reach,melee_reach.half_angle):contacts.append(target_to)
+		var previous: Vector2 = target_positions.get(id,target_to) if moving_targets else target_to
+		var target_from := previous.lerp(target_to,time_slice.x)
+		var target_end := previous.lerp(target_to,time_slice.y)
+		var contacts := Melee.blade_contacts(locked_direction,interval,origin_from,origin_to,target_from,target_end,target.hurt_radius)
+		if Melee.wave_touches(locked_direction,target_from-origin_from-COMBAT_OFFSET,target_end-origin_to-COMBAT_OFFSET,target.hurt_radius,reach,melee_reach.half_angle):contacts.append(target_to)
 		for contact in contacts:
 			if Geometry.clear_line(self,contact) and Geometry.clear_line(self,target_to):
 				struck.append(id)
@@ -284,6 +290,20 @@ func receive_attack(amount: int, source: Node2D) -> StringName:
 	update_visual()
 	queue_redraw()
 	return &"hit"
+
+func debit_life(amount: int) -> bool:
+	if dead or get_tree().paused or amount<=0:return false
+	health -= amount # Débito explícito: não é ataque físico, ignora parry/resistência/escudo.
+	health_changed.emit()
+	if health==0:
+		dead = true
+		state = &"dead"
+		velocity = Vector2.ZERO
+		cancel_skills()
+		died.emit()
+	update_visual()
+	queue_redraw()
+	return true
 
 func return_after_death(location: Vector2) -> void:
 	cancel_skills()

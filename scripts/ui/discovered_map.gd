@@ -26,3 +26,6 @@ func _draw() -> void:
 		var point: Vector2 = layout.page_position(index)
 		draw_circle(origin+point*zoom,3,Color("edce83"))
 	if game.discovery.known(game.player.position):draw_circle(origin+game.player.position*zoom,3.5,Color("84e2de"))
+
+	if is_instance_valid(game.altar) and game.discovery.known(game.altar.position):
+		draw_rect(Rect2(origin+game.altar.position*zoom-Vector2(3,3),Vector2(6,6)),Color("e7d48c"),false,1)

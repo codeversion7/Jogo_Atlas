@@ -219,14 +219,14 @@ func show_campfire() -> void:
 	title.text = "FOGUEIRA"
 	text.position = Vector2(28,72)
 	text.text = "Carne crua: %d · assada: %d\n"%[game.survival.raw,game.survival.cooked]
-	text.text += "Amigo caído: uma porção assada permite resgatá-lo aqui." if game.companion.dead else "Dividir recupera seu amigo e soma 0,2 s à proteção."
+	text.text += game.survival.meal_status(game.companion)+"\n"+game.survival.last_result
 	if game.survival.raw==0 and game.survival.cooked==0: text.text += "\nSem carne. Procure monstros; Esc permite pausar/reiniciar."
 	elif not game.companion.dead and not game.companion.can_interact(): text.text += "\nSeu amigo precisa estar perto para dividir."
 	actions.position = Vector2(28,158)
 	button("Assar uma carne",func(): game.camp_action("cook",generation))
 	actions.get_child(0).disabled = game.survival.raw<=0
 	button("Comer sozinho",func(): game.camp_action("eat",generation))
-	actions.get_child(1).disabled = game.survival.cooked<=0
+	actions.get_child(1).disabled = game.survival.cooked<=0 or game.companion.dead
 	var mode := "revive" if game.companion.dead else "share"
 	button("Reanimar e partilhar" if game.companion.dead else "Dividir com amigo",func(): game.camp_action(mode,generation))
 	actions.get_child(2).disabled = game.survival.cooked<=0 or (not game.companion.dead and not game.companion.can_interact())
